@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+
+  "name": "Portia",
+  "description": "This is where you improve your efficiency on Alibaba.",
+  "version": "0.1",
+
+  "background": {
+    "scripts": ["jquery.js", "config.js", "background.js"],
+    "persistent": true
+  },
+    
+  "content_scripts": [
+    {
+      "matches": [
+        "*://hz.productposting.alibaba.com/product/post_product_interface.*",
+        "*://hz.productposting.alibaba.com/product/posting.*"
+      ],
+      "js": ["jquery.js", "config.js", "up.js"]
+    },
+    {
+      "matches": ["*://hz.my.data.alibaba.com/industry/keywords.*"],
+      "js": ["jquery.js", "config.js", "keyword.js"]
+    },
+    {
+      "matches": ["*://hz.productposting.alibaba.com/product/products_manage.*"],
+      "js": ["jquery.js", "config.js", "product_manage.js"]
+    },
+    {
+      "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
+      "js": ["jquery.js", "config.js", "product_edit.js"]
+    },
+    {
+      "matches": ["*://*.alibaba.com/product-detail/*"],
+      "js": ["jquery.js", "config.js", "scratch.js"]
+    }
+  ],
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "background",
+    "http://*.aliimg.com/*",
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*"
+  ],
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  }
+}

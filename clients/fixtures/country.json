@@ -1,0 +1,3194 @@
+[
+    {
+        "model": "clients.country",
+        "pk": 1,
+        "fields": {
+            "ibt_id": "164",
+            "cn_name": "巴拿马",
+            "en_name": "Panama",
+            "code": "PA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 2,
+        "fields": {
+            "ibt_id": "163",
+            "cn_name": "尼加拉瓜",
+            "en_name": "Nicaragua",
+            "code": "NI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 3,
+        "fields": {
+            "ibt_id": "162",
+            "cn_name": "墨西哥",
+            "en_name": "Mexico",
+            "code": "MX",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 4,
+        "fields": {
+            "ibt_id": "161",
+            "cn_name": "牙买加",
+            "en_name": "Jamaica",
+            "code": "JM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 5,
+        "fields": {
+            "ibt_id": "160",
+            "cn_name": "洪都拉斯",
+            "en_name": "Honduras",
+            "code": "HN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 6,
+        "fields": {
+            "ibt_id": "159",
+            "cn_name": "海地",
+            "en_name": "Haiti",
+            "code": "HT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 7,
+        "fields": {
+            "ibt_id": "158",
+            "cn_name": "危地马拉",
+            "en_name": "Guatemala",
+            "code": "GT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 8,
+        "fields": {
+            "ibt_id": "157",
+            "cn_name": "格林纳达",
+            "en_name": "Grenada",
+            "code": "GD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 9,
+        "fields": {
+            "ibt_id": "156",
+            "cn_name": "古巴",
+            "en_name": "Cuba",
+            "code": "CU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 10,
+        "fields": {
+            "ibt_id": "155",
+            "cn_name": "哥斯达黎加",
+            "en_name": "Costa Rica",
+            "code": "CR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 11,
+        "fields": {
+            "ibt_id": "154",
+            "cn_name": "百慕大群岛(英)",
+            "en_name": "Bermuda",
+            "code": "BM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 12,
+        "fields": {
+            "ibt_id": "153",
+            "cn_name": "巴哈马国",
+            "en_name": "Bahamas",
+            "code": "BS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 13,
+        "fields": {
+            "ibt_id": "152",
+            "cn_name": "蒙特塞拉特岛",
+            "en_name": "Montserrat",
+            "code": "MS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 14,
+        "fields": {
+            "ibt_id": "151",
+            "cn_name": "瓜德罗普岛(法)",
+            "en_name": "Guadeloupe",
+            "code": "GP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 15,
+        "fields": {
+            "ibt_id": "150",
+            "cn_name": "开曼群岛(英)",
+            "en_name": "Cayman Islands",
+            "code": "KY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 16,
+        "fields": {
+            "ibt_id": "149",
+            "cn_name": "巴巴多斯",
+            "en_name": "Barbados",
+            "code": "BB",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 17,
+        "fields": {
+            "ibt_id": "147",
+            "cn_name": "苏里南",
+            "en_name": "Surinam",
+            "code": "SR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 18,
+        "fields": {
+            "ibt_id": "146",
+            "cn_name": "圣卢西亚",
+            "en_name": "Saint Lucia",
+            "code": "LC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 19,
+        "fields": {
+            "ibt_id": "145",
+            "cn_name": "波多黎各",
+            "en_name": "Puerto Rico",
+            "code": "PR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 20,
+        "fields": {
+            "ibt_id": "144",
+            "cn_name": "格陵兰岛",
+            "en_name": "Greenland",
+            "code": "GL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 21,
+        "fields": {
+            "ibt_id": "143",
+            "cn_name": "法罗群岛",
+            "en_name": "Faroe Islands",
+            "code": "FO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 22,
+        "fields": {
+            "ibt_id": "142",
+            "cn_name": "萨尔瓦多",
+            "en_name": "El salvador",
+            "code": "SV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 23,
+        "fields": {
+            "ibt_id": "141",
+            "cn_name": "多米尼加",
+            "en_name": "Dominica",
+            "code": "DM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 24,
+        "fields": {
+            "ibt_id": "140",
+            "cn_name": "伯利兹",
+            "en_name": "Belize",
+            "code": "BZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 25,
+        "fields": {
+            "ibt_id": "139",
+            "cn_name": "安提瓜和巴布达",
+            "en_name": "Antigua and Barbuda",
+            "code": "AG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 26,
+        "fields": {
+            "ibt_id": "138",
+            "cn_name": "安圭拉岛",
+            "en_name": "Anguilla",
+            "code": "AI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 27,
+        "fields": {
+            "ibt_id": "137",
+            "cn_name": "科特迪瓦",
+            "en_name": "Cote d'Ivoire",
+            "code": "CI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 28,
+        "fields": {
+            "ibt_id": "136",
+            "cn_name": "津巴布韦",
+            "en_name": "Zimbabwe",
+            "code": "ZW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 29,
+        "fields": {
+            "ibt_id": "135",
+            "cn_name": "赞比亚",
+            "en_name": "Zambia",
+            "code": "ZM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 30,
+        "fields": {
+            "ibt_id": "134",
+            "cn_name": "扎伊尔",
+            "en_name": "Zaire",
+            "code": "ZR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 31,
+        "fields": {
+            "ibt_id": "133",
+            "cn_name": "乌干达",
+            "en_name": "Uganda",
+            "code": "UG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 32,
+        "fields": {
+            "ibt_id": "132",
+            "cn_name": "突尼斯",
+            "en_name": "Tunisia",
+            "code": "TN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 33,
+        "fields": {
+            "ibt_id": "131",
+            "cn_name": "多哥",
+            "en_name": "Togo",
+            "code": "TG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 34,
+        "fields": {
+            "ibt_id": "130",
+            "cn_name": "坦桑尼亚",
+            "en_name": "Tanzania",
+            "code": "TZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 35,
+        "fields": {
+            "ibt_id": "129",
+            "cn_name": "斯威士兰",
+            "en_name": "Swaziland",
+            "code": "SZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 36,
+        "fields": {
+            "ibt_id": "128",
+            "cn_name": "苏丹",
+            "en_name": "Sudan",
+            "code": "SD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 37,
+        "fields": {
+            "ibt_id": "127",
+            "cn_name": "南非",
+            "en_name": "South Africa",
+            "code": "ZA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 38,
+        "fields": {
+            "ibt_id": "126",
+            "cn_name": "索马里兰",
+            "en_name": "SOMALILAND, REP OF (NORTH SOMALIA)",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 39,
+        "fields": {
+            "ibt_id": "125",
+            "cn_name": "索马里",
+            "en_name": "Somalia",
+            "code": "SO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 40,
+        "fields": {
+            "ibt_id": "124",
+            "cn_name": "塞拉利昂",
+            "en_name": "Sierra Leone",
+            "code": "SL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 41,
+        "fields": {
+            "ibt_id": "123",
+            "cn_name": "塞舌尔",
+            "en_name": "Seychelles",
+            "code": "SC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 42,
+        "fields": {
+            "ibt_id": "122",
+            "cn_name": "塞内加尔",
+            "en_name": "Senegal",
+            "code": "SN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 43,
+        "fields": {
+            "ibt_id": "121",
+            "cn_name": "卢旺达",
+            "en_name": "Rwanda",
+            "code": "RW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 44,
+        "fields": {
+            "ibt_id": "120",
+            "cn_name": "尼日利亚",
+            "en_name": "Nigeria",
+            "code": "NG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 45,
+        "fields": {
+            "ibt_id": "119",
+            "cn_name": "尼日尔",
+            "en_name": "Niger",
+            "code": "NE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 46,
+        "fields": {
+            "ibt_id": "118",
+            "cn_name": "纳米比亚",
+            "en_name": "Namibia",
+            "code": "NA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 47,
+        "fields": {
+            "ibt_id": "117",
+            "cn_name": "莫桑比克",
+            "en_name": "Mozambique",
+            "code": "MZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 48,
+        "fields": {
+            "ibt_id": "116",
+            "cn_name": "摩洛哥",
+            "en_name": "Morocco",
+            "code": "MA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 49,
+        "fields": {
+            "ibt_id": "115",
+            "cn_name": "毛里求斯",
+            "en_name": "Mauritius",
+            "code": "MU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 50,
+        "fields": {
+            "ibt_id": "114",
+            "cn_name": "毛里塔尼亚",
+            "en_name": "Mauritania",
+            "code": "MR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 51,
+        "fields": {
+            "ibt_id": "113",
+            "cn_name": "马里",
+            "en_name": "Mali",
+            "code": "ML",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 52,
+        "fields": {
+            "ibt_id": "112",
+            "cn_name": "马拉维",
+            "en_name": "Malawi",
+            "code": "MW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 53,
+        "fields": {
+            "ibt_id": "111",
+            "cn_name": "马达加斯加",
+            "en_name": "Madagascar",
+            "code": "MG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 54,
+        "fields": {
+            "ibt_id": "110",
+            "cn_name": "利比亚",
+            "en_name": "Libya",
+            "code": "LY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 55,
+        "fields": {
+            "ibt_id": "109",
+            "cn_name": "肯尼亚",
+            "en_name": "Kenya",
+            "code": "KE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 56,
+        "fields": {
+            "ibt_id": "108",
+            "cn_name": "几内亚比绍",
+            "en_name": "Guinea-Bissau",
+            "code": "GW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 57,
+        "fields": {
+            "ibt_id": "107",
+            "cn_name": "加纳",
+            "en_name": "Ghana",
+            "code": "GH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 58,
+        "fields": {
+            "ibt_id": "106",
+            "cn_name": "冈比亚",
+            "en_name": "Gambia",
+            "code": "GM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 59,
+        "fields": {
+            "ibt_id": "105",
+            "cn_name": "加蓬",
+            "en_name": "Gabon",
+            "code": "GA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 60,
+        "fields": {
+            "ibt_id": "104",
+            "cn_name": "埃塞俄比亚",
+            "en_name": "Ethiopia",
+            "code": "ET",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 61,
+        "fields": {
+            "ibt_id": "103",
+            "cn_name": "赤道几内亚",
+            "en_name": "Equatorial Guinea",
+            "code": "GQ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 62,
+        "fields": {
+            "ibt_id": "102",
+            "cn_name": "埃及",
+            "en_name": "Egypt",
+            "code": "EG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 63,
+        "fields": {
+            "ibt_id": "101",
+            "cn_name": "吉布提",
+            "en_name": "Djibouti",
+            "code": "DJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 64,
+        "fields": {
+            "ibt_id": "100",
+            "cn_name": "刚果",
+            "en_name": "Congo",
+            "code": "CG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 65,
+        "fields": {
+            "ibt_id": "99",
+            "cn_name": "科摩罗",
+            "en_name": "Comoros",
+            "code": "KM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 66,
+        "fields": {
+            "ibt_id": "98",
+            "cn_name": "乍得",
+            "en_name": "Chadian",
+            "code": "TD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 67,
+        "fields": {
+            "ibt_id": "97",
+            "cn_name": "中非共和国",
+            "en_name": "Central Africa",
+            "code": "CF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 68,
+        "fields": {
+            "ibt_id": "96",
+            "cn_name": "佛得角",
+            "en_name": "Cape Verde Is.",
+            "code": "CV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 69,
+        "fields": {
+            "ibt_id": "95",
+            "cn_name": "喀麦隆",
+            "en_name": "Cameroon",
+            "code": "CM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 70,
+        "fields": {
+            "ibt_id": "94",
+            "cn_name": "布隆迪",
+            "en_name": "Burundi",
+            "code": "BI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 71,
+        "fields": {
+            "ibt_id": "93",
+            "cn_name": "布基纳法索",
+            "en_name": "Burkina Faso",
+            "code": "BF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 72,
+        "fields": {
+            "ibt_id": "92",
+            "cn_name": "博茨瓦纳",
+            "en_name": "Botswana",
+            "code": "BW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 73,
+        "fields": {
+            "ibt_id": "91",
+            "cn_name": "贝宁",
+            "en_name": "Benin",
+            "code": "BJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 74,
+        "fields": {
+            "ibt_id": "90",
+            "cn_name": "阿鲁巴",
+            "en_name": "Aruba",
+            "code": "AW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 75,
+        "fields": {
+            "ibt_id": "89",
+            "cn_name": "安哥拉",
+            "en_name": "Angola",
+            "code": "AO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 76,
+        "fields": {
+            "ibt_id": "88",
+            "cn_name": "阿尔及利亚",
+            "en_name": "Algeria",
+            "code": "DZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 77,
+        "fields": {
+            "ibt_id": "87",
+            "cn_name": "塞浦路斯",
+            "en_name": "Cyprus",
+            "code": "CY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 78,
+        "fields": {
+            "ibt_id": "86",
+            "cn_name": "新西兰",
+            "en_name": "New Zealand",
+            "code": "NZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 79,
+        "fields": {
+            "ibt_id": "81",
+            "cn_name": "梵蒂冈",
+            "en_name": "Vatican City",
+            "code": "VA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 80,
+        "fields": {
+            "ibt_id": "79",
+            "cn_name": "乌克兰",
+            "en_name": "Ukraine",
+            "code": "UA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 81,
+        "fields": {
+            "ibt_id": "78",
+            "cn_name": "瑞士",
+            "en_name": "Switzerland",
+            "code": "CH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 82,
+        "fields": {
+            "ibt_id": "77",
+            "cn_name": "瑞典",
+            "en_name": "Sweden",
+            "code": "SE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 83,
+        "fields": {
+            "ibt_id": "76",
+            "cn_name": "西班牙",
+            "en_name": "Spain",
+            "code": "ES",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 84,
+        "fields": {
+            "ibt_id": "75",
+            "cn_name": "斯洛伐克",
+            "en_name": "Slovakia",
+            "code": "SK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 85,
+        "fields": {
+            "ibt_id": "74",
+            "cn_name": "圣马力诺",
+            "en_name": "San Marino",
+            "code": "SM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 86,
+        "fields": {
+            "ibt_id": "73",
+            "cn_name": "俄罗斯",
+            "en_name": "Russia",
+            "code": "RU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 87,
+        "fields": {
+            "ibt_id": "72",
+            "cn_name": "罗马尼亚",
+            "en_name": "Romania",
+            "code": "RO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 88,
+        "fields": {
+            "ibt_id": "71",
+            "cn_name": "葡萄牙",
+            "en_name": "Portugal",
+            "code": "PT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 89,
+        "fields": {
+            "ibt_id": "70",
+            "cn_name": "波兰",
+            "en_name": "Poland",
+            "code": "PL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 90,
+        "fields": {
+            "ibt_id": "69",
+            "cn_name": "挪威",
+            "en_name": "Norway",
+            "code": "NO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 91,
+        "fields": {
+            "ibt_id": "68",
+            "cn_name": "荷兰",
+            "en_name": "Netherlands",
+            "code": "NL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 92,
+        "fields": {
+            "ibt_id": "67",
+            "cn_name": "摩纳哥",
+            "en_name": "Monaco",
+            "code": "MC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 93,
+        "fields": {
+            "ibt_id": "66",
+            "cn_name": "摩尔多瓦共和国",
+            "en_name": "Moldova",
+            "code": "MD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 94,
+        "fields": {
+            "ibt_id": "65",
+            "cn_name": "马耳他",
+            "en_name": "Malta",
+            "code": "MT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 95,
+        "fields": {
+            "ibt_id": "64",
+            "cn_name": "立陶宛",
+            "en_name": "Lithuania",
+            "code": "LT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 96,
+        "fields": {
+            "ibt_id": "63",
+            "cn_name": "拉脱维亚",
+            "en_name": "Latvia",
+            "code": "LV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 97,
+        "fields": {
+            "ibt_id": "62",
+            "cn_name": "意大利",
+            "en_name": "Italy",
+            "code": "IT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 98,
+        "fields": {
+            "ibt_id": "61",
+            "cn_name": "爱尔兰",
+            "en_name": "Ireland",
+            "code": "IE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 99,
+        "fields": {
+            "ibt_id": "60",
+            "cn_name": "冰岛",
+            "en_name": "Iceland",
+            "code": "IS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 100,
+        "fields": {
+            "ibt_id": "59",
+            "cn_name": "匈牙利",
+            "en_name": "Hungary",
+            "code": "HU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 101,
+        "fields": {
+            "ibt_id": "58",
+            "cn_name": "希腊",
+            "en_name": "Greece",
+            "code": "GR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 102,
+        "fields": {
+            "ibt_id": "57",
+            "cn_name": "直布罗陀(英)",
+            "en_name": "Gibraltar",
+            "code": "GI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 103,
+        "fields": {
+            "ibt_id": "56",
+            "cn_name": "德国",
+            "en_name": "Germany",
+            "code": "DE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 104,
+        "fields": {
+            "ibt_id": "55",
+            "cn_name": "法国",
+            "en_name": "France",
+            "code": "FR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 105,
+        "fields": {
+            "ibt_id": "54",
+            "cn_name": "芬兰",
+            "en_name": "Finland",
+            "code": "FI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 106,
+        "fields": {
+            "ibt_id": "53",
+            "cn_name": "爱沙尼亚",
+            "en_name": "Estonia",
+            "code": "EE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 107,
+        "fields": {
+            "ibt_id": "52",
+            "cn_name": "丹麦",
+            "en_name": "Denmark",
+            "code": "DK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 108,
+        "fields": {
+            "ibt_id": "51",
+            "cn_name": "捷克",
+            "en_name": "Czech Republic",
+            "code": "CZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 109,
+        "fields": {
+            "ibt_id": "50",
+            "cn_name": "克罗地亚",
+            "en_name": "Croatia, Republic of",
+            "code": "HR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 110,
+        "fields": {
+            "ibt_id": "49",
+            "cn_name": "保加利亚",
+            "en_name": "Bulgaria",
+            "code": "BG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 111,
+        "fields": {
+            "ibt_id": "48",
+            "cn_name": "比利时",
+            "en_name": "Belgium",
+            "code": "BE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 112,
+        "fields": {
+            "ibt_id": "47",
+            "cn_name": "奥地利",
+            "en_name": "Austria",
+            "code": "AT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 113,
+        "fields": {
+            "ibt_id": "46",
+            "cn_name": "安道尔共和国",
+            "en_name": "Andorra",
+            "code": "AD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 114,
+        "fields": {
+            "ibt_id": "45",
+            "cn_name": "也门共和国",
+            "en_name": "Yemen",
+            "code": "YE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 115,
+        "fields": {
+            "ibt_id": "44",
+            "cn_name": "阿拉伯联合酋长国",
+            "en_name": "United Arab Emirates",
+            "code": "AE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 116,
+        "fields": {
+            "ibt_id": "43",
+            "cn_name": "土耳其",
+            "en_name": "Turkey",
+            "code": "TR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 117,
+        "fields": {
+            "ibt_id": "42",
+            "cn_name": "泰国",
+            "en_name": "Thailand",
+            "code": "TH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 118,
+        "fields": {
+            "ibt_id": "41",
+            "cn_name": "台湾",
+            "en_name": "Taiwan",
+            "code": "TW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 119,
+        "fields": {
+            "ibt_id": "40",
+            "cn_name": "叙利亚",
+            "en_name": "Syria",
+            "code": "SY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 120,
+        "fields": {
+            "ibt_id": "39",
+            "cn_name": "斯里兰卡",
+            "en_name": "Sri Lanka",
+            "code": "LK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 121,
+        "fields": {
+            "ibt_id": "38",
+            "cn_name": "新加坡",
+            "en_name": "Singapore",
+            "code": "SG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 122,
+        "fields": {
+            "ibt_id": "37",
+            "cn_name": "沙特阿拉伯",
+            "en_name": "Saudi Arabia",
+            "code": "SA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 123,
+        "fields": {
+            "ibt_id": "36",
+            "cn_name": "卡塔尔",
+            "en_name": "Qatar",
+            "code": "QA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 124,
+        "fields": {
+            "ibt_id": "35",
+            "cn_name": "菲律宾",
+            "en_name": "Philippines",
+            "code": "PH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 125,
+        "fields": {
+            "ibt_id": "34",
+            "cn_name": "巴基斯坦",
+            "en_name": "Pakistan",
+            "code": "PK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 126,
+        "fields": {
+            "ibt_id": "33",
+            "cn_name": "阿曼",
+            "en_name": "Oman",
+            "code": "OM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 127,
+        "fields": {
+            "ibt_id": "32",
+            "cn_name": "尼泊尔",
+            "en_name": "Nepal",
+            "code": "NP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 128,
+        "fields": {
+            "ibt_id": "31",
+            "cn_name": "马尔代夫",
+            "en_name": "Maldives",
+            "code": "MV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 129,
+        "fields": {
+            "ibt_id": "30",
+            "cn_name": "马来西亚",
+            "en_name": "Malaysia",
+            "code": "MY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 130,
+        "fields": {
+            "ibt_id": "29",
+            "cn_name": "澳门",
+            "en_name": "Macao",
+            "code": "MO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 131,
+        "fields": {
+            "ibt_id": "28",
+            "cn_name": "卢森堡",
+            "en_name": "Luxembourg",
+            "code": "LU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 132,
+        "fields": {
+            "ibt_id": "27",
+            "cn_name": "黎巴嫩",
+            "en_name": "Lebanon",
+            "code": "LB",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 133,
+        "fields": {
+            "ibt_id": "26",
+            "cn_name": "老挝",
+            "en_name": "Laos",
+            "code": "LA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 134,
+        "fields": {
+            "ibt_id": "25",
+            "cn_name": "科威特",
+            "en_name": "Kuwait",
+            "code": "KW",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 135,
+        "fields": {
+            "ibt_id": "24",
+            "cn_name": "约旦",
+            "en_name": "Jordan",
+            "code": "JO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 136,
+        "fields": {
+            "ibt_id": "23",
+            "cn_name": "以色列",
+            "en_name": "Israel",
+            "code": "IL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 137,
+        "fields": {
+            "ibt_id": "22",
+            "cn_name": "伊拉克",
+            "en_name": "Iraq",
+            "code": "IQ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 138,
+        "fields": {
+            "ibt_id": "21",
+            "cn_name": "伊朗",
+            "en_name": "Iran",
+            "code": "IR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 139,
+        "fields": {
+            "ibt_id": "20",
+            "cn_name": "印尼",
+            "en_name": "Indonesia",
+            "code": "ID",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 140,
+        "fields": {
+            "ibt_id": "19",
+            "cn_name": "印度",
+            "en_name": "India",
+            "code": "IN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 141,
+        "fields": {
+            "ibt_id": "18",
+            "cn_name": "中国香港",
+            "en_name": "Hong kong",
+            "code": "HK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 142,
+        "fields": {
+            "ibt_id": "17",
+            "cn_name": "柬埔寨",
+            "en_name": "Cambodia",
+            "code": "KH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 143,
+        "fields": {
+            "ibt_id": "16",
+            "cn_name": "文莱",
+            "en_name": "Brunei",
+            "code": "BN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 144,
+        "fields": {
+            "ibt_id": "15",
+            "cn_name": "不丹",
+            "en_name": "Bhutan",
+            "code": "BT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 145,
+        "fields": {
+            "ibt_id": "14",
+            "cn_name": "孟加拉国",
+            "en_name": "Bangladesh",
+            "code": "BD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 146,
+        "fields": {
+            "ibt_id": "13",
+            "cn_name": "巴林",
+            "en_name": "Bahrain",
+            "code": "BH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 147,
+        "fields": {
+            "ibt_id": "12",
+            "cn_name": "阿塞拜疆",
+            "en_name": "Azerbaijan Republic",
+            "code": "AZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 148,
+        "fields": {
+            "ibt_id": "11",
+            "cn_name": "阿尔巴尼亚",
+            "en_name": "Albania",
+            "code": "AL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 149,
+        "fields": {
+            "ibt_id": "10",
+            "cn_name": "阿富汗",
+            "en_name": "Afghanistan",
+            "code": "AF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 150,
+        "fields": {
+            "ibt_id": "9",
+            "cn_name": "越南",
+            "en_name": "Viet Nam",
+            "code": "VN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 151,
+        "fields": {
+            "ibt_id": "8",
+            "cn_name": "乌兹别克斯坦",
+            "en_name": "Uzbekistan",
+            "code": "UZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 152,
+        "fields": {
+            "ibt_id": "7",
+            "cn_name": "土库曼斯坦",
+            "en_name": "Turkmenistan",
+            "code": "TM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 153,
+        "fields": {
+            "ibt_id": "6",
+            "cn_name": "塔吉克斯坦",
+            "en_name": "Tadzhikistan",
+            "code": "TJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 154,
+        "fields": {
+            "ibt_id": "5",
+            "cn_name": "韩国",
+            "en_name": "Korea",
+            "code": "KR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 155,
+        "fields": {
+            "ibt_id": "4",
+            "cn_name": "蒙古",
+            "en_name": "Mongolia",
+            "code": "MN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 156,
+        "fields": {
+            "ibt_id": "3",
+            "cn_name": "哈萨克斯坦",
+            "en_name": "Kazakhstan",
+            "code": "KZ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 157,
+        "fields": {
+            "ibt_id": "2",
+            "cn_name": "日本",
+            "en_name": "Japan",
+            "code": "JP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 158,
+        "fields": {
+            "ibt_id": "1",
+            "cn_name": "朝鲜",
+            "en_name": "D.P.R.Korea",
+            "code": "KP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 159,
+        "fields": {
+            "ibt_id": "271",
+            "cn_name": "圣尤斯特歇斯",
+            "en_name": "ST. Eustatius",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 160,
+        "fields": {
+            "ibt_id": "270",
+            "cn_name": "根西岛",
+            "en_name": "Guernsey",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 161,
+        "fields": {
+            "ibt_id": "269",
+            "cn_name": "库拉索岛",
+            "en_name": "Curacao",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 162,
+        "fields": {
+            "ibt_id": "268",
+            "cn_name": "伯奈尔",
+            "en_name": "Bonaire",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 163,
+        "fields": {
+            "ibt_id": "267",
+            "cn_name": "圣巴特勒米岛",
+            "en_name": "ST. Barthelemy",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 164,
+        "fields": {
+            "ibt_id": "266",
+            "cn_name": "圣马丁岛",
+            "en_name": "ST. Maarten",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 165,
+        "fields": {
+            "ibt_id": "265",
+            "cn_name": "塔希提",
+            "en_name": "Tahiti",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 166,
+        "fields": {
+            "ibt_id": "264",
+            "cn_name": "泽西岛",
+            "en_name": "Jersey",
+            "code": "JE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 167,
+        "fields": {
+            "ibt_id": "263",
+            "cn_name": "塞班岛",
+            "en_name": "Saipan Island",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 168,
+        "fields": {
+            "ibt_id": "262",
+            "cn_name": "西撒哈拉",
+            "en_name": "Western sahara",
+            "code": "EH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 169,
+        "fields": {
+            "ibt_id": "261",
+            "cn_name": "瓦利斯群岛和富图纳群岛",
+            "en_name": "Wallis And Futuna Islands",
+            "code": "WF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 170,
+        "fields": {
+            "ibt_id": "260",
+            "cn_name": "威克岛",
+            "en_name": "Wake Island",
+            "code": "XM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 171,
+        "fields": {
+            "ibt_id": "259",
+            "cn_name": "美国本土外小岛屿",
+            "en_name": "United States Minor Outlying Islands",
+            "code": "UM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 172,
+        "fields": {
+            "ibt_id": "258",
+            "cn_name": "特克斯和凯科斯群岛",
+            "en_name": "Turks And Caicos Islands",
+            "code": "TC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 173,
+        "fields": {
+            "ibt_id": "257",
+            "cn_name": "特里斯坦(达库尼亚岛)",
+            "en_name": "Tristan Da Cunha",
+            "code": "XB",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 174,
+        "fields": {
+            "ibt_id": "256",
+            "cn_name": "托克劳",
+            "en_name": "Tokelau",
+            "code": "TK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 175,
+        "fields": {
+            "ibt_id": "255",
+            "cn_name": "斯匹次卑尔根群岛",
+            "en_name": "Spitsbergen(Svalbard)",
+            "code": "SJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 176,
+        "fields": {
+            "ibt_id": "254",
+            "cn_name": "北非西班牙属土",
+            "en_name": "Spanish Territories Of N.AFRICA",
+            "code": "XG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 177,
+        "fields": {
+            "ibt_id": "253",
+            "cn_name": "南乔治亚岛和南桑德韦奇岛",
+            "en_name": "South Georgia And The South Sandwich Isl",
+            "code": "GS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 178,
+        "fields": {
+            "ibt_id": "252",
+            "cn_name": "圣多美和普林西",
+            "en_name": "Sao Tome And Principe",
+            "code": "ST",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 179,
+        "fields": {
+            "ibt_id": "251",
+            "cn_name": "圣文森特",
+            "en_name": "Saint Vincent",
+            "code": "VC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 180,
+        "fields": {
+            "ibt_id": "250",
+            "cn_name": "圣皮埃尔和密克隆群岛",
+            "en_name": "Saint Pierre And Miquelon",
+            "code": "PM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 181,
+        "fields": {
+            "ibt_id": "249",
+            "cn_name": "圣基茨岛",
+            "en_name": "Saint Kitts",
+            "code": "KN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 182,
+        "fields": {
+            "ibt_id": "248",
+            "cn_name": "尼维斯岛",
+            "en_name": "Nevis",
+            "code": "KN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 183,
+        "fields": {
+            "ibt_id": "247",
+            "cn_name": "圣赫勒拿岛",
+            "en_name": "Saint Helena",
+            "code": "SH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 184,
+        "fields": {
+            "ibt_id": "246",
+            "cn_name": "纽埃",
+            "en_name": "Niue",
+            "code": "NU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 185,
+        "fields": {
+            "ibt_id": "245",
+            "cn_name": "荷属安的列斯群岛",
+            "en_name": "Netherlands Antilles",
+            "code": "AN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 186,
+        "fields": {
+            "ibt_id": "244",
+            "cn_name": "缅甸",
+            "en_name": "Myanmar",
+            "code": "MM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 187,
+        "fields": {
+            "ibt_id": "243",
+            "cn_name": "马约特",
+            "en_name": "Mayotte",
+            "code": "YT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 188,
+        "fields": {
+            "ibt_id": "242",
+            "cn_name": "马绍尔群岛",
+            "en_name": "Marshall Islands",
+            "code": "MH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 189,
+        "fields": {
+            "ibt_id": "241",
+            "cn_name": "马德拉",
+            "en_name": "Madeira",
+            "code": "XI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 190,
+        "fields": {
+            "ibt_id": "240",
+            "cn_name": "利比里亚",
+            "en_name": "Liberia",
+            "code": "LR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 191,
+        "fields": {
+            "ibt_id": "239",
+            "cn_name": "莱索托",
+            "en_name": "Lesotho",
+            "code": "LS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 192,
+        "fields": {
+            "ibt_id": "238",
+            "cn_name": "基里巴斯",
+            "en_name": "Kiribati",
+            "code": "KI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 193,
+        "fields": {
+            "ibt_id": "237",
+            "cn_name": "赫德岛和麦克唐岛",
+            "en_name": "Heard Island And Mcdonald Islands",
+            "code": "HM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 194,
+        "fields": {
+            "ibt_id": "236",
+            "cn_name": "几内亚共和国",
+            "en_name": "Guinea Republic",
+            "code": "GN",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 195,
+        "fields": {
+            "ibt_id": "235",
+            "cn_name": "加沙及汗尤尼斯",
+            "en_name": "Gaza And Khan Yunis",
+            "code": "XE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 196,
+        "fields": {
+            "ibt_id": "234",
+            "cn_name": "法属南部领土",
+            "en_name": "French Southern Territories",
+            "code": "TF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 197,
+        "fields": {
+            "ibt_id": "233",
+            "cn_name": "法属圭亚那",
+            "en_name": "French Guiana",
+            "code": "GF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 198,
+        "fields": {
+            "ibt_id": "232",
+            "cn_name": "法属美特罗波利坦",
+            "en_name": "France Metropolitan",
+            "code": "FX",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 199,
+        "fields": {
+            "ibt_id": "231",
+            "cn_name": "福克兰群岛",
+            "en_name": "Falkland Island (Malvinas)",
+            "code": "FK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 200,
+        "fields": {
+            "ibt_id": "230",
+            "cn_name": "多米尼加共和国",
+            "en_name": "Dominican Republic",
+            "code": "DO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 201,
+        "fields": {
+            "ibt_id": "229",
+            "cn_name": "科西嘉岛",
+            "en_name": "France-Corsica",
+            "code": "XF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 202,
+        "fields": {
+            "ibt_id": "228",
+            "cn_name": "刚果民主共和国",
+            "en_name": "Congo (DEM. REP. OF)",
+            "code": "CD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 203,
+        "fields": {
+            "ibt_id": "227",
+            "cn_name": "科科斯群岛",
+            "en_name": "Cocos(keeling) Islands",
+            "code": "CC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 204,
+        "fields": {
+            "ibt_id": "226",
+            "cn_name": "圣诞岛",
+            "en_name": "Christmas Island",
+            "code": "CX",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 205,
+        "fields": {
+            "ibt_id": "225",
+            "cn_name": "海峡群岛",
+            "en_name": "Channel Islands",
+            "code": "XC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 206,
+        "fields": {
+            "ibt_id": "224",
+            "cn_name": "加罗林群岛",
+            "en_name": "Caroline Islands",
+            "code": "XK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 207,
+        "fields": {
+            "ibt_id": "223",
+            "cn_name": "加那利群岛",
+            "en_name": "Canary Islands",
+            "code": "XA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 208,
+        "fields": {
+            "ibt_id": "222",
+            "cn_name": "英属印度洋地区",
+            "en_name": "British Indian Ocean Territory",
+            "code": "IO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 209,
+        "fields": {
+            "ibt_id": "221",
+            "cn_name": "布维岛",
+            "en_name": "Bouvet Island",
+            "code": "BV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 210,
+        "fields": {
+            "ibt_id": "220",
+            "cn_name": "巴利阿里群岛",
+            "en_name": "Balearic Islands",
+            "code": "XJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 211,
+        "fields": {
+            "ibt_id": "219",
+            "cn_name": "亚速尔",
+            "en_name": "Azores",
+            "code": "XH",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 212,
+        "fields": {
+            "ibt_id": "218",
+            "cn_name": "阿森松",
+            "en_name": "Ascension",
+            "code": "XD",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 213,
+        "fields": {
+            "ibt_id": "217",
+            "cn_name": "南极洲",
+            "en_name": "Antarctica",
+            "code": "AQ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 214,
+        "fields": {
+            "ibt_id": "216",
+            "cn_name": "萨摩亚",
+            "en_name": "Samoa",
+            "code": "WS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 215,
+        "fields": {
+            "ibt_id": "214",
+            "cn_name": "法属玻利尼西亚",
+            "en_name": "French Polynesia",
+            "code": "PF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 216,
+        "fields": {
+            "ibt_id": "213",
+            "cn_name": "维尔京群岛(美)",
+            "en_name": "Vigin Islands(U.S.)",
+            "code": "VI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 217,
+        "fields": {
+            "ibt_id": "212",
+            "cn_name": "维尔京群岛(英属)",
+            "en_name": "Virgin Islands(British)",
+            "code": "VG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 218,
+        "fields": {
+            "ibt_id": "211",
+            "cn_name": "留尼旺岛",
+            "en_name": "Reunion Island",
+            "code": "RE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 219,
+        "fields": {
+            "ibt_id": "210",
+            "cn_name": "马提尼克",
+            "en_name": "Martinique",
+            "code": "MQ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 220,
+        "fields": {
+            "ibt_id": "209",
+            "cn_name": "新西兰属土岛屿",
+            "en_name": "New Zealand other island",
+            "code": "XL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 221,
+        "fields": {
+            "ibt_id": "208",
+            "cn_name": "特立尼达和多巴哥",
+            "en_name": "Trinidad and Tobago",
+            "code": "TT",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 222,
+        "fields": {
+            "ibt_id": "207",
+            "cn_name": "斯洛文尼亚",
+            "en_name": "Slovenia",
+            "code": "SI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 223,
+        "fields": {
+            "ibt_id": "206",
+            "cn_name": "塞尔维亚",
+            "en_name": "Serbia",
+            "code": "RS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 224,
+        "fields": {
+            "ibt_id": "204",
+            "cn_name": "巴勒斯坦",
+            "en_name": "Palestine",
+            "code": "BL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 225,
+        "fields": {
+            "ibt_id": "203",
+            "cn_name": "帕劳群岛",
+            "en_name": "Palau",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 226,
+        "fields": {
+            "ibt_id": "202",
+            "cn_name": "黑山共和国",
+            "en_name": "Montenegro",
+            "code": "ME",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 227,
+        "fields": {
+            "ibt_id": "201",
+            "cn_name": "密克隆岛",
+            "en_name": "Miquelon",
+            "code": 0,
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 228,
+        "fields": {
+            "ibt_id": "200",
+            "cn_name": "密克罗尼西亚",
+            "en_name": "Micronesia",
+            "code": "FM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 229,
+        "fields": {
+            "ibt_id": "199",
+            "cn_name": "马其顿",
+            "en_name": "Macedonia",
+            "code": "MK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 230,
+        "fields": {
+            "ibt_id": "198",
+            "cn_name": "列支敦士登",
+            "en_name": "Liechtenstein",
+            "code": "LI",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 231,
+        "fields": {
+            "ibt_id": "197",
+            "cn_name": "科索沃",
+            "en_name": "Kosovo",
+            "code": "XO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 232,
+        "fields": {
+            "ibt_id": "196",
+            "cn_name": "吉尔吉斯斯坦",
+            "en_name": "Kirghizia",
+            "code": "KG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 233,
+        "fields": {
+            "ibt_id": "195",
+            "cn_name": "格鲁吉亚",
+            "en_name": "Georgia",
+            "code": "GE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 234,
+        "fields": {
+            "ibt_id": "194",
+            "cn_name": "厄立特里亚",
+            "en_name": "Eritrea",
+            "code": "ER",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 235,
+        "fields": {
+            "ibt_id": "193",
+            "cn_name": "东帝汶",
+            "en_name": "East Timor",
+            "code": "TP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 236,
+        "fields": {
+            "ibt_id": "191",
+            "cn_name": "波斯尼亚和黑塞哥维那",
+            "en_name": "Bosnia Herzegovina",
+            "code": "BA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 237,
+        "fields": {
+            "ibt_id": "190",
+            "cn_name": "白俄罗斯",
+            "en_name": "Belarus",
+            "code": "BY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 238,
+        "fields": {
+            "ibt_id": "189",
+            "cn_name": "亚美尼亚",
+            "en_name": "Armenia",
+            "code": "AM",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 239,
+        "fields": {
+            "ibt_id": "188",
+            "cn_name": "乌拉圭",
+            "en_name": "Uruguay",
+            "code": "UY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 240,
+        "fields": {
+            "ibt_id": "187",
+            "cn_name": "秘鲁",
+            "en_name": "Peru",
+            "code": "PE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 241,
+        "fields": {
+            "ibt_id": "186",
+            "cn_name": "巴拉圭",
+            "en_name": "Paraguay",
+            "code": "PY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 242,
+        "fields": {
+            "ibt_id": "185",
+            "cn_name": "圭亚那(英国)",
+            "en_name": "Guyana",
+            "code": "GY",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 243,
+        "fields": {
+            "ibt_id": "184",
+            "cn_name": "厄瓜多尔",
+            "en_name": "Ecuador",
+            "code": "EC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 244,
+        "fields": {
+            "ibt_id": "183",
+            "cn_name": "哥伦比亚",
+            "en_name": "Colombia",
+            "code": "CO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 245,
+        "fields": {
+            "ibt_id": "182",
+            "cn_name": "智利",
+            "en_name": "Chile",
+            "code": "CL",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 246,
+        "fields": {
+            "ibt_id": "181",
+            "cn_name": "巴西",
+            "en_name": "Brazil",
+            "code": "BR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 247,
+        "fields": {
+            "ibt_id": "180",
+            "cn_name": "玻利维亚",
+            "en_name": "Bolivia",
+            "code": "BO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 248,
+        "fields": {
+            "ibt_id": "179",
+            "cn_name": "阿根廷",
+            "en_name": "Argentina",
+            "code": "AR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 249,
+        "fields": {
+            "ibt_id": "178",
+            "cn_name": "图瓦卢",
+            "en_name": "Tuvalu",
+            "code": "TV",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 250,
+        "fields": {
+            "ibt_id": "177",
+            "cn_name": "瓦努阿图",
+            "en_name": "VANUATU",
+            "code": "VU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 251,
+        "fields": {
+            "ibt_id": "176",
+            "cn_name": "汤加",
+            "en_name": "Tonga",
+            "code": "TO",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 252,
+        "fields": {
+            "ibt_id": "175",
+            "cn_name": "所罗门群岛",
+            "en_name": "Solomon",
+            "code": "SB",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 253,
+        "fields": {
+            "ibt_id": "174",
+            "cn_name": "巴布亚新几内亚",
+            "en_name": "Papua New Guinea",
+            "code": "PG",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 254,
+        "fields": {
+            "ibt_id": "173",
+            "cn_name": "诺福克",
+            "en_name": "Norfolk",
+            "code": "NF",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 255,
+        "fields": {
+            "ibt_id": "172",
+            "cn_name": "新喀里多尼亚群岛(法)",
+            "en_name": "New Caledonia",
+            "code": "NC",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 256,
+        "fields": {
+            "ibt_id": "171",
+            "cn_name": "瑙鲁",
+            "en_name": "Nauru",
+            "code": "NR",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 257,
+        "fields": {
+            "ibt_id": "170",
+            "cn_name": "马里亚纳群岛",
+            "en_name": "Mariana",
+            "code": "MP",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 258,
+        "fields": {
+            "ibt_id": "169",
+            "cn_name": "关岛(美)",
+            "en_name": "Guam",
+            "code": "GU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 259,
+        "fields": {
+            "ibt_id": "168",
+            "cn_name": "斐济",
+            "en_name": "Fiji",
+            "code": "FJ",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 260,
+        "fields": {
+            "ibt_id": "167",
+            "cn_name": "库克群岛",
+            "en_name": "Cook Is.",
+            "code": "CK",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 261,
+        "fields": {
+            "ibt_id": "166",
+            "cn_name": "美属萨摩亚",
+            "en_name": "American Samoa",
+            "code": "AS",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 262,
+        "fields": {
+            "ibt_id": "165",
+            "cn_name": "委内瑞拉",
+            "en_name": "Venezuela",
+            "code": "VE",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 263,
+        "fields": {
+            "ibt_id": "83",
+            "cn_name": "加拿大",
+            "en_name": "Canada",
+            "code": "CA",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 264,
+        "fields": {
+            "ibt_id": "80",
+            "cn_name": "英国",
+            "en_name": "United Kingdom",
+            "code": "GB",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 265,
+        "fields": {
+            "ibt_id": "85",
+            "cn_name": "澳大利亚",
+            "en_name": "Australia",
+            "code": "AU",
+            "voltage": 0,
+            "socket": 0
+        }
+    },
+    {
+        "model": "clients.country",
+        "pk": 266,
+        "fields": {
+            "ibt_id": "84",
+            "cn_name": "美国",
+            "en_name": "United States",
+            "code": "US",
+            "voltage": 0,
+            "socket": 0
+        }
+    }
+]
