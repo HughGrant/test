@@ -6,14 +6,14 @@ $(function() {
         $('form').hide();
         $('#btns').show();
         $('#login_error').hide();
-        $('#login_fail').hide();
+        $('#server_error').hide();
     }
 
     function logout_status() {
         $('form').show();
         $('#btns').hide();
         $('#login_error').hide();
-        $('#login_fail').hide();
+        $('#server_error').hide();
     }
 
     $.get(LOGIN_URL).done(function(data){

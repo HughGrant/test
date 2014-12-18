@@ -2,6 +2,7 @@ var DOMAIN = 'http://localhost:8000/'
 var ADMIN_URL = DOMAIN + 'admin/'
 var LOGIN_URL = DOMAIN + 'chrome_login/'
 var LOGOUT_URL = DOMAIN + 'logout/'
+var KW_URL = DOMAIN + 'products/keyword/'
 
 $.fn.serializeObject = function() {
    var o = {}
@@ -38,35 +39,23 @@ var model_insert = function(model_name, data, success_msg, error_msg) {
 }
 
 var setup_keywords_ui = function() {
-  $('#productKeyword').after('<button id="get_keywords" type="button" class="ui-button ui-button-normal ui-button-big">获取关键字</button>')
-  $('#productKeyword').after('<button id="clear_keywords" type="button" class="ui-button ui-button-normal ui-button-big">清除关键字</button>')
+  $('#productKeyword').after('<button id="get_keywords" type="button" class="ui-button ui-button-normal ui-button-big">更多关键字</button>')
+  $('#keywords3').after('<button id="clear_keywords" type="button" class="ui-button ui-button-normal ui-button-big">清除</button>')
   
   
   $('#get_keywords').click(get_keywords)
   $('#clear_keywords').click(function() {
-    $('#productKeyword').val('')
     $('#keywords2').val('')
     $('#keywords3').val('')
   })
 }
 
 var set_keywords = function(data) {
-  if (data.success == true) {
-    
-    var key1 = $('#productKeyword')
-    var key2 = $('#keywords2')
-    var key3 = $('#keywords3')
-    
-    if ($.trim(key1.val()) == '') { key1.val(data.keywords.shift()) }
-    if ($.trim(key2.val()) == '') { key2.val(data.keywords.shift()) }
-    if ($.trim(key3.val()) == '') { key3.val(data.keywords.shift()) }
-
-  } else {
-    var f = confirm(data.message + '\n\n是否现在去采集?')
-    if (f) {
-      open_url(SEARCH_HOT_KEYWORD_URL)
-    }
-  }
+  var key2 = $('#keywords2'),
+      key3 = $('#keywords3');
+  
+  if ($.trim(key2.val()) == '') { key2.val(data.result.shift()) }
+  if ($.trim(key3.val()) == '') { key3.val(data.result.shift()) }
 }
 
 var open_url = function(url) {
@@ -74,23 +63,34 @@ var open_url = function(url) {
 }
 
 var get_keywords = function() {
-  var name = $.trim($('#productName').val())
-  if (name == '') {
-    $('#productName').css('border', '2px solid red')
-    return false
+  var mk = $('#productKeyword');
+  if ($(mk.val()) == '') {
+    mk.css('border', '2px solid red');
+    return false;
   }
 
-  var key1 = $.trim($('#productKeyword').val())
-  var key2 = $.trim($('#keywords2').val())
-  var key3 = $.trim($('#keywords3').val())
-  var count = 0
-  if (key1 == '') { count++ }
+  var name = $.trim($('#productKeyword').val()),
+      key2 = $.trim($('#keywords2').val()),
+      key3 = $.trim($('#keywords3').val()),
+      count = 0;
+
   if (key2 == '') { count++ }
   if (key3 == '') { count++ }
   if (count == 0) { return false }
 
-  var info = {action:'push_keywords', name:name, count:count}
-  chrome.runtime.sendMessage(info)
+  var url =  KW_URL + '?count=' + count + '&name=' + name
+  $.get(url).done(function(data) {
+    if (data.status) {
+      set_keywords(data);
+    } else {
+      var f = confirm('关键字不足, 否现在去采集?');
+      if (f) {
+        open_url(SEARCH_HOT_KEYWORD_URL);
+      }
+    }
+  }).fail(function(data) {
+    alert(data.message);
+  });
 }
 
 var product_upload = function(product) {

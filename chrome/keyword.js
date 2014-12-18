@@ -15,27 +15,33 @@ $(function(){
 	})
 
 	$('#append_keyword').click(function() {
-		var f = detect_keywords()
+		var f = detect_keywords();
 		if (!f) {
-			return false
+			return false;
 		}
-		var kws = $('.ynkw:checked')
+		var kws = $('.ynkw:checked');
 		if (kws.length == 0) {
-			return false
+			return false;
 		}
-		var list = []
-		var skw = $('#J-search-keywords').val()
+		var list = [];
+		var skw = $('#J-search-keywords').val();
 		kws.map(function(){
-			var v = $(this).attr('value')
-			list.push({name:skw, word:v})
-		})
-		$.post(DOMAIN + 'products/keywords', list).done(function() {
-			alert('成功增加'+list.length+'个关键字');
-		}).fail(function() {
-            alert('出错了');
+			var v = $(this).attr('value');
+			list.push(v);
 		});
-	})
-})
+
+		var words = { name: skw, words: list };
+		$.post(KW_URL, words).done(function(data) {
+			if (data.status) {
+				alert('添加成功');
+			} else {
+				alert(data.message);
+			}
+		}).fail(function() {
+            alert('服务器出错了');
+		});
+	});
+});
 
 function adding_boxes() {
 	var kw = $('#J-search-keywords')

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import View
-# from django.utils.decorators import method_decorator
+from django.utils.decorators import method_decorator
 
 
 class ChromeLoginView(View):
@@ -22,16 +22,24 @@ class ChromeLoginView(View):
                 return JsonResponse({'status': True})
         return JsonResponse({'status': False})
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 def user_logout(request):
     logout(request)
     return JsonResponse({'status': True})
 
+
+def login_required_jr(request):
+    return JsonResponse({'status': False, 'message': '请先登入'})
+
 urlpatterns = patterns(
     '',
     url(r'^products/', include('products.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^chrome_login/',
-        csrf_exempt(ChromeLoginView.as_view()), name='chrome_login'),
+    url(r'^chrome_login/', ChromeLoginView.as_view(), name='chrome_login'),
+    url(r'^login_required_jr/', login_required_jr, name='login_required_jr'),
     url(r'^logout/', user_logout, name='user_logout'),
 )

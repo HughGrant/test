@@ -7,13 +7,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     chrome.tabs.create({url:request.url})
   }
 
-  if (request.action == 'push_keywords') {
-    var params = {name:request.name, count:request.count}
-    $.get(DOMAIN + 'push_keywords', params).done(function(kws) {
-      chrome.tabs.sendMessage(sender.tab.id, {action:'set_keywords', data:kws})
-    })
-  }
-
   if (request.action == 'delivery_cost') {
     var countryId = request.countryId
     var weight = request.weight
