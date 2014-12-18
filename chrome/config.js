@@ -69,7 +69,14 @@ var get_keywords = function() {
     return false;
   }
 
-  var name = $.trim($('#productKeyword').val()),
+  var tmp = mk.val().split(' ');
+  var clean_name = [];
+  tmp.forEach(function(i){
+    if (i != '') { clean_name.push(i)};
+  });
+  mk.val(clean_name.join(' '));
+
+  var name = $.trim(mk.val()),
       key2 = $.trim($('#keywords2').val()),
       key3 = $.trim($('#keywords3').val()),
       count = 0;
