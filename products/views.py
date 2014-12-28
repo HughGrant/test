@@ -32,8 +32,7 @@ class KeywordView(View):
         name = request.GET['name'].lower()
         count = int(request.GET['count'])
 
-        # possible optimization in the future
-        # print(name, count)
+        # TODO possible optimization in the future
         re = Keyword.objects.filter(name=name).order_by('count')[:count]
         if re.count() == count:
             jr['status'] = True

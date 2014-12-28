@@ -149,14 +149,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">填充所有</button>')
 		$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>')
+		$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>')
 
 		$('#download_imgs').click(function() {
-			var name = $('#productName').val()
+			var name = $('#productName').val();
 			if ($.trim(name) == '') {
-				name = product.name
+				name = product.name;
 			}
 			for (var i = product.photos.length - 1; i >= 0; i--) {
-				push_img(product.photos[i], name)
+				download_url(product.photos[i], name + '.jpg');
+			}
+		});
+
+		$('#check_imgs').click(function() {
+			for (var i = product.photos.length - 1; i >= 0; i--) {
+				check_img(product.photos[i]);
 			}
 		})
 

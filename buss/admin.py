@@ -8,7 +8,7 @@ from . import models
 from products.models import Basic
 admin.site.site_header = '亚新科技'
 admin.site.site_title = 'Yason Tech'
-admin.site.index_title = 'Love what you do, be what you like'
+admin.site.index_title = '亚新电子科技有限公司'
 
 
 class AutoUserAdmin(admin.ModelAdmin):
@@ -24,6 +24,10 @@ class AutoUserAdmin(admin.ModelAdmin):
 class ProductOrderInline(admin.TabularInline):
     model = models.ProductOrder
     extra = 1
+
+
+class QuotationForm(forms.ModelForm):
+    pass
 
 
 @admin.register(models.Order)

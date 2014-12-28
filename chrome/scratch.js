@@ -1,11 +1,10 @@
 $(function(){
-  $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制产品</a></div>')
+  $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制产品</a></div>');
   $('#scratch_trigger').click(function() {
-    product = scratch()
-    // model_insert('products', product, '复制产品成功', '出错了')
-    product_upload(product)
-  })
-})
+    product = scratch();
+    product_upload(product);
+  });
+});
 
 function scratch() {
   var product = {}
@@ -93,11 +92,6 @@ function get_rich_text() {
     var src = $(imgs[i].innerText).attr('src')
     rich.imgs.push(src)
   }
-    // } else {
-    //   for (var j = img.length - 1; j >= 0; j--) {
-    //     rich.imgs.push(img[j].src)
-    //   }
-    // } 
   return rich
 }
 

@@ -3,22 +3,8 @@ var ADMIN_URL = DOMAIN + 'admin/'
 var LOGIN_URL = DOMAIN + 'chrome_login/'
 var LOGOUT_URL = DOMAIN + 'logout/'
 var KW_URL = DOMAIN + 'products/keyword/'
-
-$.fn.serializeObject = function() {
-   var o = {}
-   var a = this.serializeArray()
-   $.each(a, function() {
-       if (o[this.name]) {
-           if (!o[this.name].push) {
-               o[this.name] = [o[this.name]]
-           }
-           o[this.name].push(this.value || '')
-       } else {
-           o[this.name] = this.value || ''
-       }
-   })
-   return o
-}
+var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm'
+var UPLOAD_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/posting.htm'
 
 var get_delivery_cost = function(countryId, weight) {
   chrome.runtime.sendMessage({action:'delivery_cost', countryId:countryId, weight:weight})
@@ -59,12 +45,20 @@ var set_keywords = function(data) {
 }
 
 var open_url = function(url) {
-  chrome.runtime.sendMessage({action: 'push_img', url: url})
+  chrome.runtime.sendMessage({action: 'open_url', url: url})
+}
+
+var download_url = function(url, filename) {
+  chrome.runtime.sendMessage({
+    action: 'download_url',
+    url: url,
+    filename: filename
+  });
 }
 
 var get_keywords = function() {
   var mk = $('#productKeyword');
-  if ($(mk.val()) == '') {
+  if ($.trim(mk.val()) == '') {
     mk.css('border', '2px solid red');
     return false;
   }
@@ -92,7 +86,7 @@ var get_keywords = function() {
     } else {
       var f = confirm('关键字不足, 否现在去采集?');
       if (f) {
-        open_url(SEARCH_HOT_KEYWORD_URL);
+        collect_keywords(mk.val());
       }
     }
   }).fail(function(data) {
@@ -100,17 +94,19 @@ var get_keywords = function() {
   });
 }
 
+var collect_keywords = function(name) {
+  chrome.runtime.sendMessage({action: 'collect_keywords', name: name});
+}
+
 var product_upload = function(product) {
-  chrome.runtime.sendMessage({action: 'upload_product', product: product})
+  chrome.runtime.sendMessage({action: 'upload_product', product: product});
 }
 
-var push_img = function(url, name) {
-  var url = DOMAIN + 'push_img?url=' + url + '&name=' + name
-  open_url(url)
+var check_img = function(url) {
+  open_url(url);
 }
 
 
-var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm'
 var ATTR = [
   ["售后服务体系", "After-sales Service Provided", "select"],
   ["保修期", "Warranty", "input"],
@@ -635,6 +631,21 @@ function make_python_fixures(ci) {
   console.log(code)
 }
 
+$.fn.serializeObject = function() {
+   var o = {}
+   var a = this.serializeArray()
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]]
+           }
+           o[this.name].push(this.value || '')
+       } else {
+           o[this.name] = this.value || ''
+       }
+   })
+   return o
+}
 
 // var jq = document.createElement('script');
 // jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";

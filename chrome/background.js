@@ -3,8 +3,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		upload_product(request.product)
 	}
 
-  if (request.action == 'push_img') {
+  if (request.action == 'open_url') {
     chrome.tabs.create({url:request.url})
+  }
+
+  if (request.action == 'download_url') {
+    chrome.downloads.download({
+      url: request.url,
+      filename: request.filename 
+    });
   }
 
   if (request.action == 'delivery_cost') {
@@ -15,11 +22,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       console.log(data)
     })
   }
+
+  if (request.action == 'collect_keywords') {
+    chrome.tabs.create({'url':SEARCH_HOT_KEYWORD_URL}, function(tab) {
+      chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, ctab) {
+        if (tabId == tab.id && changeInfo.status == 'complete') {
+          chrome.tabs.sendMessage(tab.id, {action:'set_name', name:request.name});
+        }
+      });
+    });
+  }
 })
 
 var upload_product = function(record) {
-  var url = 'http://hz.productposting.alibaba.com/product/posting.htm'
-  chrome.tabs.create({'url':url}, function(tab) {
+  chrome.tabs.create({'url':UPLOAD_PRODUCT_URL}, function(tab) {
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, ctab) {
       if (tabId == tab.id && changeInfo.status == 'complete') {
         chrome.tabs.sendMessage(tab.id, {action:'set_product', product:record})

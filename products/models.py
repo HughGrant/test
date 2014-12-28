@@ -40,23 +40,29 @@ class Keyword(models.Model):
         unique_together = ('name', 'word')
         verbose_name = verbose_name_plural = '产品关键字'
 
-# {name: 'name', title:'产品名'},
-# {name: 'keywords', title:'关键字'},
-# {name: 'category', title:'类目'},
-# {name: 'summary', title:'概览'},
-# {name: 'photos', title:'产品图片'},
-# {name: 'attrs', title:'产品属性'},
-# {name: 'min_order_quantity', title:'起订量'},
-# {name: 'min_order_unit', title:'起订单位'},
-# {name: 'money_type', title:'货币类型'},
-# {name: 'price_range_min', title:'最低报价'},
-# {name: 'price_range_max', title:'最高报价'},
-# {name: 'price_uint', title:'报价单位'},
-# {name: 'port', title:'港口'},
-# {name: 'payment_method', title:'付款方式'},
-# {name: 'supply_quantity', title:'产量'},
-# {name: 'supply_unit', title:'产量单位'},
-# {name: 'supply_period', title:'产量周期'},
-# {name: 'consignment_term', title:'运输时长'},
-# {name: 'packaging_desc', title:'包装描述'},
-# {name: 'rich_text', title:'产品正文'},
+
+# class Attr(models.Model):
+#     basic = models.ForeignKey(Basic)
+#     name = models.CharField('属性名', max_length=50)
+#     value = models.CharField('属性值', max_length=50)
+
+
+# class Extend(models.Model):
+#     category = models.CharField('类目', max_length=100)
+#     summary = models.CharField('概览', max_length=200)
+#     # photos = models.CharField('产品图片', max_length=100)
+#     # attrs = models.CharField('产品属性', max_length=100)
+#     min_order_quantity = models.IntegerField('起订量', default=1)
+#     # min_order_unit = models.CharField('起订单位', max_length=100)
+#     money_type = models.CharField('货币类型', max_length=10, choices=CURRENCY_TYPE)
+#     price_range_min = models.FloatField('最低报价', default=0)
+#     price_range_max = models.FloatField('最高报价', default=0)
+#     # price_uint = models.CharField('报价单位', max_length=10)
+#     port = models.CharField('港口', max_length=100)
+#     # payment_method = models.IntegerField('付款方式', default=0)
+#     supply_quantity = models.IntegerField('产量', max_length=100)
+#     # supply_unit = models.CharField('产量单位', max_length=100)
+#     # supply_period = models.CharField('产量周期', max_length=100)
+#     consignment_term = models.CharField('运输时长', max_length=100)
+#     packaging_desc = models.CharField('包装描述', max_length=200)
+#     rich_text = models.TextField('产品正文', max_length=200)

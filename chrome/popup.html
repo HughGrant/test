@@ -6,40 +6,63 @@
     <title>Future starts here</title>
     <link rel="stylesheet" href="bs.css">
   </head>
-  <body style="width:200px;">
-    <div class="container" style="margin-bottom:10px;">
-        <h5 class="text-center">阿里小助手  <small>亚新</small></h5>
-        <hr>
-        <div id="login_error" class="alert alert-warning" style="display:none;">
-          用户名或密码错误
-        </div>
-        <div id="server_error" class="alert alert-danger" style="display:none;">
-          服务器出错
-        </div>
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <!-- <label for="username" class="col-sm-2 control-label">用户名</label> -->
-            <div class="col-sm-4">
-              <input type="email" class="form-control" name="username" placeholder="请输入用户名">
-            </div>
-          </div>
-          <div class="form-group">
-            <!-- <label for="password" class="col-sm-2 control-label">密码</label> -->
-            <div class="col-sm-4">
-              <input type="password" class="form-control" name="password" placeholder="请输入密码">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-4">
-              <button id="login" type="button" class="btn btn-default">登入</button>
-            </div>
-          </div>
-        </form>
+  <body style="width:225px;">
+    <div class="container">
 
-        <div id="btns" class="btn-group-vertical" style="margin-left:42px;">
-          <button id="site" type="button" class="btn btn-success">管理后台</button>
-          <button id="logout" type="button" class="btn btn-success">切换帐号</button>
+      <div class="row">
+        <div class="col-xs-12">
+          <h5 class="text-center header">阿里小助手  <small>亚新</small></h5>
+          <hr>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="login_error" class="alert alert-warning" style="display:none;">
+            用户名或密码错误
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="server_error" class="alert alert-danger" style="display:none;">
+            服务器出错
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <div class="col-xs-12">
+                <input type="email" class="form-control" name="username" placeholder="请输入用户名">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-12">
+                <input type="password" class="form-control" name="password" placeholder="请输入密码">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-12">
+                <button id="login" type="button" class="btn btn-default">登入</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 text-center" style="padding-bottom:10px">
+          <div id="btns" class="btn-group">
+            <button id="site" type="button" class="btn btn-success">管理后台</button>
+            <button id="logout" type="button" class="btn btn-success">切换帐号</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   <script src="jquery.js"></script>
   <script src="config.js"></script>
