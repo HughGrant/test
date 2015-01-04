@@ -25,7 +25,8 @@ function scratch() {
   product.consignment_term = $('td:contains("Packaging Detail:") + td')[0].innerText
   product.packaging_desc = $('td:contains("Delivery Detail:") + td')[0].innerText
 
-  product.summary = $('p.description')[0].innerText
+  // alibaba removed this attribute
+  // product.summary = $('p.description')[0].innerText
 
   var priceInfo = $('th:contains("FOB Price:") + td')[0].innerText
   if (priceInfo == "Get Latest Price") {

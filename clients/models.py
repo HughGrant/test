@@ -6,8 +6,8 @@ from preset import VOLTAGE_CHOICES, SOCKET_CHOICES
 class Country(models.Model):
     # public info to all users, only superuser can do CRUD
     ibt_id = models.IntegerField('IBT_ID')
-    cn_name = models.CharField('中文名', max_length=20)
-    en_name = models.CharField('英文名', max_length=20)
+    cn_name = models.CharField('中文名', max_length=50)
+    en_name = models.CharField('英文名', max_length=50)
     code = models.CharField('代码', max_length=10)
     voltage = models.IntegerField('电压', choices=VOLTAGE_CHOICES)
     socket = models.IntegerField('插头', choices=SOCKET_CHOICES)

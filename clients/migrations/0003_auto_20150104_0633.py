@@ -2,20 +2,19 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('clients', '0005_client_user'),
+        ('clients', '0002_auto_20141231_1347'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            model_name='country',
+            name='en_name',
+            field=models.CharField(verbose_name='英文名', max_length=30),
             preserve_default=True,
         ),
     ]

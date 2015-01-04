@@ -173,7 +173,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			var is_en = $('.ui-header-lan-display-text').html() == 'English'
 
 			$('#productName').val(product.name)
-			$('#summary').val(product.summary)
+			// alibaba removed this attribute
+			// $('#summary').val(product.summary)
 
 			// filling attrs
 			var names_clean = []
