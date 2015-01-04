@@ -5,9 +5,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == 'set_name') {
 		$(function() {
 			$('#J-search-keywords').val(request.name);
-			// setTimeout(function() {
-			// 	$('#J-search-trigger').click();
-			// }, 1000);
 		});
 	}
 });

@@ -16,23 +16,28 @@
         "*://hz.productposting.alibaba.com/product/post_product_interface.*",
         "*://hz.productposting.alibaba.com/product/posting.*"
       ],
-      "js": ["jquery.js", "config.js", "up.js"]
+      "js": ["jquery.js", "nprogress.js", "config.js", "up.js"],
+      "css": ["nprogress.css"]
     },
     {
       "matches": ["*://hz.my.data.alibaba.com/industry/keywords.*"],
-      "js": ["jquery.js", "config.js", "keyword.js"]
+      "js": ["jquery.js", "nprogress.js", "config.js", "keyword.js"],
+      "css": ["nprogress.css"]
     },
     {
       "matches": ["*://hz.productposting.alibaba.com/product/products_manage.*"],
-      "js": ["jquery.js", "config.js", "product_manage.js"]
+      "js": ["jquery.js", "nprogress.js", "config.js", "product_manage.js"],
+      "css": ["nprogress.css"]
     },
     {
       "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
-      "js": ["jquery.js", "config.js", "product_edit.js"]
+      "js": ["jquery.js", "nprogress.js", "config.js", "product_edit.js"],
+      "css": ["nprogress.css"]
     },
     {
       "matches": ["*://*.alibaba.com/product-detail/*"],
-      "js": ["jquery.js", "config.js", "scratch.js"]
+      "js": ["jquery.js", "nprogress.js", "config.js", "scratch.js"],
+      "css": ["nprogress.css"]
     }
   ],
 

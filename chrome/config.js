@@ -610,27 +610,6 @@ var countryInfo = [
   [164,"巴拿马","Panama","PA"]
 ]
 
-function make_python_fixures(ci) {
-  var pk = 1
-  var code = ''
-  for (var i = ci.length - 1; i >= 0; i--) {
-    code += '{\n'
-    code += '\t"model": "clients.countries",\n'
-    code += '\t"pk": ' + pk + ',\n'
-    code += '\t"fields": {\n'
-      code += '\t\t"ibt_id": "' + ci[i][0] + '",\n'
-      code += '\t\t"cn_name": "' + ci[i][1] + '",\n'
-      code += '\t\t"en_name": "' + ci[i][2] + '",\n'
-      code += '\t\t"code": "' + ci[i][3] + '",\n'
-      code += '\t\t"voltage": "",\n'
-      code += '\t\t"socket": ""\n'
-      code += '\t}\n'
-    code += '},\n'
-    pk++
-  }
-  console.log(code)
-}
-
 $.fn.serializeObject = function() {
    var o = {}
    var a = this.serializeArray()
@@ -646,6 +625,34 @@ $.fn.serializeObject = function() {
    })
    return o
 }
+
+$(document).ajaxStart(function() {
+    NProgress.start();
+});
+
+$(document).ajaxStart(function() {
+    NProgress.done();
+});
+// function make_python_fixures(ci) {
+//   var pk = 1
+//   var code = ''
+//   for (var i = ci.length - 1; i >= 0; i--) {
+//     code += '{\n'
+//     code += '\t"model": "clients.countries",\n'
+//     code += '\t"pk": ' + pk + ',\n'
+//     code += '\t"fields": {\n'
+//       code += '\t\t"ibt_id": "' + ci[i][0] + '",\n'
+//       code += '\t\t"cn_name": "' + ci[i][1] + '",\n'
+//       code += '\t\t"en_name": "' + ci[i][2] + '",\n'
+//       code += '\t\t"code": "' + ci[i][3] + '",\n'
+//       code += '\t\t"voltage": "",\n'
+//       code += '\t\t"socket": ""\n'
+//       code += '\t}\n'
+//     code += '},\n'
+//     pk++
+//   }
+//   console.log(code)
+// }
 
 // var jq = document.createElement('script');
 // jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
