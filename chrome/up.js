@@ -102,7 +102,6 @@ function check_box(elem, values) {
 		var input = create_other_input(name, left.join(', '))
 		other.prop('checked', true)
 		var xxx = elem.find('label:eq(' + (defaults.length - 1) + ')')
-		console.log(xxx)
 		xxx.after(input)
 	}
 }

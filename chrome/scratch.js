@@ -1,9 +1,15 @@
 $(function(){
-  $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制产品</a></div>');
-  $('#scratch_trigger').click(function() {
-    product = scratch();
-    product_upload(product);
-  });
+    $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制产品</a></div>');
+    $('#scratch_trigger').click(function() {
+        $.get(LOGIN_URL).done(function(data){
+            if (data.status) {
+                product = scratch();
+                product_upload(product);
+            } else {
+                alert('请先登入');
+            }
+        });
+    });
 });
 
 function scratch() {
