@@ -41,6 +41,9 @@ class Keyword(models.Model):
         verbose_name = verbose_name_plural = '产品关键字'
 
 
+class Category(models.Model):
+    pass
+
 # class Attr(models.Model):
 #     basic = models.ForeignKey(Basic)
 #     name = models.CharField('属性名', max_length=50)
