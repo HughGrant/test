@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Q
 from django import forms
 from django.http import JsonResponse
-from django.utils.safestring import mark_safe
+# from django.utils.safestring import mark_safe
 from django.conf.urls import patterns
 from . import models
 from products.models import Basic

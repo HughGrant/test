@@ -15,11 +15,13 @@ class ClientCountryFilter(admin.SimpleListFilter):
     parameter_name = 'country'
 
     def lookups(self, request, model_admin):
+        # returns a tuple
         names = models.Client.objects.values_list(
             'country__id', 'country__cn_name').distinct()
         return names
 
     def queryset(self, request, queryset):
+        # self.value() represents the filter value
         if self.value():
             return queryset.filter(country__id=self.value())
         return queryset

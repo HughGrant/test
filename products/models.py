@@ -22,7 +22,7 @@ class Basic(models.Model):
 
     def weight(self):
         return max([self.net_weight, self.gross_weight, self.volume_weight])
-    weight.short_description = '重量(KG)'
+    weight.short_description = '物流重量(KG)'
 
     class Meta:
         verbose_name = verbose_name_plural = '产品基本信息'
@@ -42,7 +42,21 @@ class Keyword(models.Model):
 
 
 class Category(models.Model):
-    pass
+    parent = models.ForeignKey(
+        'self', verbose_name='上级类目', null=True, blank=True)
+    name = models.CharField('类目名称', max_length=100)
+
+    def __str__(self):
+        return self.slug_name()
+
+    def slug_name(self):
+        if self.parent:
+            return self.parent.slug_name() + '>' + self.name
+        else:
+            return self.name
+
+    class Meta:
+        verbose_name = verbose_name_plural = '产品分类'
 
 # class Attr(models.Model):
 #     basic = models.ForeignKey(Basic)
