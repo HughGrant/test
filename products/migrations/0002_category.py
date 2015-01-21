@@ -14,12 +14,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('level', models.IntegerField(verbose_name='目录级别', default=0)),
-                ('name', models.CharField(max_length=100, verbose_name='名称')),
-                ('parent', models.ForeignKey(null=True, to='products.Category', verbose_name='上级目录', blank=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('name', models.CharField(max_length=100, verbose_name='类目名称')),
+                ('parent', models.ForeignKey(null=True, to='products.Category', blank=True, verbose_name='上级类目')),
             ],
             options={
+                'verbose_name': '产品分类',
+                'verbose_name_plural': '产品分类',
             },
             bases=(models.Model,),
         ),

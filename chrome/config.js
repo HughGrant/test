@@ -1,13 +1,14 @@
-var DOMAIN = 'http://localhost:8000/'
-var ADMIN_URL = DOMAIN + 'admin/'
-var LOGIN_URL = DOMAIN + 'chrome_login/'
-var LOGOUT_URL = DOMAIN + 'logout/'
-var KW_URL = DOMAIN + 'products/keyword/'
-var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm'
-var UPLOAD_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/posting.htm'
+var DOMAIN = 'http://localhost:8000/';
+var ADMIN_URL = DOMAIN + 'admin/';
+var LOGIN_URL = DOMAIN + 'chrome_login/';
+var LOGOUT_URL = DOMAIN + 'logout/';
+var KW_URL = DOMAIN + 'products/keyword/';
+var CAPTURE_PRODUCT_URL = DOMAIN + 'products/capture/';
+var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm';
+var UPLOAD_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/posting.htm';
 
 var get_delivery_cost = function(countryId, weight) {
-  chrome.runtime.sendMessage({action:'delivery_cost', countryId:countryId, weight:weight})
+    chrome.runtime.sendMessage({action:'delivery_cost', countryId:countryId, weight:weight});
 }
 
 var model_insert = function(model_name, data, success_msg, error_msg) {
@@ -104,7 +105,7 @@ var collect_keywords = function(name) {
     chrome.runtime.sendMessage({action: 'collect_keywords', name: name});
 }
 
-var product_upload = function(product) {
+var bg_upload_product = function(product) {
     chrome.runtime.sendMessage({action: 'upload_product', product: product});
 }
 
@@ -143,6 +144,7 @@ var ATTR = [
     ["最大压片厚度", "Max. Tablet Thickness(mm)", "input"],
     ["最大压力", "Max. Pressure(KN)", "input"],
     ["生产率", "Production Capacity", "input"],
+    ["控制模式", "Control Mode", "select"],
 ]
 
 var moneyType = {
@@ -659,6 +661,15 @@ $(document).ajaxStart(function() {
 //   }
 //   console.log(code)
 // }
+
+function make(a) {
+    var code = '';
+    django.jQuery.each(a, function(x, y){
+        var str = '(' + y + ', "' + x + '"),\n';
+        code += str;
+    });
+    console.log(code);
+}
 
 // var jq = document.createElement('script');
 // jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";

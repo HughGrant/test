@@ -5,7 +5,25 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from products.models import Keyword
+from products.models import *
+
+
+class CaptureView(View):
+
+    def post(self, request):
+        jr = {'status': False}
+        print(request.POST)
+
+        basic = Basic(user=request.user)
+        basic.name = request.POST['name']
+
+        jr['status'] = True
+        return JsonResponse(jr)
+
+    @method_decorator(login_required(login_url='/login_required_jr/'))
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class KeywordView(View):

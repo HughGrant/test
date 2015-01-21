@@ -1,20 +1,61 @@
 from django.contrib import admin
-from products.models import Basic, Keyword, Category
+from . import models
 from buss.admin import AutoUserAdmin
 
 
-@admin.register(Basic)
+@admin.register(models.Basic)
 class BasicAdmin(AutoUserAdmin):
     exclude = ('user', )
+    ordering = ('cn_name', 'model')
+    # TODO: using a custom filter
+    # Filting products only belongs to this user
     list_filter = ('name', 'cn_name')
     search_fields = ('name', 'cn_name', 'model')
     list_display = ('__str__', 'cost', 'weight', 'size', 'voltage', 'video')
 
 
-@admin.register(Keyword)
-class KeywordAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'count')
-    list_filter = ('name', )
+class AttrInline(admin.TabularInline):
+    model = models.Attr
+    extra = 1
+
+
+class MinOrderQuantityInline(admin.TabularInline):
+    model = models.MinOrderQuantity
+    max_num = 1
+
+
+class SupplyAbilityInline(admin.TabularInline):
+    model = models.SupplyAbility
+    max_num = 1
+
+
+class RichTextInline(admin.StackedInline):
+    model = models.RichText
+    max_num = 1
+
+
+class FobPriceInline(admin.TabularInline):
+    model = models.FobPrice
+    max_num = 1
+
+
+@admin.register(models.Extend)
+class ExtendAdmin(admin.ModelAdmin):
+    inlines = [
+        AttrInline,
+        MinOrderQuantityInline,
+        FobPriceInline,
+        SupplyAbilityInline,
+        RichTextInline
+    ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'basic':
+            kwargs["queryset"] = models.Basic.objects.filter(user=request.user)
+
+        if db_field.name == 'category':
+            kwargs["queryset"] = models.Category.objects.filter(category=None)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class CategoryFilter(admin.SimpleListFilter):
@@ -31,7 +72,7 @@ class CategoryFilter(admin.SimpleListFilter):
         return queryset
 
 
-@admin.register(Category)
+@admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('__str__', )
     search_fields = ('name', )
@@ -43,3 +84,9 @@ class CategoryAdmin(admin.ModelAdmin):
         else:
             self.exclude = ('level', )
         return super().get_form(request, obj, **kwargs)
+
+
+@admin.register(models.Keyword)
+class KeywordAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'count')
+    list_filter = ('name', )
