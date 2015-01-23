@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from django.contrib.postgres.filelds import ArrayField
+from django.utils.html import format_html
 from preset import *
 
 
@@ -19,7 +19,10 @@ class Basic(models.Model):
     bak = models.TextField('备注', blank=True, max_length=200)
 
     def __str__(self):
-        return "%s(%s)" % (self.cn_name, self.model)
+        if self.cn_name:
+            return "%s(%s)" % (self.cn_name, self.model)
+        else:
+            return "%s(%s)" % (self.name, self.model)
 
     def weight(self):
         return max([self.net_weight, self.gross_weight, self.volume_weight])
@@ -68,7 +71,9 @@ class Category(models.Model):
             root.save()
 
         if len(cats) > 0:
-            cls.auto_create(cats, parent=root)
+            return cls.auto_create(cats, parent=root)
+        else:
+            return root
 
     class Meta:
         verbose_name = verbose_name_plural = '产品分类'
@@ -83,56 +88,87 @@ class Attr(models.Model):
         verbose_name = verbose_name_plural = '产品属性'
 
 
+class Picture(models.Model):
+    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
+    url = models.CharField('图片来源', max_length=300)
+
+    class Meta:
+        verbose_name = verbose_name_plural = '产品图片'
+
+
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', verbose_name='基本信息')
+    url = models.CharField('产品来源', blank=True, max_length=300)
     category = models.ForeignKey('Category', verbose_name='产品分类')
-    # photos = models.CharField('产品图片', max_length=100)
-    # attrs = ArrayField(ArrayField(
-    #     models.CharField('产品属性', max_length=100, blank=True)))
+    moq = models.ForeignKey(
+        'MOQ', verbose_name='最小起订量')
+    fob_price = models.ForeignKey('FobPrice', verbose_name='FOB报价')
     port = models.CharField('港口', max_length=100)
-    # payment_method = models.IntegerField('付款方式', default=0)
+    payment_terms = models.CharField('付款方式', max_length=200)
+    supply_ability = models.ForeignKey('SupplyAbility', verbose_name='供贷能力')
+    packaging_desc = models.CharField('包装描述', max_length=600)
     consignment_term = models.CharField('运输时长', max_length=100)
-    packaging_desc = models.TextField('包装描述', max_length=600)
+    rich_text = models.TextField('产品正文', blank=True, max_length=50000)
+
+    def __str__(self):
+        return self.basic.__str__()
+
+    def upload_button(self):
+        return format_html(
+            '<button id="{0}" class="ali_upload">上传</button>',
+            self.id)
+    upload_button.allow_tabs = True
+    upload_button.short_description = '动作'
 
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'
 
 
-class MinOrderQuantity(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
+class MOQ(models.Model):
+    user = models.ForeignKey(User)
     min_order_quantity = models.IntegerField('起订量', default=1)
     min_order_unit = models.IntegerField(
         '起订单位', default=20, choices=UNIT_TYPE_PLURAL)
+
+    def __str__(self):
+        return '%s %s' % (
+            self.min_order_quantity,
+            self.get_min_order_unit_display())
 
     class Meta:
         verbose_name = verbose_name_plural = '最小起订量'
 
 
 class FobPrice(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
+    user = models.ForeignKey(User)
     money_type = models.IntegerField('货币类型', default=1, choices=CURRENCY_TYPE)
     price_range_min = models.FloatField('最低报价', default=0)
     price_range_max = models.FloatField('最高报价', default=0)
-    price_uint = models.IntegerField('报价单位', default=20, choices=UNIT_TYPE)
+    price_unit = models.IntegerField('报价单位', default=20, choices=UNIT_TYPE)
+
+    def __str__(self):
+        return '%s %s-%s %s' % (
+            self.get_money_type_display(),
+            self.price_range_min,
+            self.price_range_max,
+            self.get_price_unit_display())
 
     class Meta:
         verbose_name = verbose_name_plural = 'FOB报价'
 
 
 class SupplyAbility(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
+    user = models.ForeignKey(User)
     supply_quantity = models.IntegerField('产量', max_length=100)
     supply_unit = models.IntegerField(
         '产量单位', default=20, choices=UNIT_TYPE_PLURAL)
     supply_period = models.CharField('产量周期', max_length=20, choices=TIME)
 
-
-class RichText(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
-    introduction = models.TextField('产品简介', blank=True)
-    specification = models.TextField('参数信息', blank=True)
-    application = models.TextField('适用范围', blank=True)
-    package = models.TextField('产品包装', blank=True)
+    def __str__(self):
+        return '%s %s per %s' % (
+            self.supply_quantity,
+            self.get_supply_unit_display(),
+            self.get_supply_period_display())
 
     class Meta:
-        verbose_name = verbose_name_plural = '产品正文信息'
+        verbose_name = verbose_name_plural = '供贷能力'

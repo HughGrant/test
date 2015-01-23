@@ -1,4 +1,5 @@
 # from django.shortcuts import render
+import json
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
@@ -10,12 +11,96 @@ from products.models import *
 
 class CaptureView(View):
 
+    def get(self, request):
+        jr = {'status': False, 'message': 'test ok'}
+        pk = request.GET.get('id')
+        if not pk:
+            jr['message'] = 'lack of id'
+            return JsonResponse(jr)
+
+        ext = Extend.objects.get(pk=int(pk))
+        data = {}
+
+        data['name'] = ext.basic.name
+        data['category'] = ext.category.slug_name().split('>')
+        data['port'] = ext.port
+        data['consignment_term'] = ext.consignment_term
+        data['packaging_desc'] = ext.packaging_desc
+
+        data['attrs'] = []
+        for attr in ext.attr_set.all():
+            data['attrs'].append([attr.name, attr.value])
+
+        data['photos'] = []
+        for photo in ext.picture_set.all():
+            data['photos'].append(photo.url)
+
+        data['payment_terms'] = ext.payment_terms.split(',')
+
+        data['min_order_quantity'] = ext.moq.min_order_quantity
+        data['min_order_unit'] = ext.moq.min_order_unit
+
+        data['money_type'] = ext.fob_price.money_type
+        data['price_range_min'] = ext.fob_price.price_range_min
+        data['price_range_max'] = ext.fob_price.price_range_max
+        data['price_unit'] = ext.fob_price.price_unit
+
+        data['supply_quantity'] = ext.supply_ability.supply_quantity
+        data['supply_unit'] = ext.supply_ability.supply_unit
+        data['supply_period'] = ext.supply_ability.supply_period
+        data['rich_text'] = ext.rich_text
+
+        jr['status'] = True
+        jr['data'] = data
+        return JsonResponse(jr)
+
     def post(self, request):
         jr = {'status': False}
-        print(request.POST)
+        pd = json.loads(request.POST['json'])
 
         basic = Basic(user=request.user)
-        basic.name = request.POST['name']
+        basic.name = pd['name']
+        basic.save()
+
+        ext = Extend(basic=basic)
+        ext.category = Category.auto_create(pd['category'])
+        ext.url = pd['url']
+        ext.port = pd['port']
+        ext.consignment_term = pd['consignment_term']
+        ext.packaging_desc = pd['packaging_desc']
+        ext.payment_terms = ','.join(pd['payment_terms'])
+
+        moq = MOQ(
+            user=request.user,
+            min_order_quantity=pd['min_order_quantity'],
+            min_order_unit=pd['min_order_unit'])
+        moq.save()
+        ext.moq = moq
+
+        fob_price = FobPrice(
+            user=request.user,
+            money_type=pd['money_type'],
+            price_range_min=pd['price_range_min'],
+            price_range_max=pd['price_range_max'],
+            price_unit=pd['price_unit'])
+        fob_price.save()
+        ext.fob_price = fob_price
+
+        sp = SupplyAbility(
+            user=request.user,
+            supply_quantity=pd['supply_quantity'],
+            supply_unit=pd['supply_unit'],
+            supply_period=pd['supply_period'])
+        sp.save()
+        ext.supply_ability = sp
+
+        ext.save()
+
+        for attr in pd['attrs']:
+            Attr(extend=ext, name=attr[0], value=attr[1]).save()
+
+        for photo in pd['photos']:
+            Picture(extend=ext, url=photo).save()
 
         jr['status'] = True
         return JsonResponse(jr)

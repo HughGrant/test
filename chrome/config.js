@@ -634,6 +634,7 @@ $.fn.serializeObject = function() {
    return o
 }
 
+// NProgress ajax setup
 $(document).ajaxStart(function() {
     NProgress.start();
 });
@@ -662,14 +663,14 @@ $(document).ajaxStart(function() {
 //   console.log(code)
 // }
 
-function make(a) {
-    var code = '';
-    django.jQuery.each(a, function(x, y){
-        var str = '(' + y + ', "' + x + '"),\n';
-        code += str;
-    });
-    console.log(code);
-}
+// function make(a) {
+//     var code = '';
+//     django.jQuery.each(a, function(x, y){
+//         var str = '(' + y + ', "' + x + '"),\n';
+//         code += str;
+//     });
+//     console.log(code);
+// }
 
 // var jq = document.createElement('script');
 // jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";

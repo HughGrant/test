@@ -38,6 +38,13 @@
       "matches": ["*://*.alibaba.com/product-detail/*"],
       "js": ["jquery.js", "nprogress.js", "config.js", "scratch.js"],
       "css": ["nprogress.css"]
+    },
+    {
+      "matches": [
+        "*://127.0.0.1:*/*",
+        "*://localhost:*/*"
+      ],
+      "js": ["upload_from_back.js"]
     }
   ],
 
@@ -46,9 +53,10 @@
     "activeTab",
     "background",
     "downloads",
+    "management",
     "http://*.aliimg.com/*",
-    "http://127.0.0.1:8000/*",
-    "http://localhost:8000/*"
+    "http://127.0.0.1:*/*",
+    "http://localhost:*/*"
   ],
 
   "browser_action": {

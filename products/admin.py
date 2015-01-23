@@ -14,40 +14,39 @@ class BasicAdmin(AutoUserAdmin):
     list_display = ('__str__', 'cost', 'weight', 'size', 'voltage', 'video')
 
 
+@admin.register(models.MOQ)
+class MOQAdmin(AutoUserAdmin):
+    exclude = ('user', )
+
+
+@admin.register(models.SupplyAbility)
+class SupplyAbilityAdmin(AutoUserAdmin):
+    exclude = ('user', )
+
+
+@admin.register(models.FobPrice)
+class FobPriceAdmin(AutoUserAdmin):
+    exclude = ('user', )
+    # get_model_perms = lambda self, req: {}
+
+
 class AttrInline(admin.TabularInline):
     model = models.Attr
     extra = 1
 
 
-class MinOrderQuantityInline(admin.TabularInline):
-    model = models.MinOrderQuantity
-    max_num = 1
-
-
-class SupplyAbilityInline(admin.TabularInline):
-    model = models.SupplyAbility
-    max_num = 1
-
-
-class RichTextInline(admin.StackedInline):
-    model = models.RichText
-    max_num = 1
-
-
-class FobPriceInline(admin.TabularInline):
-    model = models.FobPrice
-    max_num = 1
+class PictureInline(admin.TabularInline):
+    model = models.Picture
+    extra = 1
 
 
 @admin.register(models.Extend)
 class ExtendAdmin(admin.ModelAdmin):
     inlines = [
         AttrInline,
-        MinOrderQuantityInline,
-        FobPriceInline,
-        SupplyAbilityInline,
-        RichTextInline
+        PictureInline
     ]
+    list_display = ('__str__', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'basic':
@@ -55,7 +54,22 @@ class ExtendAdmin(admin.ModelAdmin):
 
         if db_field.name == 'category':
             kwargs["queryset"] = models.Category.objects.filter(category=None)
+
+        if db_field.name == 'fob_price':
+            kwargs["queryset"] = models.FobPrice.objects.filter(
+                user=request.user)
+
+        if db_field.name == 'moq':
+            kwargs["queryset"] = models.MOQ.objects.filter(user=request.user)
+
+        if db_field.name == 'supply_ability':
+            kwargs["queryset"] = models.SupplyAbility.objects.filter(
+                user=request.user)
+
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    class Media:
+        js = ('js/upload_to_ali.js', )
 
 
 class CategoryFilter(admin.SimpleListFilter):

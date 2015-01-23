@@ -224,18 +224,25 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			$('#priceRangeMax').val(product.price_range_max)
 			$('#priceUnit').val(product.price_unit)
 			$('#port').val(product.port)
-			check_payment_box(product.payment_method)
+			check_payment_box(product.payment_terms)
 			$('#supplyQuantity').val(product.supply_quantity)
 			$('#supplyUnit').val(product.supply_unit)
 			$('#supplyPeriod').val(product.supply_period)
 			$('#consignmentTerm').val(product.consignment_term)
 			$('#packagingDesc').val(product.packaging_desc)
 			// rich text
-			var rich_f = function(lines) {
-				var content = lines.join('');
-				tinyMCE.activeEditor.setContent(content);
+			if (product.from_back) {
+				var rich_f = function(content) {
+					tinyMCE.activeEditor.setContent(content);
+				}
+				var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')'
+			} else {
+				var rich_f = function(lines) {
+					var content = lines.join('');
+					tinyMCE.activeEditor.setContent(content);
+				}
+				var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')'
 			}
-			var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')'
 			var script = document.createElement('script')
 			script.textContent = rich_code
 			setTimeout(function(){

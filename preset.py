@@ -43,6 +43,10 @@ PAYMENT_METHOD = (
     (2, '西联'),
     (3, 'T/T'),
     (4, '国内银行转账'),
+    (5, 'L/C'),
+    (6, 'D/A'),
+    (7, 'D/P'),
+    (8, 'MoneyGram'),
 )
 
 UNIT_TYPE_PLURAL = (
