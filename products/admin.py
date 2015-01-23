@@ -18,16 +18,30 @@ class BasicAdmin(AutoUserAdmin):
 class MOQAdmin(AutoUserAdmin):
     exclude = ('user', )
 
+    def get_model_perms(self, request):
+        perms = super().get_model_perms(request)
+        perms['hide_from_index'] = True
+        return perms
+
 
 @admin.register(models.SupplyAbility)
 class SupplyAbilityAdmin(AutoUserAdmin):
     exclude = ('user', )
 
+    def get_model_perms(self, request):
+        perms = super().get_model_perms(request)
+        perms['hide_from_index'] = True
+        return perms
+
 
 @admin.register(models.FobPrice)
 class FobPriceAdmin(AutoUserAdmin):
     exclude = ('user', )
-    # get_model_perms = lambda self, req: {}
+
+    def get_model_perms(self, request):
+        perms = super().get_model_perms(request)
+        perms['hide_from_index'] = True
+        return perms
 
 
 class AttrInline(admin.TabularInline):
