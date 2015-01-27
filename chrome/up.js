@@ -1,30 +1,5 @@
 var product = null
 
-function get_key(name, is_en) {
-	for (var i = 0; i < ATTR.length; i++) {
-		var kw = {val:ATTR[i][1], way:ATTR[i][2]}
-		if (is_en && ATTR[i][1] == name) {
-			return kw 
-		} else {
-			if (ATTR[i][0] == name) {
-					return kw
-			}
-		}
-	}
-
-	return false
-}
-
-function get_attr_pos(attrs, key) {
-	for (var i = 0; i < attrs.length; i++) {
-		if (attrs[i][0] == key) {
-			return i
-		}
-	}
-
-	return false
-}
-
 function create_attr(key, value) {
 	var cai = $('.custom-attr-item').last()
 	cai.find('input').first().val(key)
@@ -32,6 +7,7 @@ function create_attr(key, value) {
 	$('#copyActionButton').click()
 }
 
+// no sign of use of this function yet
 function select_by_val(elem, val) {
 	var name = elem.attr('name')
 	$('[name=' + name + ']').val(val)
@@ -113,28 +89,23 @@ function set_oringal_place() {
 	$('[name=contryValue]').val('CN-China (Mainland)')
 }
 
-function fill_attr(elem, val, way) {
-	console.log(elem);
-	if (way == 'check') {
+function fill_attr(elem, val) {
+	var a = $(elem);
+
+	if (a.find('input[type=text]').size() > 0) {
+		a.find('input').val(val);
+	} else if (a.find('select').size() > 0) {
+		select_by_text(a.find('select'), val)
+	} else if (a.find('input[type=checkbox]').size() > 0) {
 		check_box(elem, val.split(','))
-	}
-
-	var op = $(elem).find(way)
-	if (op.length == 0) {
-		return false
-	}
-
-	if (way == 'input') {
-		op.val(val)
-	}
-
-	if (way == 'select') {
-		select_by_text(op, val)
 	}
 }
 
-function alert_empty_attr(elem, way) {
-	$(elem).find(way).css('border', '2px solid red')
+function mark_empty_attr(elem) {
+	// could be one of the following
+	$(elem).find('input[type=text]').css('border', '2px solid red')
+	$(elem).find('select').css('border', '2px solid red')
+	$(elem).find('input[type=checkbox]').css('border', '2px solid red')
 }
 
 $(function() {
@@ -171,48 +142,49 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		})
 
 		$('#auto_fill').click(function() {
-			window.scrollTo(0, document.body.scrollHeight)
 			// find out what lang that this page is in
 			var is_en = $('.ui-header-lan-display-text').html() == 'English'
-
-			$('#productName').val(product.name)
-			// alibaba removed this attribute
-			// $('#summary').val(product.summary)
-
-			// filling attrs
-			var names_clean = []
-			$('.attr-title').map(function() {
-				names_clean.push($(this).html().replace(':', ''))
-			})
-
-			var values = $('.attribute-table-td')
-			// inital set for all attrs
+			if (!is_en) {
+				alert('请先把页面语言设置为英文');
+				return false;
+			}
+			// set up product object
 			for (var i = product.attrs.length - 1; i >= 0; i--) {
 				product.attrs[i][2] = false
 			}
-
-			for (var i = 0; i < names_clean.length; i++) {
-				// the key here is always English name and way to operate
-				var key = get_key(names_clean[i], is_en)
-				if (key === false) {
-					console.log("fixed attr not defined:" + names_clean[i])
-				} else {
-					var pos = get_attr_pos(product.attrs, key.val)
-					if (pos === false) {
-						alert_empty_attr(values[i], key.way)
-						console.log("should have this standarded attr:" + names_clean[i])
-					} else {
-						// rule out some special case
-						product.attrs[pos][2] = true;
-						if (key.val == 'Place of Origin') {
-							set_oringal_place();
-							continue;
-						}
-						console.log(values[i]);
-						fill_attr(values[i], product.attrs[pos][1], key.way);
+			product.get_attr_val = function(key) {
+				for (var i = 0; i < product.attrs.length; i++) {
+					if (product.attrs[i][0] == key) {
+						product.attrs[i][2] == true;
+						return product.attrs[i][1];
 					}
 				}
+				return false;
 			}
+			window.scrollTo(0, document.body.scrollHeight)
+
+			$('#productName').val(product.name)
+			// attrs needs to fill
+			var attrs = []
+			$('.attr-title').map(function() {
+				attrs.push($(this).html().replace(':', ''))
+			})
+			// attrs's value
+			var values = $('.attribute-table-td')
+			attrs.forEach(function(attr_name, index) {
+				var attr_val = product.get_attr_val(attr_name);
+				if (attr_name == 'Place of Origin') {
+					set_oringal_place();
+					return;
+				}
+				// start to fill
+				if (attr_val !== false) {
+					fill_attr(values[index], attr_val);
+				} else {
+					mark_empty_attr(values[index]);
+					console.log("should have this standarded attr:" + attr_name);
+				}
+			});
 			// loop through all attrs to finish the unfilled attr
 			for (var i = 0; i < product.attrs.length; i++) {
 				if (product.attrs[i][2] === false) {
@@ -236,23 +208,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			$('#consignmentTerm').val(product.consignment_term)
 			$('#packagingDesc').val(product.packaging_desc)
 			// rich text
-			if (product.from_back) {
-				var rich_f = function(content) {
-					tinyMCE.activeEditor.setContent(content);
+			var rich_f = function(content) {
+				if (content.constructor === Array) {
+					content = content.join('');
 				}
-				var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')'
-			} else {
-				var rich_f = function(lines) {
-					var content = lines.join('');
-					tinyMCE.activeEditor.setContent(content);
-				}
-				var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')'
+				tinyMCE.activeEditor.setContent(content);
 			}
-			var script = document.createElement('script')
-			script.textContent = rich_code
+			var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')';
+			var script = document.createElement('script');
+			script.textContent = rich_code;
 			setTimeout(function(){
-				(document.head || document.documentElement).appendChild(script)
-				script.parentNode.removeChild(script)
+				(document.head || document.documentElement).appendChild(script);
+				script.parentNode.removeChild(script);
 			}, 1000)
 		})
 	}	
