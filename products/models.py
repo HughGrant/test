@@ -125,7 +125,6 @@ class Extend(models.Model):
 
 
 class MOQ(models.Model):
-    user = models.ForeignKey(User)
     min_order_quantity = models.IntegerField('起订量', default=1)
     min_order_unit = models.IntegerField(
         '起订单位', default=20, choices=UNIT_TYPE_PLURAL)
@@ -136,11 +135,11 @@ class MOQ(models.Model):
             self.get_min_order_unit_display())
 
     class Meta:
+        unique_together = ('min_order_quantity', 'min_order_unit')
         verbose_name = verbose_name_plural = '最小起订量'
 
 
 class FobPrice(models.Model):
-    user = models.ForeignKey(User)
     money_type = models.IntegerField('货币类型', default=1, choices=CURRENCY_TYPE)
     price_range_min = models.FloatField('最低报价', default=0)
     price_range_max = models.FloatField('最高报价', default=0)
@@ -154,11 +153,15 @@ class FobPrice(models.Model):
             self.get_price_unit_display())
 
     class Meta:
+        unique_together = (
+            'money_type',
+            'price_range_min',
+            'price_range_max',
+            'price_unit')
         verbose_name = verbose_name_plural = 'FOB报价'
 
 
 class SupplyAbility(models.Model):
-    user = models.ForeignKey(User)
     supply_quantity = models.IntegerField('产量', max_length=100)
     supply_unit = models.IntegerField(
         '产量单位', default=20, choices=UNIT_TYPE_PLURAL)
@@ -171,4 +174,6 @@ class SupplyAbility(models.Model):
             self.get_supply_period_display())
 
     class Meta:
+        unique_together = (
+            'supply_quantity', 'supply_unit', 'supply_period')
         verbose_name = verbose_name_plural = '供贷能力'

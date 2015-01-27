@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django import forms
+from django.core.exceptions import ValidationError
 from . import models
 from buss.admin import AutoUserAdmin
 
@@ -14,19 +16,42 @@ class BasicAdmin(AutoUserAdmin):
     list_display = ('__str__', 'cost', 'weight', 'size', 'voltage', 'video')
 
 
+class MOQForm(forms.ModelForm):
+
+    def clean(self):
+        if models.MOQ.objects.filter(**self.cleaned_data).exists():
+            raise ValidationError('已存在，无需重复创建')
+
+    class Meta:
+        fields = ('min_order_quantity', 'min_order_unit')
+        model = models.MOQ
+
+
 @admin.register(models.MOQ)
-class MOQAdmin(AutoUserAdmin):
-    exclude = ('user', )
+class MOQAdmin(admin.ModelAdmin):
+    form = MOQForm
 
     def get_model_perms(self, request):
         perms = super().get_model_perms(request)
         perms['hide_from_index'] = True
         return perms
+
+
+class SPForm(forms.ModelForm):
+
+    def clean(self):
+        if models.SupplyAbility.objects.filter(**self.cleaned_data).exists():
+            raise ValidationError('已存在，无需重复创建')
+
+    class Meta:
+        fields = (
+            'supply_quantity', 'supply_unit', 'supply_period')
+        model = models.SupplyAbility
 
 
 @admin.register(models.SupplyAbility)
-class SupplyAbilityAdmin(AutoUserAdmin):
-    exclude = ('user', )
+class SupplyAbilityAdmin(admin.ModelAdmin):
+    form = SPForm
 
     def get_model_perms(self, request):
         perms = super().get_model_perms(request)
@@ -34,9 +59,24 @@ class SupplyAbilityAdmin(AutoUserAdmin):
         return perms
 
 
+class FobPriceForm(forms.ModelForm):
+
+    def clean(self):
+        if models.FobPrice.objects.filter(**self.cleaned_data).exists():
+            raise ValidationError('已存在，无需重复创建')
+
+    class Meta:
+        fields = (
+            'money_type',
+            'price_range_min',
+            'price_range_max',
+            'price_unit')
+        model = models.FobPrice
+
+
 @admin.register(models.FobPrice)
-class FobPriceAdmin(AutoUserAdmin):
-    exclude = ('user', )
+class FobPriceAdmin(admin.ModelAdmin):
+    form = FobPriceForm
 
     def get_model_perms(self, request):
         perms = super().get_model_perms(request)
@@ -69,21 +109,10 @@ class ExtendAdmin(admin.ModelAdmin):
         if db_field.name == 'category':
             kwargs["queryset"] = models.Category.objects.filter(category=None)
 
-        if db_field.name == 'fob_price':
-            kwargs["queryset"] = models.FobPrice.objects.filter(
-                user=request.user)
-
-        if db_field.name == 'moq':
-            kwargs["queryset"] = models.MOQ.objects.filter(user=request.user)
-
-        if db_field.name == 'supply_ability':
-            kwargs["queryset"] = models.SupplyAbility.objects.filter(
-                user=request.user)
-
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Media:
-        js = ('js/upload_to_ali.js', )
+        js = ('js/tinymce/tinymce.min.js', 'js/upload_to_ali.js')
 
 
 class CategoryFilter(admin.SimpleListFilter):

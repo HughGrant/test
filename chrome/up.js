@@ -38,24 +38,27 @@ function select_by_val(elem, val) {
 }
 
 function create_other_input(name, value) {
-	var input_name = 'otherAttrContext' + name.replace('sysAttrValueIdAndValue','')
-	var input = '<input value="' + value + '" id="" name="' + input_name + '" type="text" class="attr-inline type-other TAG:main" maxlength="70" style="width: 180px;">'
-	return input
+	// this function is used to create a input box which should be
+	// visible on the page after you select a "other" value
+	var input_name = 'otherAttrContext' + name.replace('sysAttrValueIdAndValue','');
+	var input = '<input value="' + value + '" id="" name="' + input_name + '" type="text" class="attr-inline type-other TAG:main" maxlength="70" style="width: 180px;">';
+	return input;
 }
 
 function select_by_text(elem, text) {
-	var name = elem.attr('name')
+	var name = elem.attr('name');
 	var option = $('[name=' + name + '] option').filter(function() { 
-	    return ($(this).text() == text)
-	})
+	    return ($(this).text() == text);
+	});
+
 	if (option.length) {
-		option.prop('selected', true)
+		option.prop('selected', true);
 	} else {
 		$('[name=' + name + '] option').filter(function() { 
-	    return ($(this).text() == 'Other')
-		}).prop('selected', true)
-		var input = create_other_input(name, text)
-		$(elem).after(input)
+	    	return ($(this).text() == 'Other')
+		}).prop('selected', true);
+		var input = create_other_input(name, text);
+		$(elem).after(input);
 	}
 }
 
@@ -111,6 +114,7 @@ function set_oringal_place() {
 }
 
 function fill_attr(elem, val, way) {
+	console.log(elem);
 	if (way == 'check') {
 		check_box(elem, val.split(','))
 	}
@@ -199,12 +203,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 						console.log("should have this standarded attr:" + names_clean[i])
 					} else {
 						// rule out some special case
-						product.attrs[pos][2] = true
+						product.attrs[pos][2] = true;
 						if (key.val == 'Place of Origin') {
-							set_oringal_place()
-							continue
+							set_oringal_place();
+							continue;
 						}
-						fill_attr(values[i], product.attrs[pos][1], key.way)
+						console.log(values[i]);
+						fill_attr(values[i], product.attrs[pos][1], key.way);
 					}
 				}
 			}

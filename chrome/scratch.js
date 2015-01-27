@@ -55,10 +55,11 @@ function scratch() {
 
     var priceInfo = $('th:contains("FOB Price:") + td')[0].innerText
     if (priceInfo == "Get Latest Price") {
-        product.price_range_min = 0
-        product.price_range_max = 0
-        product.money_type = 'USD'
-        product.price_unit = 20
+        product.price_range_min = 0;
+        product.price_range_max = 0;
+        // in preset.py money_type USD is 1
+        product.money_type = 1;
+        product.price_unit = 20;
     } else {
         priceInfo = priceInfo.replace(/,/g, '').split('/')
         var unitInfo = $.trim(priceInfo[1]).split(' ')[0]

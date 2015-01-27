@@ -70,34 +70,32 @@ class CaptureView(View):
         ext.packaging_desc = pd['packaging_desc']
         ext.payment_terms = ','.join(pd['payment_terms'])
 
-        moq = MOQ(
-            user=request.user,
+        ext.moq = MOQ.objects.get_or_create(
             min_order_quantity=pd['min_order_quantity'],
-            min_order_unit=pd['min_order_unit'])
-        moq.save()
-        ext.moq = moq
+            min_order_unit=pd['min_order_unit'])[0]
 
-        fob_price = FobPrice(
-            user=request.user,
+        ext.fob_price = FobPrice.objects.get_or_create(
             money_type=pd['money_type'],
             price_range_min=pd['price_range_min'],
             price_range_max=pd['price_range_max'],
-            price_unit=pd['price_unit'])
-        fob_price.save()
-        ext.fob_price = fob_price
+            price_unit=pd['price_unit'])[0]
 
-        sp = SupplyAbility(
-            user=request.user,
+        ext.supply_ability = SupplyAbility.objects.get_or_create(
             supply_quantity=pd['supply_quantity'],
             supply_unit=pd['supply_unit'],
-            supply_period=pd['supply_period'])
-        sp.save()
-        ext.supply_ability = sp
+            supply_period=pd['supply_period'])[0]
 
         ext.save()
 
+        has_voltage = False
         for attr in pd['attrs']:
             Attr(extend=ext, name=attr[0], value=attr[1]).save()
+            if attr[0].lower() == 'voltage':
+                has_voltage = True
+
+        if has_voltage:
+            basic.voltage = 220
+            basic.save()
 
         for photo in pd['photos']:
             Picture(extend=ext, url=photo).save()

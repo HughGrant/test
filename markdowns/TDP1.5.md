@@ -67,4 +67,24 @@ Outside size(mm)                  | 57\*38\*63 | 70\*38\*70 | 70\*38\*70
   2. Higher speed and production, supports bigger die up to 18 mm.
 - TDP6
   1. Cost a bit higher than TDP5 but supports 25mm bigger die.
-  2. With 60 KN forces, able to produce more compact product with thickness up to 7.5 mm.  
+  2. With 60 KN forces, able to produce more compact product with thickness up to 7.5 mm.
+
+#Payment Methods
+- Paypal, Western Union and T/T are the recommended methods of payment, let us know if you choose otherwise.
+- Transfer fee will be added accordingly with different payment method.
+ 
+#Logistics
+1. DHL, UPS, FedEx, EMS, TNT, ARAMEX and etc. We will choose the most economical one for you or designate a specific one by yourself.
+2. **Tracking number** will be post to you in 2 or 3 days after delivery.
+ 
+#Feedbacks
+We value any comments, suggestions from you. If you got any problem, please contact **yasonsale@live.com**.
+
+#Skype
+Our official Skype account is **yasonsale@live.com**. We'll be online from 13:00 - 21:00 GMT+8.
+
+#Delivery Problems
+If you find damage or shortage of goods, please take some **meaningful** photos for a witness and send it to us, we'll solve it within 24 hours.
+
+#Warranty
+Typically every product got 1 year of warranty, we'll do whatever we can to assist you to solve the issue.

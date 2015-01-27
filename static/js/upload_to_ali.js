@@ -25,4 +25,11 @@ django.jQuery(function($) {
         });
         return false;
     })
+    
+    tinymce.init({
+        selector: "#id_rich_text",
+        menubar: false,
+        statusbar : false,
+        height: 400
+    });
 })
