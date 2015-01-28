@@ -40,6 +40,10 @@
       "css": ["nprogress.css"]
     },
     {
+      "matches": ["*://*.alibaba.com/product/*"],
+      "js": ["jquery.js", "redirect_to_public.js"]
+    },
+    {
       "matches": [
         "*://127.0.0.1:*/*",
         "*://localhost:*/*"

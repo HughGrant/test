@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制</a></div>');
     $('.buttons').append('<div class="item"><a id="capture_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">抓取</a></div>');
     $('#scratch_trigger').click(function() {
