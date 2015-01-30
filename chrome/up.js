@@ -114,10 +114,6 @@ function check_box(elem, values) {
 	}
 }
 
-function set_oringal_place() {
-	$('[name=contryValue]').val('CN-China (Mainland)')
-}
-
 function fill_attr(elem, val) {
 	var a = $(elem);
 
@@ -250,7 +246,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			attrs.forEach(function(attr_name, index) {
 				var attr_val = product.get_attr_val(attr_name);
 				if (attr_name == 'Place of Origin') {
-					set_oringal_place();
+					$('[name=contryValue]').val('CN-China (Mainland)');
 					return;
 				}
 				// start to fill

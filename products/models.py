@@ -109,6 +109,7 @@ class Extend(models.Model):
     packaging_desc = models.CharField('包装描述', max_length=600)
     consignment_term = models.CharField('运输时长', max_length=100)
     rich_text = models.TextField('产品正文', blank=True, max_length=50000)
+    upload_count = models.IntegerField('已上传次数', default=0)
 
     def __str__(self):
         return self.basic.__str__()
@@ -119,6 +120,11 @@ class Extend(models.Model):
             self.id)
     upload_button.allow_tabs = True
     upload_button.short_description = '动作'
+
+    def has_rich_text(self):
+        return self.rich_text != ''
+    has_rich_text.boolean = True
+    has_rich_text.short_description = '产品正文'
 
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'

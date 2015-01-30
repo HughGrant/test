@@ -100,7 +100,9 @@ class ExtendAdmin(admin.ModelAdmin):
         AttrInline,
         PictureInline
     ]
-    list_display = ('__str__', 'upload_button')
+    exclude = ('upload_count', )
+    list_display = (
+        '__str__', 'upload_count', 'has_rich_text', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'basic':
