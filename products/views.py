@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from products.models import *
 
 
@@ -20,7 +21,7 @@ class CaptureView(View):
 
         ext = Extend.objects.get(pk=int(pk))
         data = {}
-
+        data['extend_id'] = ext.id
         data['name'] = ext.basic.name
         data['category'] = ext.category.slug_name().split('>')
         data['port'] = ext.port
@@ -101,6 +102,24 @@ class CaptureView(View):
             Picture(extend=ext, url=photo).save()
 
         jr['status'] = True
+        return JsonResponse(jr)
+
+    @method_decorator(login_required(login_url='/login_required_jr/'))
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class UploaderView(View):
+
+    def post(self, request):
+        eid = request.POST['extend_id']
+        Extend.objects.filter(pk=eid).update(
+            upload_count=F('upload_count') + 1)
+        return JsonResponse({'status': True})
+
+    def get(self, request):
+        jr = {'status': False}
         return JsonResponse(jr)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))

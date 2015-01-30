@@ -4,6 +4,7 @@ var LOGIN_URL = DOMAIN + 'chrome_login/';
 var LOGOUT_URL = DOMAIN + 'logout/';
 var KW_URL = DOMAIN + 'products/keyword/';
 var CAPTURE_PRODUCT_URL = DOMAIN + 'products/capture/';
+var UPLOAD_COUNTER_URL = DOMAIN + 'products/uploader';
 var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm';
 var UPLOAD_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/posting.htm';
 
