@@ -223,27 +223,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			}
 			// set up product object
 			for (var i = product.attrs.length - 1; i >= 0; i--) {
-				product.attrs[i][2] = false
+				product.attrs[i][2] = false;
 			}
+
 			product.get_attr_val = function(key) {
 				for (var i = 0; i < product.attrs.length; i++) {
 					if (product.attrs[i][0] == key) {
-						product.attrs[i][2] == true;
+						product.attrs[i][2] = true;
 						return product.attrs[i][1];
 					}
 				}
 				return false;
 			}
-			window.scrollTo(0, document.body.scrollHeight)
 
-			$('#productName').val(product.name)
+			window.scrollTo(0, document.body.scrollHeight);
+
+			$('#productName').val(product.name);
 			// attrs needs to fill
-			var attrs = []
+			var attrs = [];
 			$('.attr-title').map(function() {
-				attrs.push($(this).html().replace(':', ''))
-			})
+				attrs.push($(this).html().replace(':', ''));
+			});
 			// attrs's value
-			var values = $('.attribute-table-td')
+			var values = $('.attribute-table-td');
+
 			attrs.forEach(function(attr_name, index) {
 				var attr_val = product.get_attr_val(attr_name);
 				if (attr_name == 'Place of Origin') {
@@ -259,12 +262,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 				}
 			});
 			// loop through all attrs to finish the unfilled attr
-			for (var i = 0; i < product.attrs.length; i++) {
-				if (product.attrs[i][2] === false) {
-					create_attr(product.attrs[i][0], product.attrs[i][1])
-					product.attrs[i][2] = true
+			product.attrs.forEach(function(attr) {
+				if (!attr[2]) {
+					create_attr(attr[0], attr[1]);
 				}
-			}
+			});
 
 			// trade information
 			$('#minOrderQuantity').val(product.min_order_quantity)
