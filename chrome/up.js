@@ -1,5 +1,34 @@
 var product = null
 
+// var x = [{
+//     "fileSavePath": "HTB1KzXLHXXXXXcqaXXXq6xXFXXXT.jpg",
+//     "fileURL": "http://kfupload.alibaba.com/kf-down/HTB1KzXLHXXXXXcqaXXXq6xXFXXXT.jpg?size=38274&height=444&width=1000&hash=020d06a9e76ff5bdbbe5e31d3d437063",
+//     "imgURL": "http://g02.s.alicdn.com/kf/HTB1KzXLHXXXXXcqaXXXq6xXFXXXT.jpg_200x200.jpg",
+//     "fileName": "carton-car.jpg",
+//     "fileSize": "38274",
+//     "fileHeight": "444",
+//     "fileWidth": "1000",
+//     "fileMd5": "020d06a9e76ff5bdbbe5e31d3d437063",
+//     "fileDestOrder": 1,
+//     "fileSrcOrder": 0,
+//     "fileFlag": "add",
+//     "fileId": 0,
+//     "isError": false
+// }, {
+//     "fileSavePath": "HTB1QqTnHXXXXXbqaXXXq6xXFXXXu.jpg",
+//     "fileURL": "http://kfupload.alibaba.com/kf-down/HTB1QqTnHXXXXXbqaXXXq6xXFXXXu.jpg?size=19485&height=246&width=279&hash=8c8e22c1ea41a51f195da6aee0a51bce",
+//     "imgURL": "http://g03.s.alicdn.com/kf/HTB1QqTnHXXXXXbqaXXXq6xXFXXXu.jpg_200x200.jpg",
+//     "fileName": "Color.jpg",
+//     "fileSize": "19485",
+//     "fileHeight": "246",
+//     "fileWidth": "279",
+//     "fileMd5": "8c8e22c1ea41a51f195da6aee0a51bce",
+//     "fileDestOrder": 2,
+//     "fileSrcOrder": 0,
+//     "fileFlag": "add",
+//     "fileId": 0,
+//     "isError": false
+// }]
 function create_attr(key, value) {
 	var cai = $('.custom-attr-item').last()
 	cai.find('input').first().val(key)
@@ -118,12 +147,56 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		set_keywords(request.data)
 	}
 
+	// if (request.action == 'upload_image') {
+	// 	var image_url = 'http://g01.s.alicdn.com/kf/HT1ywtiFLXcXXagOFbXw/220954227/HT1ywtiFLXcXXagOFbXw.jpg';
+	// 	var uid = 'i5idisdx';
+	// 	var boundary = '----ksuploadboundary' + uid;
+	// 	var get_content = function(name, value, boundary) {
+	// 		var str = boundary + '\n';
+	// 		str += 'Content-Disposition: form-data; name="' + name + '"\n\n';
+	// 		str += value + '\n';
+	// 	}
+		
+	// 	$.get(image_url, function(data) {
+	// 		var content = boundary + '\n';
+	// 		content += 'Content-Disposition: form-data; name="name"\n\n';
+	// 		content += request.file_name + '\n';
+
+	// 		content += boundary + '\n';
+	// 		content += 'Content-Disposition: form-data; name="scene"\n\n';
+	// 		content += 'productImageRule\n';
+
+
+	// 		content += boundary + '\n';
+	// 		content += 'Content-Disposition: form-data; name="file"; filename="' + request.file_name + '"\n';
+	// 		content += 'Content-Type: image/jpeg\n\n';
+	// 		content += data;
+	// 		content += '\n' + boundary + '--';
+	// 		$.ajax({
+	// 			url: "http://kfupload.alibaba.com/mupload",
+	// 			type: "POST",
+	// 			data: content,
+	// 			processData: false,
+	// 			contentType: 'multipart/form-data; boundary=' + boundary
+	// 		}).done(function(data) {
+	// 			console.log(data);
+	// 		});
+	// 	});
+	// }
+
 	if (request.action == 'set_product') {
-		product = request.product
+		product = request.product;
 
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">填充所有</button>')
 		$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>')
 		$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>')
+		// $('#browser').after('<button id="upload_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">自动上传</button>')
+
+		// $('#upload_imgs').click(function() {
+		// 	var image_url = 'http://g01.s.alicdn.com/kf/HT1ywtiFLXcXXagOFbXw/220954227/HT1ywtiFLXcXXagOFbXw.jpg';
+		// 	var file_name = product.name + '.jpg';
+		// 	chrome.runtime.sendMessage({action:'upload_image', image_url:image_url, file_name:file_name});
+		// });
 
 		$('#download_imgs').click(function() {
 			var name = $('#productName').val();
@@ -143,7 +216,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 		$('#auto_fill').click(function() {
 			// find out what lang that this page is in
-			var is_en = $('.ui-header-lan-display-text').html() == 'English'
+			var is_en = $('.ui-header-lan-display-text').html() == 'English';
 			if (!is_en) {
 				alert('请先把页面语言设置为英文');
 				return false;

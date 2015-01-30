@@ -29,7 +29,9 @@ django.jQuery(function($) {
     tinymce.init({
         selector: "#id_rich_text",
         menubar: false,
-        statusbar : false,
+        statusbar: false,
+        toolbar1: "code undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
+        plugins: ["code"],
         height: 400
     });
 })

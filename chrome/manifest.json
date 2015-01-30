@@ -58,9 +58,10 @@
     "background",
     "downloads",
     "management",
-    "http://*.aliimg.com/*",
-    "http://127.0.0.1:*/*",
-    "http://localhost:*/*"
+    "*://*.aliimg.com/*",
+    "*://127.0.0.1:*/*",
+    "*://localhost:*/*",
+    "*://*.alicdn.com/*"
   ],
 
   "browser_action": {
