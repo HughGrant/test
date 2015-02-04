@@ -42,7 +42,7 @@ function scratch() {
 
     product.category = array_trim($('.ui-breadcrumb').attr('content').split('>'))
 
-    product.ali_category_id = $('.num').html().replace(/[()]/g, '');
+    product.unkown_category_id = $('.num').html().replace(/[()]/g, '');
 
     product.photos = []
         // main img src

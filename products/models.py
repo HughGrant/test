@@ -48,6 +48,7 @@ class Category(models.Model):
     parent = models.ForeignKey(
         'self', verbose_name='上级类目', null=True, blank=True)
     name = models.CharField('类目名称', max_length=100)
+    ali_id = models.IntegerField('阿里ID', default=0)
 
     def __str__(self):
         return self.slug_name()
@@ -57,6 +58,11 @@ class Category(models.Model):
             return self.parent.slug_name() + '>' + self.name
         else:
             return self.name
+
+    def has_ali_id(self):
+        return self.ali_id != 0
+    has_ali_id.short_description = '是否已添加阿里ID'
+    has_ali_id.boolean = True
 
     @classmethod
     def auto_create(cls, cats, parent=None):

@@ -1,7 +1,7 @@
 # from django.shortcuts import render
 import json
 from django.http import JsonResponse
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.utils.decorators import method_decorator
@@ -57,13 +57,15 @@ class CaptureView(View):
 
     def post(self, request):
         jr = {'status': False}
+        if not request.user.has_perm('products.add_extend'):
+            raise PermissionDenied()
+
         pd = json.loads(request.POST['json'])
-        print(pd['ali_category_id'])
-        basic = Basic(user=request.user)
-        basic.name = pd['name']
+
+        basic = Basic(name=pd['name'])
         basic.save()
 
-        ext = Extend(basic=basic)
+        ext = Extend(basic=basic, user=request.user)
         ext.category = Category.auto_create(pd['category'])
         ext.url = pd['url']
         ext.port = pd['port']

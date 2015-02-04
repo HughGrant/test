@@ -105,8 +105,6 @@ class ExtendAdmin(AutoUserAdmin):
         '__str__', 'upload_count', 'has_rich_text', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'basic':
-            kwargs["queryset"] = models.Basic.objects.filter(user=request.user)
 
         if db_field.name == 'category':
             kwargs["queryset"] = models.Category.objects.filter(category=None)
@@ -133,7 +131,8 @@ class CategoryFilter(admin.SimpleListFilter):
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', )
+    list_display = ('__str__', 'has_ali_id')
+    readonly_fields = ('name', )
     search_fields = ('name', )
     list_filter = (CategoryFilter, )
 
