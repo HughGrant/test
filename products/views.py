@@ -58,7 +58,7 @@ class CaptureView(View):
     def post(self, request):
         jr = {'status': False}
         pd = json.loads(request.POST['json'])
-
+        print(pd['ali_category_id'])
         basic = Basic(user=request.user)
         basic.name = pd['name']
         basic.save()

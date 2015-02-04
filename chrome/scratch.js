@@ -21,11 +21,13 @@ $(function() {
 var capture_product = function(product) {
     product.rich_text = [];
     product.url = location.toString();
-    data = {'json': JSON.stringify(product)};
+    data = {
+        'json': JSON.stringify(product)
+    };
 
     $.post(CAPTURE_PRODUCT_URL, data).done(function(data) {
-        if (data.status) { 
-            alert('抓取成功'); 
+        if (data.status) {
+            alert('抓取成功');
         } else {
             alert(data.message);
         }
@@ -40,14 +42,16 @@ function scratch() {
 
     product.category = array_trim($('.ui-breadcrumb').attr('content').split('>'))
 
+    product.ali_category_id = $('.num').html().replace(/[()]/g, '');
+
     product.photos = []
-    // main img src
+        // main img src
     product.photos.push($('#J-image-icontent img')[0].src)
     product.attrs = []
     keys = $('.J-name')
     values = $('.J-value')
-    for(var i = 0; i < keys.length; i++) {
-        product.attrs.push([keys[i].innerText.replace(':', ''), $.trim(values[i].innerText)])
+    for (var i = 0; i < keys.length; i++) {
+        product.attrs.push([keys[i].innerText.replace(/:/g, ''), $.trim(values[i].innerText)])
     }
 
     product.consignment_term = $('td:contains("Delivery Detail:") + td')[0].innerText
@@ -107,7 +111,7 @@ function get_rich_text() {
     rich = {};
     rich.txt = [];
     rich.imgs = [];
-    for(var i = 0; i < eles.length; i++) {
+    for (var i = 0; i < eles.length; i++) {
         var img = $(eles[i]).find('img');
         if (img.length == 0) {
             var html = eles[i].outerHTML;
@@ -124,7 +128,7 @@ function get_rich_text() {
 }
 
 function array_trim(arr) {
-    for(var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         arr[i] = $.trim(arr[i]);
     }
     return arr;

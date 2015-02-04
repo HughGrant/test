@@ -5,7 +5,6 @@ from preset import *
 
 
 class Basic(models.Model):
-    user = models.ForeignKey(User)
     cn_name = models.CharField('中文名', blank=True, max_length=200)
     name = models.CharField('英文名', blank=True, max_length=200)
     model = models.CharField('型号', blank=True, max_length=200)
@@ -82,7 +81,10 @@ class Category(models.Model):
 class Attr(models.Model):
     extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
     name = models.CharField('属性名', max_length=100)
-    value = models.CharField('属性值', max_length=100)
+    value = models.CharField('属性值', max_length=200)
+
+    def __str__(self):
+        return '%s: %s' % (self.name, self.value)
 
     class Meta:
         verbose_name = verbose_name_plural = '产品属性'
@@ -98,6 +100,7 @@ class Picture(models.Model):
 
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', verbose_name='基本信息')
+    user = models.ForeignKey(User)
     url = models.CharField('产品来源', blank=True, max_length=300)
     category = models.ForeignKey('Category', verbose_name='产品分类')
     moq = models.ForeignKey(

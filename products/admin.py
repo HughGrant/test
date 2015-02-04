@@ -6,9 +6,8 @@ from buss.admin import AutoUserAdmin
 
 
 @admin.register(models.Basic)
-class BasicAdmin(AutoUserAdmin):
-    exclude = ('user', )
-    ordering = ('cn_name', 'model')
+class BasicAdmin(admin.ModelAdmin):
+    ordering = ('cn_name', 'model', 'name')
     # TODO: using a custom filter
     # Filting products only belongs to this user
     list_filter = ('name', 'cn_name')
@@ -95,12 +94,13 @@ class PictureInline(admin.TabularInline):
 
 
 @admin.register(models.Extend)
-class ExtendAdmin(admin.ModelAdmin):
+class ExtendAdmin(AutoUserAdmin):
     inlines = [
         AttrInline,
         PictureInline
     ]
-    exclude = ('upload_count', )
+    exclude = ('upload_count', 'user')
+    ordering = ('category', )
     list_display = (
         '__str__', 'upload_count', 'has_rich_text', 'upload_button')
 

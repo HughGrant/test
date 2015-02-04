@@ -24,13 +24,13 @@
 - Candies
 
 #Specifications
-- Model: TDP5
-- Max.Main Pressure (KN): 50
-- Max.Diameter (MM): 18
-- Max.Filling Depth (MM): 16
-- Max.Tablet Thickness (MM): 6
-- Max. Production capacity (Pills/Hour): 4000
-- Motor Powder (KW): 0.75
+- Model: TDP6
+- Max.Main Pressure (KN): 60
+- Max.Diameter (MM): 25
+- Max.Filling Depth (MM): 18
+- Max.Tablet Thickness (MM): 7.5
+- Max. Production capacity (Pills/Hour): 3000
+- Motor Powder (KW): 1.1
 - Machine Size (CM): 70\*38\*70
 
 #Instructions
