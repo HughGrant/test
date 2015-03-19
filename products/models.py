@@ -8,6 +8,7 @@ class Basic(models.Model):
     cn_name = models.CharField('中文名', blank=True, max_length=200)
     name = models.CharField('英文名', blank=True, max_length=200)
     model = models.CharField('型号', blank=True, max_length=200)
+    keyword = models.CharField('默认主关键字', blank=True, max_length=200)
     video = models.CharField('视频', blank=True, max_length=200)
     size = models.CharField('尺寸(CM)', blank=True, max_length=200)
     net_weight = models.FloatField('净重(KG)', default=0)
@@ -134,6 +135,17 @@ class Extend(models.Model):
         return self.rich_text != ''
     has_rich_text.boolean = True
     has_rich_text.short_description = '产品正文'
+
+    def keyword_coverage(self):
+        if self.basic.keyword:
+            qs = Keyword.objects.filter(name=self.basic.keyword)
+            if qs.exists():
+                total = qs.count()
+                count = qs.filter(count__gt=0).count()
+                return '{:3.2f}%'.format(count/total*100)
+            return '没有二级关键字'
+        return '未设置默认关键字'
+    keyword_coverage.short_description = '关键字覆盖率'
 
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'

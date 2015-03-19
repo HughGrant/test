@@ -27,15 +27,9 @@ var model_insert = function(model_name, data, success_msg, error_msg) {
 }
 
 var setup_keywords_ui = function() {
-  $('#productKeyword').after('<button id="get_keywords" type="button" class="ui-button ui-button-normal ui-button-big">更多关键字</button>')
-  $('#keywords3').after('<button id="clear_keywords" type="button" class="ui-button ui-button-normal ui-button-big">清除</button>')
-  
-  
-  $('#get_keywords').click(get_keywords)
-  $('#clear_keywords').click(function() {
-    $('#keywords2').val('')
-    $('#keywords3').val('')
-  })
+    $('#productName').after('<button id="get_keywords" type="button" class="ui-button ui-button-normal ui-button-big">更多关键字</button>');
+    $('#get_keywords').css('padding-left', '4px');
+    $('#get_keywords').click(get_keywords);
 }
 
 var set_keywords = function(data) {

@@ -23,6 +23,7 @@ class CaptureView(View):
         data = {}
         data['extend_id'] = ext.id
         data['name'] = ext.basic.name
+        data['keyword'] = ext.basic.keyword
         data['category'] = ext.category.slug_name().split('>')
         data['port'] = ext.port
         data['consignment_term'] = ext.consignment_term

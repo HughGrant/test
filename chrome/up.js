@@ -104,9 +104,34 @@ function mark_empty_attr(elem) {
 	$(elem).find('input[type=checkbox]').css('border', '2px solid red');
 }
 
-$(function() {
-	setup_keywords_ui();
-})
+function fill_keywords(search_keyword) {
+    var url =  KW_URL + '?count=3&name=' + search_keyword
+    $.get(url).done(function(data) {
+        // need to login to continue
+        if (!data.status && data.message) {
+            alert(data.message);
+            return false;
+        }
+
+        if (data.status) {
+            var key2 = $('#keywords2'),
+                key3 = $('#keywords3'),
+                key1 = $('#productKeyword');
+            
+            key1.val(data.result.shift());
+            key2.val(data.result.shift());
+            key3.val(data.result.shift());
+        } else {
+            var f = confirm('关键字不足, 否现在去采集?');
+            if (f) {
+                collect_keywords(search_keyword);
+            }
+        }
+
+    }).fail(function(data) {
+        alert(data.message);
+    });
+}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
@@ -117,7 +142,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == 'set_product') {
 		product = request.product;
 
-		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">填充所有</button>');
+		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
 		$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>');
 		$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>');
 
@@ -160,8 +185,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			}
 
 			window.scrollTo(0, document.body.scrollHeight);
-
+			// start to fill
+			// first name and primary product keyword
 			$('#productName').val(product.name);
+			if ($.trim(product.keyword) != '') {
+                $('#addMoreKeywords').click(function() {
+                    setTimeout(function() {
+                        fill_keywords(product.keyword);
+                    }, 1000);
+                });
+			};
 			// attrs needs to fill
 			var attrs = [];
 			$('.attr-title').map(function() {

@@ -10,9 +10,10 @@ class BasicAdmin(admin.ModelAdmin):
     ordering = ('cn_name', 'model', 'name')
     # TODO: using a custom filter
     # Filting products only belongs to this user
-    list_filter = ('name', 'cn_name')
+    list_filter = ('cn_name', )
     search_fields = ('name', 'cn_name', 'model')
-    list_display = ('__str__', 'cost', 'weight', 'size', 'voltage', 'video')
+    list_display = (
+        '__str__', 'bak', 'cost', 'weight', 'size', 'voltage', 'video')
 
 
 class MOQForm(forms.ModelForm):
@@ -102,7 +103,8 @@ class ExtendAdmin(AutoUserAdmin):
     exclude = ('upload_count', 'user')
     ordering = ('category', )
     list_display = (
-        '__str__', 'upload_count', 'has_rich_text', 'upload_button')
+        '__str__', 'upload_count', 'has_rich_text', 'upload_button',
+        'keyword_coverage')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
 
@@ -148,3 +150,4 @@ class CategoryAdmin(admin.ModelAdmin):
 class KeywordAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'count')
     list_filter = ('name', )
+    search_fields = ('name', 'word')
