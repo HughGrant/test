@@ -47,10 +47,10 @@ V1000| 1000L           | 400L        | 4kw          | 12r/min         | 300kg   
 2. **Tracking number** will be post to you in 2 or 3 days after delivery.
  
 #Feedbacks
-We value any comments, suggestions from you. If you got any problem, please contact at **yasonsale#live.com**(replace # with @).
+We value any comments, suggestions from you. If you got any problem, please contact at **yasonsale @ live.com**.
 
 #Skype
-Our official Skype account is **yasonsale#live.com**(replace # with @). We'll be online from 13:00 - 21:00 GMT+8.
+Our official Skype account is **yasonsale @ live.com**. We'll be online from 13:00 - 21:00 GMT+8.
 
 #Delivery Problems
 If you find damage or shortage of goods, please take some **meaningful** photos for a witness and send it to us, we'll solve it within 24 hours.

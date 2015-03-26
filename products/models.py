@@ -28,6 +28,25 @@ class Basic(models.Model):
         return max([self.net_weight, self.gross_weight, self.volume_weight])
     weight.short_description = '物流重量(KG)'
 
+    def price(self):
+        qs = DifferentPrice.objects.filter(basic_id=self.id)
+        if not qs.exists():
+            return self.cost
+        fs = '<br><br>'.join([str(dp) for dp in qs.all()])
+        return format_html(fs)
+    price.short_description = '报价'
+    price.allow_tabs = True
+
+    def has_accessory(self):
+        return Accessory.objects.filter(basic_id=self.id).exists()
+    has_accessory.short_description = '配件'
+    has_accessory.boolean = True
+
+    def has_video(self):
+        return self.video != ''
+    has_video.short_description = '视频'
+    has_video.boolean = True
+
     class Meta:
         verbose_name = verbose_name_plural = '产品基本信息'
 
@@ -85,6 +104,30 @@ class Category(models.Model):
         verbose_name = verbose_name_plural = '产品分类'
 
 
+class Accessory(models.Model):
+    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
+    difference = models.CharField('描述', max_length=100)
+    price = models.FloatField('价钱(RMB)', default=0)
+
+    def __str__(self):
+        return '%s: %s' % (self.difference, self.price)
+
+    class Meta:
+        verbose_name = verbose_name_plural = '产品配件'
+
+
+class DifferentPrice(models.Model):
+    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
+    difference = models.CharField('描述', max_length=100)
+    price = models.FloatField('价钱(RMB)', default=0)
+
+    def __str__(self):
+        return '%s: %s' % (self.difference, self.price)
+
+    class Meta:
+        verbose_name = verbose_name_plural = '产品差异价'
+
+
 class Attr(models.Model):
     extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
     name = models.CharField('属性名', max_length=100)
@@ -135,17 +178,6 @@ class Extend(models.Model):
         return self.rich_text != ''
     has_rich_text.boolean = True
     has_rich_text.short_description = '产品正文'
-
-    def keyword_coverage(self):
-        if self.basic.keyword:
-            qs = Keyword.objects.filter(name=self.basic.keyword)
-            if qs.exists():
-                total = qs.count()
-                count = qs.filter(count__gt=0).count()
-                return '{:3.2f}%'.format(count/total*100)
-            return '没有二级关键字'
-        return '未设置默认关键字'
-    keyword_coverage.short_description = '关键字覆盖率'
 
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'

@@ -5,15 +5,29 @@ from . import models
 from buss.admin import AutoUserAdmin
 
 
+class DifferentPriceInline(admin.TabularInline):
+    model = models.DifferentPrice
+    extra = 1
+
+
+class AccesscoryInline(admin.TabularInline):
+    model = models.Accessory
+    extra = 1
+
+
 @admin.register(models.Basic)
 class BasicAdmin(admin.ModelAdmin):
+    inlines = [
+        DifferentPriceInline,
+        AccesscoryInline
+    ]
     ordering = ('cn_name', 'model', 'name')
     # TODO: using a custom filter
     # Filting products only belongs to this user
     list_filter = ('cn_name', )
     search_fields = ('name', 'cn_name', 'model')
     list_display = (
-        '__str__', 'bak', 'cost', 'weight', 'size', 'voltage', 'video')
+        '__str__', 'price', 'weight', 'size', 'has_accessory', 'has_video')
 
 
 class MOQForm(forms.ModelForm):
@@ -100,11 +114,12 @@ class ExtendAdmin(AutoUserAdmin):
         AttrInline,
         PictureInline
     ]
+    search_fields = ('basic__cn_name', 'basic__name', 'basic__model')
+    list_filter = ('basic__cn_name', )
     exclude = ('upload_count', 'user')
-    ordering = ('category', )
+    ordering = ('basic__cn_name', 'basic__model', 'basic__name')
     list_display = (
-        '__str__', 'upload_count', 'has_rich_text', 'upload_button',
-        'keyword_coverage')
+        '__str__', 'upload_count', 'has_rich_text', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
 
