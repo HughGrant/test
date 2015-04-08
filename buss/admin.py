@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.db.models import Q
 from django import forms
 from django.http import JsonResponse
 # from django.utils.safestring import mark_safe
@@ -39,8 +38,8 @@ class OrderAdmin(AutoUserAdmin):
         urls = super().get_urls()
         my_urls = patterns(
             '',
-            # admin/app_name/model_name/view_name
-            # admin/buss/order/products_basic/1/
+            # url pattern: admin/app_name/model_name/view_name
+            # actual url:  admin/buss/order/products_basic/1/
             (r'^products_basic/(?P<basic_id>[0-9]+)/$',
              self.admin_site.admin_view(self.products_basic, cacheable=True))
         )
@@ -55,16 +54,14 @@ class OrderAdmin(AutoUserAdmin):
 
 
 @admin.register(models.Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(AutoUserAdmin):
+    # maybe in the future, this function is only open to manager
+    # that would affect the way how this system works
 
-    def get_queryset(self, request):
-        qset = super().get_queryset(request)
-        if request.user.groups.filter(name='manager').exists():
-            return qset.filter(creator=request.user)
-        else:
-            return qset.filter(Q(order__user=request.user) |
-                               Q(order=None))
-
-    def save_model(self, request, obj, form, change):
-        obj.creator = request.user
-        obj.save()
+    exclude = ('user', )
+    list_display = (
+        'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
+        'payment_method', 'date', 'verified', 'bak')
+    list_editable = (
+        'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
+        'payment_method', 'bak', 'verified')

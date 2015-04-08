@@ -15,7 +15,7 @@ class Basic(models.Model):
     gross_weight = models.FloatField('毛重(KG)', default=0)
     volume_weight = models.FloatField('积重(KG)', default=0)
     cost = models.FloatField('成本(RMB)', default=0)
-    voltage = models.IntegerField('电压', default=0, choices=VOLTAGE_CHOICES)
+    voltage = models.CharField('电压', max_length=50)
     bak = models.TextField('备注', blank=True, max_length=200)
 
     def __str__(self):
@@ -120,6 +120,10 @@ class DifferentPrice(models.Model):
     basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
     difference = models.CharField('描述', max_length=100)
     price = models.FloatField('价钱(RMB)', default=0)
+    size = models.CharField('尺寸(CM)', blank=True, max_length=200)
+    net_weight = models.FloatField('净重(KG)', default=0)
+    gross_weight = models.FloatField('毛重(KG)', default=0)
+    volume_weight = models.FloatField('积重(KG)', default=0)
 
     def __str__(self):
         return '%s: %s' % (self.difference, self.price)
