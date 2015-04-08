@@ -26,8 +26,7 @@ class BasicAdmin(admin.ModelAdmin):
     # Filting products only belongs to this user
     list_filter = ('cn_name', )
     search_fields = ('name', 'cn_name', 'model')
-    list_display = (
-        '__str__', 'price', 'weight', 'size', 'has_accessory', 'has_video')
+    list_display = ('__str__', 'price', 'has_accessory', 'has_video')
 
 
 class MOQForm(forms.ModelForm):

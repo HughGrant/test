@@ -4,7 +4,7 @@ from django.http import JsonResponse
 # from django.utils.safestring import mark_safe
 from django.conf.urls import patterns
 from . import models
-from products.models import Basic
+from products.models import DifferentPrice
 admin.site.site_header = '亚新科技'
 admin.site.site_title = 'Yason Tech'
 admin.site.index_title = '亚新电子科技有限公司'
@@ -40,14 +40,14 @@ class OrderAdmin(AutoUserAdmin):
             '',
             # url pattern: admin/app_name/model_name/view_name
             # actual url:  admin/buss/order/products_basic/1/
-            (r'^products_basic/(?P<basic_id>[0-9]+)/$',
+            (r'^products_basic/(?P<dp_id>[0-9]+)/$',
              self.admin_site.admin_view(self.products_basic, cacheable=True))
         )
         return my_urls + urls
 
-    def products_basic(self, request, basic_id):
-        b = Basic.objects.get(pk=basic_id)
-        return JsonResponse({'cost': b.cost})
+    def products_basic(self, request, dp_id):
+        b = DifferentPrice.objects.get(pk=dp_id)
+        return JsonResponse({'cost': b.price})
 
     class Media:
         js = ('js/product_order_select_binding.js', )

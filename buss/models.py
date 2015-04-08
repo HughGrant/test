@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from clients.models import Client
-from products.models import Basic
+from products.models import DifferentPrice
 from preset import CURRENCY_TYPE, PAYMENT_METHOD
 
 
@@ -29,7 +29,7 @@ class Order(models.Model):
 
 class ProductOrder(models.Model):
     order = models.ForeignKey('Order')
-    product = models.ForeignKey(Basic, verbose_name='产品')
+    product = models.ForeignKey(DifferentPrice, verbose_name='产品价格')
     quantity = models.IntegerField('数量', default=0)
     cost = models.FloatField('成本', default=0)
     price = models.FloatField('单价', default=0)
