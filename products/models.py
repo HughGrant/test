@@ -223,7 +223,7 @@ class FobPrice(models.Model):
 
 
 class SupplyAbility(models.Model):
-    supply_quantity = models.IntegerField('产量', max_length=100)
+    supply_quantity = models.IntegerField('产量', default=0)
     supply_unit = models.IntegerField(
         '产量单位', default=20, choices=UNIT_TYPE_PLURAL)
     supply_period = models.CharField('产量周期', max_length=20, choices=TIME)
