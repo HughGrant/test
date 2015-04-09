@@ -62,9 +62,10 @@ WSGI_APPLICATION = 'dicaprio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tuwenmin',
-        'USER': 'tuwenmin',
+        'NAME': 'yason',
+        'USER': 'postgres',
         'HOST': '127.0.0.1',
+        'PASSWORD': 'tuwenmin123',
         'PORT': 5432,
         'ATOMIC_REQUESTS': True,
     }
