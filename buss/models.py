@@ -13,7 +13,6 @@ class Order(models.Model):
         'Payment', blank=True, null=True, verbose_name='付款信息')
     total_cost = models.FloatField('总成本', default=0)
     shipping_cost = models.FloatField('总运费', default=0)
-    total_price = models.FloatField('总报价', default=0)
     bak = models.TextField('备注', blank=True, max_length=500)
     date = models.DateField('日期', auto_now_add=True)
 

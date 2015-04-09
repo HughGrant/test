@@ -18,15 +18,11 @@ class Basic(models.Model):
         else:
             return "%s(%s)" % (self.name, self.model)
 
-    def weight(self):
-        return max([self.net_weight, self.gross_weight, self.volume_weight])
-    weight.short_description = '物流重量(KG)'
-
     def price(self):
         qs = DifferentPrice.objects.filter(basic_id=self.id)
         if not qs.exists():
             return self.cost
-        fs = '<br><br>'.join([str(dp) for dp in qs.all()])
+        fs = '<br><br>'.join([dp.description() for dp in qs.all()])
         return format_html(fs)
     price.short_description = '报价'
     price.allow_tabs = True
@@ -122,6 +118,13 @@ class DifferentPrice(models.Model):
     def __str__(self):
         return '%s-%s: %s' % (
             self.basic.cn_name, self.difference, self.price)
+
+    def weight(self):
+        return max([self.net_weight, self.gross_weight, self.volume_weight])
+
+    def description(self):
+        return '%s: %sRMB, %sKG, %sCM' % (
+            self.difference, self.price, self.weight(), self.size)
 
     class Meta:
         verbose_name = verbose_name_plural = '产品差异价'
