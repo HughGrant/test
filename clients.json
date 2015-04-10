@@ -1,0 +1,198 @@
+[
+{
+    "fields": {
+        "address": "Rua das Casinhas, Vale Barreiro - Cabe\u00e7udo, 6100-031 Sert\u00e3, Portugal",
+        "country": 88,
+        "contact": "+351 918 581 581",
+        "company": "",
+        "email": "tiagolucena@gmail.com",
+        "user": 2,
+        "code": "6100-031",
+        "name": "Tiago Lucena"
+    },
+    "pk": 1,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "59/271 Soi Moo Ban Hua Na, House C4, Prachuap Khiri Khan province, Hua Hin, Thailand",
+        "country": 117,
+        "contact": "+66809071454",
+        "company": "",
+        "email": "vitexmeds@gmail.com",
+        "user": 2,
+        "code": "77110",
+        "name": "Daniel Nguyen"
+    },
+    "pk": 2,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "15716 Fox Ln Selma, TX 78154",
+        "country": 266,
+        "contact": "1-210-740-2047",
+        "company": "",
+        "email": "yehweh67@gmail.com",
+        "user": 2,
+        "code": "78154",
+        "name": "Jason Buie"
+    },
+    "pk": 3,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Packtex Ltd, Beal Street, Leicester, LE2 0AA, UK",
+        "country": 264,
+        "contact": "00 44 116 2123786",
+        "company": "Packtex Ltd",
+        "email": "sg@packtex.com",
+        "user": 2,
+        "code": "LE2 0AA",
+        "name": "Suleman Gaffar"
+    },
+    "pk": 4,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Klimoplaan 30, 3600 Genk, Belgium",
+        "country": 111,
+        "contact": "0032477678161",
+        "company": "",
+        "email": "raf_politi@hotmail.com",
+        "user": 2,
+        "code": "600 Genk",
+        "name": "Ince Arif"
+    },
+    "pk": 5,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "",
+        "country": 44,
+        "contact": "(+62) 813 8228 7770",
+        "company": "",
+        "email": "witianatalatas.dachi@gmail.com",
+        "user": 2,
+        "code": "",
+        "name": "Dachi"
+    },
+    "pk": 6,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "MARGINEI 46A, CATELU, GLINA, ILFOV, ROMANIA",
+        "country": 87,
+        "contact": "+40723329821",
+        "company": "",
+        "email": "bio_ai2001@yahoo.com",
+        "user": 2,
+        "code": "077106",
+        "name": "Raicu Gheorghe"
+    },
+    "pk": 7,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Yaxi 13175544808 \u4e49\u4e4c\u5e02\u7a20\u5dde\u5317\u8def251\u5f044\u5e624\u53f72\u697c",
+        "country": 137,
+        "contact": "",
+        "company": "",
+        "email": "omedable@yahoo.com",
+        "user": 2,
+        "code": "",
+        "name": "Omed Raheem"
+    },
+    "pk": 8,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "369 Bradford Rd Westerly, RI 02808, USA",
+        "country": 266,
+        "contact": "401-623-6755",
+        "company": "",
+        "email": "bigwavesurfer171@yahoo.com",
+        "user": 2,
+        "code": "RI 02808",
+        "name": "Evan Speck"
+    },
+    "pk": 9,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "503 Brookneal Dr St Charles, MO 63304 USA",
+        "country": 266,
+        "contact": "1-636-300-9567",
+        "company": "OPM Enterprises ",
+        "email": "deanfixes@att.net",
+        "user": 2,
+        "code": "MO 63304",
+        "name": "Dean Olszowka"
+    },
+    "pk": 10,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "28835 Carnation Ct, Castaic, CA 91384, USA",
+        "country": 266,
+        "contact": "818 335 3177",
+        "company": "",
+        "email": "scvhalloween@gmail.com",
+        "user": 2,
+        "code": "CA 91384",
+        "name": "Jason Turchin"
+    },
+    "pk": 11,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Jan Aartestraat 88, 5017 EE Tilburg, Netherlands",
+        "country": 91,
+        "contact": "06-29581830",
+        "company": "",
+        "email": "jjmertens@hotmail.com",
+        "user": 2,
+        "code": "5017 EE Tilburg",
+        "name": "Joris Mertens"
+    },
+    "pk": 12,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Via Aeroporti, 103, 36030 Caldogno-rettorgole-cresole VI, Italy",
+        "country": 97,
+        "contact": "0444986993",
+        "company": "",
+        "email": "info@kharma-nail.com",
+        "user": 2,
+        "code": "36030",
+        "name": "Ana Lucia Necoara"
+    },
+    "pk": 13,
+    "model": "clients.client"
+},
+{
+    "fields": {
+        "address": "Bakkenzuigerstraat 11, 1333 HA Almere, Netherlands",
+        "country": 91,
+        "contact": "+316-10659334",
+        "company": "Arkopharma Nederland B.V.",
+        "email": "rudy@jaap.nl",
+        "user": 2,
+        "code": "",
+        "name": "Rudy Uijtenhaak"
+    },
+    "pk": 14,
+    "model": "clients.client"
+}
+]
