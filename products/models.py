@@ -151,7 +151,7 @@ class Picture(models.Model):
 
 
 class Extend(models.Model):
-    basic = models.ForeignKey('Basic', verbose_name='基本信息')
+    basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
     user = models.ForeignKey(User)
     url = models.CharField('产品来源', blank=True, max_length=300)
     category = models.ForeignKey('Category', verbose_name='产品分类')
