@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import View
@@ -44,5 +43,3 @@ urlpatterns = patterns(
     url(r'^login_required_jr/', login_required_jr, name='login_required_jr'),
     url(r'^logout/', user_logout, name='user_logout'),
 )
-
-urlpatterns += staticfiles_urlpatterns()

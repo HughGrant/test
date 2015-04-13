@@ -46,7 +46,8 @@
     {
       "matches": [
         "*://127.0.0.1:*/*",
-        "*://localhost:*/*"
+        "*://localhost:*/*",
+        "*://112.74.83.16/*"
       ],
       "js": ["upload_from_back.js"]
     }
@@ -61,7 +62,8 @@
     "*://*.aliimg.com/*",
     "*://127.0.0.1:*/*",
     "*://localhost:*/*",
-    "*://*.alicdn.com/*"
+    "*://*.alicdn.com/*",
+    "*://112.74.83.16/*"
   ],
 
   "browser_action": {

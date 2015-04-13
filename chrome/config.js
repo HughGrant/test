@@ -1,4 +1,5 @@
-var DOMAIN = 'http://localhost:8000/';
+// var DOMAIN = 'http://localhost:8000/';
+var DOMAIN = "http://112.74.83.16/";
 var ADMIN_URL = DOMAIN + 'admin/';
 var LOGIN_URL = DOMAIN + 'chrome_login/';
 var LOGOUT_URL = DOMAIN + 'logout/';
