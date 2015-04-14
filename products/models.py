@@ -21,7 +21,7 @@ class Basic(models.Model):
     def price(self):
         qs = DifferentPrice.objects.filter(basic_id=self.id)
         if not qs.exists():
-            return self.cost
+            return '未设置: 0 RMB, 0KG, 0*0*0CM'
         fs = '<br><br>'.join([dp.description() for dp in qs.all()])
         return format_html(fs)
     price.short_description = '报价'

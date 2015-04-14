@@ -94,7 +94,7 @@ function scratch() {
     product.supply_period = supply[supply.length - 1]
 
     var rich = get_rich_text();
-    product.rich_text = rich.txt;
+    product.rich_text = rich.txt.join('');
 
     if (rich.imgs.length > 0) {
         for (var i = rich.imgs.length - 1; i >= 0; i--) {
@@ -106,6 +106,7 @@ function scratch() {
 }
 
 function get_rich_text() {
+    // this function return a dict
     var div = $('#J-rich-text-description');
     var eles = div.find('> p, > table, > ul');
     rich = {};

@@ -63,13 +63,12 @@ class CaptureView(View):
 
         pd = json.loads(request.POST['json'])
 
-        basic = Basic(name=pd['name'])
-        basic.save()
-
-        ext = Extend(basic=basic, user=request.user)
+        ext = Extend(user=request.user)
         ext.category = Category.auto_create(pd['category'])
         ext.url = pd['url']
         ext.port = pd['port']
+        if pd['rich_text']:
+            ext.rich_text = pd['rich_text']
         ext.consignment_term = pd['consignment_term']
         ext.packaging_desc = pd['packaging_desc']
         ext.payment_terms = ','.join(pd['payment_terms'])
@@ -91,15 +90,8 @@ class CaptureView(View):
 
         ext.save()
 
-        has_voltage = False
         for attr in pd['attrs']:
             Attr(extend=ext, name=attr[0], value=attr[1]).save()
-            if attr[0].lower() == 'voltage':
-                has_voltage = True
-
-        if has_voltage:
-            basic.voltage = 220
-            basic.save()
 
         for photo in pd['photos']:
             Picture(extend=ext, url=photo).save()
