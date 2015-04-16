@@ -3,7 +3,7 @@
 
   "name": "Portia",
   "description": "This is where you improve your efficiency on Alibaba.",
-  "version": "0.1",
+  "version": "0.2",
 
   "background": {
     "scripts": ["jquery.js", "config.js", "background.js"],

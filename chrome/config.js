@@ -1,5 +1,5 @@
-// var DOMAIN = 'http://localhost:8000/';
-var DOMAIN = "http://112.74.83.16/";
+var DOMAIN = 'http://localhost:8000/';
+// var DOMAIN = "http://112.74.83.16/";
 var ADMIN_URL = DOMAIN + 'admin/';
 var LOGIN_URL = DOMAIN + 'chrome_login/';
 var LOGOUT_URL = DOMAIN + 'logout/';
@@ -99,10 +99,6 @@ var get_keywords = function() {
 
 var collect_keywords = function(name) {
     chrome.runtime.sendMessage({action: 'collect_keywords', name: name});
-}
-
-var bg_upload_product = function(product) {
-    chrome.runtime.sendMessage({action: 'upload_product', product: product});
 }
 
 var check_img = function(url) {

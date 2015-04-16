@@ -153,7 +153,7 @@ class Picture(models.Model):
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
     user = models.ForeignKey(User)
-    url = models.CharField('产品来源', blank=True, max_length=300)
+    title = models.CharField('标题', blank=True, max_length=200)
     category = models.ForeignKey('Category', verbose_name='产品分类')
     moq = models.ForeignKey(
         'MOQ', verbose_name='最小起订量')
@@ -163,11 +163,13 @@ class Extend(models.Model):
     supply_ability = models.ForeignKey('SupplyAbility', verbose_name='供贷能力')
     packaging_desc = models.CharField('包装描述', max_length=600)
     consignment_term = models.CharField('运输时长', max_length=100)
-    rich_text = models.TextField('产品正文', blank=True, max_length=50000)
+    rich_text = models.TextField('产品正文', blank=True, max_length=100000)
     upload_count = models.IntegerField('已上传次数', default=0)
 
     def __str__(self):
-        return self.basic.__str__()
+        if not self.title:
+            return self.basic.__str__()
+        return self.title
 
     def upload_button(self):
         return format_html(

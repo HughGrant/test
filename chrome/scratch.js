@@ -1,16 +1,5 @@
 $(function() {
-    $('.buttons').append('<div class="item"><a id="scratch_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">复制</a></div>');
     $('.buttons').append('<div class="item"><a id="capture_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">抓取</a></div>');
-    $('#scratch_trigger').click(function() {
-        $.get(LOGIN_URL).done(function(data) {
-            if (data.status) {
-                product = scratch();
-                bg_upload_product(product);
-            } else {
-                alert('请先登入');
-            }
-        });
-    });
 
     $('#capture_trigger').click(function() {
         product = scratch();
@@ -20,7 +9,6 @@ $(function() {
 
 var capture_product = function(product) {
     product.rich_text = [];
-    product.url = location.toString();
     data = {
         'json': JSON.stringify(product)
     };
@@ -80,8 +68,12 @@ function scratch() {
     product.min_order_unit = unitType[MOQ[1]]
 
 
-    var port = $('th:contains("Port:") + td')[0].innerText
-    product.port = $.trim(port)
+    var port = $('th:contains("Port:") + td');
+    if (port.length) {
+        product.port = $.trim(port[0].innerText);
+    } else {
+        product.port = 'NingBo';
+    }
 
     var pm = $('th:contains("Payment Terms:") + td')[0].innerText
     product.payment_terms = array_trim(pm.split(','))
