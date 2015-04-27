@@ -1,7 +1,4 @@
-$(function() {
-	// has to be done in this way because of the product is load by ajax
-	setInterval(detect_update, 1000);
-});
+setInterval(detect_update, 2000);
 
 function detect_update() {
 	var list = $('.list-date');
