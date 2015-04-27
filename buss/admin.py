@@ -29,10 +29,17 @@ class QuotationForm(forms.ModelForm):
     pass
 
 
+def make_month_profit(modeladmin, request, queryset):
+    titles = ['日期', '客户性质', '客户邮箱地址', '客户名字', '国家', '收款金额(USD)', '付款方式',
+              '折RMB实际收款额(6.18)', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号', '货代公司', '发货日期']
+make_month_profit.short_description = '生成月利润Excel报表'
+
+
 @admin.register(models.Order)
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     inlines = [ProductOrderInline]
+    actions = [make_month_profit]
 
     def get_urls(self):
         urls = super().get_urls()
