@@ -22,7 +22,10 @@ class CaptureView(View):
         ext = Extend.objects.get(pk=int(pk))
         data = {}
         data['extend_id'] = ext.id
-        data['name'] = ext.basic.name
+        if not ext.title:
+            data['name'] = ext.basic.name
+        else:
+            data['name'] = ext.title
         data['keyword'] = ext.basic.keyword
         data['category'] = ext.category.slug_name().split('>')
         data['port'] = ext.port
@@ -64,8 +67,8 @@ class CaptureView(View):
         pd = json.loads(request.POST['json'])
 
         ext = Extend(user=request.user)
+        ext.title = pd['name']
         ext.category = Category.auto_create(pd['category'])
-        ext.url = pd['url']
         ext.port = pd['port']
         if pd['rich_text']:
             ext.rich_text = pd['rich_text']

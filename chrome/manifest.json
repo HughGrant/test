@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Portia",
-  "description": "This is where you improve your efficiency on Alibaba.",
-  "version": "0.1",
+  "name": "PortiaProject",
+  "description": "A little help on Alibaba.",
+  "version": "0.2",
 
   "background": {
     "scripts": ["jquery.js", "config.js", "background.js"],
@@ -63,7 +63,8 @@
     "*://127.0.0.1:*/*",
     "*://localhost:*/*",
     "*://*.alicdn.com/*",
-    "*://112.74.83.16/*"
+    "*://112.74.83.16/*",
+    "*://*.bootstrapcdn.com/*"
   ],
 
   "browser_action": {

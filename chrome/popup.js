@@ -5,15 +5,11 @@ $(function() {
     function login_status() {
         $('form').hide();
         $('#btns').show();
-        $('#login_error').hide();
-        $('#server_error').hide();
     }
 
     function logout_status() {
         $('form').show();
         $('#btns').hide();
-        $('#login_error').hide();
-        $('#server_error').hide();
     }
 
     $.get(LOGIN_URL).done(function(data){
@@ -29,8 +25,8 @@ $(function() {
     });
 
     $('#login').click(function() {
-        var username = $('input[name=username]');
-        var password = $('input[name=password]');
+        var username = $('#username');
+        var password = $('#password');
 
         if ($.trim(username.val()) == '') {
             username.css('border', '1px solid red');
@@ -48,20 +44,20 @@ $(function() {
             if (data.status) {
                 login_status()
             } else {
-                $('#login_error').show();
+                alert('用户名或密码错误，请重试');
                 username.focus();
             }
             username.val('');
             password.val('');
         }).fail(function() {
-            $('#server_error').show();
+            alert('服务器出错，请联系管理员');
         });
     });
 
     $('#logout').click(function() {
         $.get(LOGOUT_URL).done(function() {
             logout_status();
-            $('input[name=username]').focus();
+            $('#username').focus();
         }).fail(function() {
             $('#server_error').show();
         });
