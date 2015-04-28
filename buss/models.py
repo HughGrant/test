@@ -10,13 +10,13 @@ class Order(models.Model):
     client = models.ForeignKey(
         Client, blank=True, null=True, verbose_name='客户')
     bak = models.TextField('备注', blank=True, max_length=500)
-    date = models.DateField('日期', auto_now_add=True)
+    date = models.DateTimeField('日期', auto_now=True)
 
     def po_excel_str(self):
         descriptions = []
         for po in self.productorder_set.all():
             descriptions.append(po.description())
-        return '/n'.join(descriptions)
+        return '\n'.join(descriptions)
 
     def po_list(self):
         descriptions = []
@@ -92,8 +92,7 @@ class ProductOrder(models.Model):
 
 
 class Payment(models.Model):
-    order = models.ForeignKey(
-        'Order', blank=True, null=True, verbose_name='定单')
+    order = models.ForeignKey('Order', verbose_name='定单')
     sender_info = models.CharField('付款人信息', max_length=100)
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
@@ -101,7 +100,7 @@ class Payment(models.Model):
     exchange_rate = models.FloatField('对人民币汇率', default=6.2)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
-    date = models.DateField('日期', auto_now_add=True)
+    date = models.DateTimeField('日期', auto_now=True)
     bak = models.CharField('备注', blank=True, max_length=200)
 
     class Meta:

@@ -1,5 +1,4 @@
-import io
-from datetime import datetime
+import io, time
 from django.contrib import admin
 from django.http import HttpResponse
 import xlsxwriter
@@ -35,17 +34,19 @@ def make_month_profit(modeladmin, req, queryset):
               '折RMB实际收款额', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号',
               '货代公司', '发货日期']
     excel_file = io.BytesIO()
-    now = datetime.now()
-    file_name = '%s%2d%2d.xlsx' % (now.year, now.month, now.day)
+    file_name = '%s.xlsx' % (time.strftime('%Y-%m-%d'))
     workbook = xlsxwriter.Workbook(excel_file, {'in_memory': True})
     worksheet = workbook.add_worksheet()
     # write the titles first
+    bold = workbook.add_format({'bold': True})
+    text_wrap = workbook.add_format({'text_wrap': True})
     for col, title in enumerate(titles):
-        worksheet.write_string(0, col, title)
+        worksheet.write(0, col, title, bold)
     # filling the data
     row = 1
     for qs in queryset:
-        worksheet.write_datetime(row, 0, qs.date)
+        row_t = (row + 1, row + 1, row + 1)
+        worksheet.write_string(row, 0, qs.date.strftime('%Y-%m-%d'))
         is_old = models.Order.objects.filter(client=qs.client).count()
         if is_old == 1:
             worksheet.write_string(row, 1, '新')
@@ -57,11 +58,18 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_number(row, 5, qs.payments_money())
         worksheet.write_string(row, 6, qs.payments_method())
         worksheet.write_number(row, 7, qs.payments_rmb())
-        worksheet.write_string(row, 8, qs.po_excel_str())
+        worksheet.write(row, 8, qs.po_excel_str(), text_wrap)
         worksheet.write_number(row, 9, qs.prime_cost())
         worksheet.write_number(row, 10, qs.shipping_cost())
-        worksheet.write_number(row, 11, qs.profit())
+        worksheet.write_formula(row, 11, '=H%d-J%d-K%d' % row_t)
         row += 1
+
+    worksheet.set_column('A:A', 12)
+    worksheet.set_column('C:C', 25)
+    worksheet.set_column('D:D', 17)
+    worksheet.set_column('F:F', 17)
+    worksheet.set_column('H:H', 17)
+    worksheet.set_column('I:I', 30)
     workbook.close()
     ct = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     resp = HttpResponse(excel_file.getvalue())
