@@ -115,16 +115,13 @@ class ExtendAdmin(AutoUserAdmin):
     ]
     search_fields = ('basic__cn_name', 'basic__name', 'basic__model')
     list_filter = ('basic__cn_name', )
-    exclude = ('upload_count', 'user')
+    exclude = ('user', )
     ordering = ('basic__cn_name', 'basic__model', 'basic__name')
-    list_display = (
-        '__str__', 'upload_count', 'has_rich_text', 'upload_button')
+    list_display = ('__str__', 'has_rich_text', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-
         if db_field.name == 'category':
             kwargs["queryset"] = models.Category.objects.filter(category=None)
-
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Media:

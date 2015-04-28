@@ -1,10 +1,9 @@
+import io
+from datetime import datetime
 from django.contrib import admin
-from django import forms
-from django.http import JsonResponse
-# from django.utils.safestring import mark_safe
-from django.conf.urls import patterns
+from django.http import HttpResponse
+import xlsxwriter
 from . import models
-from products.models import DifferentPrice
 admin.site.site_header = '亚新科技'
 admin.site.site_title = 'Yason Tech'
 admin.site.index_title = '亚新电子科技有限公司'
@@ -25,50 +24,72 @@ class ProductOrderInline(admin.TabularInline):
     extra = 1
 
 
-class QuotationForm(forms.ModelForm):
-    pass
+class PaymentInline(admin.TabularInline):
+    model = models.Payment
+    extra = 1
+    exclude = ('user', )
 
 
-def make_month_profit(modeladmin, request, queryset):
+def make_month_profit(modeladmin, req, queryset):
     titles = ['日期', '客户性质', '客户邮箱地址', '客户名字', '国家', '收款金额(USD)', '付款方式',
-              '折RMB实际收款额(6.18)', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号', '货代公司', '发货日期']
-make_month_profit.short_description = '生成月利润Excel报表'
+              '折RMB实际收款额', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号',
+              '货代公司', '发货日期']
+    excel_file = io.BytesIO()
+    now = datetime.now()
+    file_name = '%s%2d%2d.xlsx' % (now.year, now.month, now.day)
+    workbook = xlsxwriter.Workbook(excel_file, {'in_memory': True})
+    worksheet = workbook.add_worksheet()
+    # write the titles first
+    for col, title in enumerate(titles):
+        worksheet.write_string(0, col, title)
+    # filling the data
+    row = 1
+    for qs in queryset:
+        worksheet.write_datetime(row, 0, qs.date)
+        is_old = models.Order.objects.filter(client=qs.client).count()
+        if is_old == 1:
+            worksheet.write_string(row, 1, '新')
+        else:
+            worksheet.write_string(row, 1, '老')
+        worksheet.write_string(row, 2, qs.client.email)
+        worksheet.write_string(row, 3, qs.client.name)
+        worksheet.write_string(row, 4, qs.client.country.cn_name)
+        worksheet.write_number(row, 5, qs.payments_money())
+        worksheet.write_string(row, 6, qs.payments_method())
+        worksheet.write_number(row, 7, qs.payments_rmb())
+        worksheet.write_string(row, 8, qs.po_excel_str())
+        worksheet.write_number(row, 9, qs.prime_cost())
+        worksheet.write_number(row, 10, qs.shipping_cost())
+        worksheet.write_number(row, 11, qs.profit())
+        row += 1
+    workbook.close()
+    ct = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    resp = HttpResponse(excel_file.getvalue())
+    resp['Content-Disposition'] = 'attachment; filename=%s' % file_name
+    resp['Content-type'] = ct
+    return resp
+make_month_profit.short_description = '生成利润表'
 
 
 @admin.register(models.Order)
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
-    inlines = [ProductOrderInline]
+    search_fields = ('client', )
+    list_filter = ('date', )
+    list_display = ('client', 'payments_rmb', 'po_list', 'prime_cost',
+                    'shipping_cost', 'profit', 'date', 'bak')
+    inlines = [ProductOrderInline, PaymentInline]
     actions = [make_month_profit]
-
-    def get_urls(self):
-        urls = super().get_urls()
-        my_urls = patterns(
-            '',
-            # url pattern: admin/app_name/model_name/view_name
-            # actual url:  admin/buss/order/products_basic/1/
-            (r'^products_basic/(?P<dp_id>[0-9]+)/$',
-             self.admin_site.admin_view(self.products_basic, cacheable=True))
-        )
-        return my_urls + urls
-
-    def products_basic(self, request, dp_id):
-        b = DifferentPrice.objects.get(pk=dp_id)
-        return JsonResponse({'cost': b.price})
-
-    class Media:
-        js = ('js/product_order_select_binding.js', )
 
 
 @admin.register(models.Payment)
-class PaymentAdmin(AutoUserAdmin):
-    # maybe in the future, this function is only open to manager
-    # that would affect the way how this system works
-
+class PaymentAdmin(admin.ModelAdmin):
     exclude = ('user', )
+    list_filter = ('date', )
+    search_fields = ('sender_info', )
     list_display = (
         'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
-        'payment_method', 'date', 'verified', 'bak')
-    list_editable = (
-        'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
-        'payment_method', 'bak', 'verified')
+        'payment_method', 'rmb', 'date', 'bak')
+
+    def get_queryset(self, req):
+        return super().get_queryset(req).filter(order__user=req.user)

@@ -238,7 +238,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			$('#supplyPeriod').val(product.supply_period)
 			$('#consignmentTerm').val(product.consignment_term)
 			$('#packagingDesc').val(product.packaging_desc)
-				// rich text
+			// rich text
 			var rich_f = function(content) {
 				if (content.constructor === Array) {
 					content = content.join('');
@@ -252,18 +252,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 				(document.head || document.documentElement).appendChild(script);
 				script.parentNode.removeChild(script);
 			}, 1000);
-			// upload counter
-			if (product.extend_id) {
-				$.post(UPLOAD_COUNTER_URL, {
-					extend_id: product.extend_id
-				}).done(function(data) {
-					if (data.message) {
-						alert(data.message)
-					};
-				}).fail(function() {
-					alert('出错啦');
-				})
-			};
 		});
 	}
 

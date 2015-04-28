@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.html import format_html
 from preset import *
 
 
@@ -23,9 +22,9 @@ class Basic(models.Model):
         if not qs.exists():
             return '未设置: 0 RMB, 0KG, 0*0*0CM'
         fs = '<br><br>'.join([dp.description() for dp in qs.all()])
-        return format_html(fs)
+        return fs
     price.short_description = '报价'
-    price.allow_tabs = True
+    price.allow_tags = True
 
     def has_accessory(self):
         return Accessory.objects.filter(basic_id=self.id).exists()
@@ -120,7 +119,7 @@ class DifferentPrice(models.Model):
             self.basic.cn_name, self.difference, self.price)
 
     def weight(self):
-        return max([self.net_weight, self.gross_weight, self.volume_weight])
+        return max(self.net_weight, self.gross_weight, self.volume_weight)
 
     def description(self):
         return '%s: %sRMB, %sKG, %sCM' % (
@@ -164,7 +163,6 @@ class Extend(models.Model):
     packaging_desc = models.CharField('包装描述', max_length=600)
     consignment_term = models.CharField('运输时长', max_length=100)
     rich_text = models.TextField('产品正文', blank=True, max_length=100000)
-    upload_count = models.IntegerField('已上传次数', default=0)
 
     def __str__(self):
         if not self.title:
@@ -172,10 +170,8 @@ class Extend(models.Model):
         return self.title
 
     def upload_button(self):
-        return format_html(
-            '<button id="{0}" class="ali_upload">上传</button>',
-            self.id)
-    upload_button.allow_tabs = True
+        return '<button id="%s" class="ali_upload">上传</button>' % self.id
+    upload_button.allow_tags = True
     upload_button.short_description = '动作'
 
     def has_rich_text(self):
