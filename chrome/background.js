@@ -1,7 +1,16 @@
+var plate_html;
+$.get(chrome.extension.getURL("plate.html"), function(data) {
+    plate_html = data;
+});
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == "upload_product") {
 		upload_product(request.product);
 	}
+
+    if (request.action == "command_plate") {
+        sendResponse({'html': plate_html});
+    }
 
     if (request.action == 'open_url') {
         chrome.tabs.create({url:request.url});

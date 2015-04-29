@@ -1,4 +1,4 @@
-import io, time
+import io
 from django.contrib import admin
 from django.http import HttpResponse
 import xlsxwriter
@@ -34,14 +34,13 @@ def make_month_profit(modeladmin, req, queryset):
               '折RMB实际收款额', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号',
               '货代公司', '发货日期']
     excel_file = io.BytesIO()
-    file_name = '%s.xlsx' % (time.strftime('%Y-%m-%d'))
     workbook = xlsxwriter.Workbook(excel_file, {'in_memory': True})
     worksheet = workbook.add_worksheet()
     # write the titles first
-    bold = workbook.add_format({'bold': True})
-    text_wrap = workbook.add_format({'text_wrap': True})
+    title_format = workbook.add_format({'bold': True, 'align': 'center'})
+    po_format = workbook.add_format({'text_wrap': True, 'align': 'center'})
     for col, title in enumerate(titles):
-        worksheet.write(0, col, title, bold)
+        worksheet.write(0, col, title, title_format)
     # filling the data
     row = 1
     for qs in queryset:
@@ -55,24 +54,24 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_string(row, 2, qs.client.email)
         worksheet.write_string(row, 3, qs.client.name)
         worksheet.write_string(row, 4, qs.client.country.cn_name)
-        worksheet.write_number(row, 5, qs.payments_money())
+        worksheet.write_formula(row, 5, qs.payments_excel_money())
         worksheet.write_string(row, 6, qs.payments_method())
-        worksheet.write_number(row, 7, qs.payments_rmb())
-        worksheet.write(row, 8, qs.po_excel_str(), text_wrap)
-        worksheet.write_number(row, 9, qs.prime_cost())
-        worksheet.write_number(row, 10, qs.shipping_cost())
+        worksheet.write_formula(row, 7, qs.payments_excel_rmb())
+        worksheet.write(row, 8, qs.po_excel_str(), po_format)
+        worksheet.write_formula(row, 9, qs.prime_excel_cost())
+        worksheet.write_formula(row, 10, qs.shipping_excel_cost())
         worksheet.write_formula(row, 11, '=H%d-J%d-K%d' % row_t)
         row += 1
 
-    worksheet.set_column('A:A', 12)
-    worksheet.set_column('C:C', 25)
-    worksheet.set_column('D:D', 17)
-    worksheet.set_column('F:F', 17)
-    worksheet.set_column('H:H', 17)
+    center_algin = workbook.add_format({'align': 'center'})
+    worksheet.set_column('A:O', 15, center_algin)
+    worksheet.set_column('C:C', 30)
+    worksheet.set_column('H:H', 25)
     worksheet.set_column('I:I', 30)
     workbook.close()
     ct = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     resp = HttpResponse(excel_file.getvalue())
+    file_name = '%s.xlsx' % (time.strftime('%Y-%m-%d'))
     resp['Content-Disposition'] = 'attachment; filename=%s' % file_name
     resp['Content-type'] = ct
     return resp

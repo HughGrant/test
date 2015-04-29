@@ -135,10 +135,6 @@ function fill_keywords(search_keyword) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
-	if (request.action == 'set_keywords') {
-		set_keywords(request.data);
-	}
-
 	if (request.action == 'set_product') {
 		product = request.product;
 

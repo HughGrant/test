@@ -37,11 +37,17 @@ class Order(models.Model):
         return rmb
     payments_rmb.short_description = '实际收款额(RMB)'
 
-    def payments_money(self):
-        usd = 0
+    def payments_excel_money(self):
+        usd = []
         for payment in self.payment_set.all():
-            usd += payment.collected_money
-        return usd
+            usd.append(str(payment.collected_money))
+        return '=' + '+'.join(usd)
+
+    def payments_excel_rmb(self):
+        rmb = []
+        for payment in self.payment_set.all():
+            rmb.append(payment.excel_rmb())
+        return '=' + '+'.join(rmb)
 
     def payments_method(self):
         methods = []
@@ -56,12 +62,24 @@ class Order(models.Model):
         return cost
     prime_cost.short_description = '贷物成本(RMB)'
 
+    def prime_excel_cost(self):
+        cost = []
+        for po in self.productorder_set.all():
+            cost.append('%d*%d' % (po.product.price, po.quantity))
+        return '=' + '+'.join(cost)
+
     def shipping_cost(self):
         cost = 0
         for po in self.productorder_set.all():
             cost += po.shipping_cost
         return cost
     shipping_cost.short_description = '运费(RMB)'
+
+    def shipping_excel_cost(self):
+        cost = []
+        for po in self.productorder_set.all():
+            cost.append(str(po.shipping_cost))
+        return '=' + '+'.join(cost)
 
     def __str__(self):
         return '%s-定单ID:%s' % (self.client.__str__(), self.id)
@@ -111,6 +129,11 @@ class Payment(models.Model):
             return self.collected_money / 1.04 * self.exchange_rate
         return self.collected_money * self.exchange_rate
     rmb.short_description = '折RMB实际收款额'
+
+    def excel_rmb(self):
+        if self.payment_method == 1:
+            return '%f/1.04*%f' % (self.collected_money, self.exchange_rate)
+        return '%f*%f' % (self.collected_money, self.exchange_rate)
 
     def __str__(self):
         return '%s(%s%s %s)' % (

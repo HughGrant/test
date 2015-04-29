@@ -3,37 +3,42 @@
 
   "name": "PortiaProject",
   "description": "A little help on Alibaba.",
-  "version": "0.2",
+  "version": "0.3",
 
   "background": {
-    "scripts": ["jquery.js", "config.js", "background.js"],
+    "scripts": ["jquery.js", "urls.js", "background.js"],
     "persistent": true
   },
     
   "content_scripts": [
     {
+      "matches": ["*://*.alibaba.com/*"],
+      "js": [
+        "jquery.js", "nprogress.js", "urls.js", "nprogress_setup.js",
+        "utils.js", "command_plate.js"
+      ],
+      "css": ["nprogress.css"]
+    },
+    {
       "matches": [
         "*://hz.productposting.alibaba.com/product/post_product_interface.*",
         "*://hz.productposting.alibaba.com/product/posting.*"
       ],
-      "js": ["jquery.js", "nprogress.js", "config.js", "up.js"],
-      "css": ["nprogress.css"]
+      "js": ["up.js"]
     },
     {
       "matches": ["*://hz.my.data.alibaba.com/industry/keywords.*"],
-      "js": ["jquery.js", "nprogress.js", "config.js", "keyword.js"],
-      "css": ["nprogress.css"]
+      "js": ["keyword.js"]
     },
     {
       "matches": ["*://hz.productposting.alibaba.com/product/products_manage.*"],
-      "js": ["jquery.js", "nprogress.js", "config.js", "product_manage.js"],
-      "css": ["nprogress.css"]
+      "js": ["product_manage.js"]
     },
-    {
-      "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
-      "js": ["jquery.js", "nprogress.js", "config.js", "product_edit.js"],
-      "css": ["nprogress.css"]
-    },
+    // {
+    //   "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
+    //   "js": ["jquery.js", "nprogress.js", "config.js", "product_edit.js"],
+    //   "css": ["nprogress.css"]
+    // },
     {
       "matches": ["*://*.alibaba.com/product-detail/*"],
       "js": ["jquery.js", "nprogress.js", "config.js", "scratch.js"],
