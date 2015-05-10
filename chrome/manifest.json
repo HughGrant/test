@@ -15,7 +15,7 @@
       "matches": ["*://*.alibaba.com/*"],
       "js": [
         "jquery.js", "nprogress.js", "urls.js", "nprogress_setup.js",
-        "utils.js", "command_plate.js"
+        "utils.js", "command_plate.js", "string_score.min.js"
       ],
       "css": ["nprogress.css"]
     },

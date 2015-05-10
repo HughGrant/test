@@ -1,4 +1,5 @@
 import io
+import time
 from django.contrib import admin
 from django.http import HttpResponse
 import xlsxwriter
@@ -61,6 +62,9 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_formula(row, 9, qs.prime_excel_cost())
         worksheet.write_formula(row, 10, qs.shipping_excel_cost())
         worksheet.write_formula(row, 11, '=H%d-J%d-K%d' % row_t)
+        worksheet.write_string(row, 12, qs.tracking_number)
+        worksheet.write_string(row, 13, qs.logistic_company)
+        worksheet.write_string(row, 14, qs.ship_date.strftime('%Y-%m-%d'))
         row += 1
 
     center_algin = workbook.add_format({'align': 'center'})
@@ -82,21 +86,22 @@ make_month_profit.short_description = '生成利润表'
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client', )
-    list_filter = ('date', )
+    list_filter = ('ship_date', )
     list_display = ('client', 'payments_rmb', 'po_list', 'prime_cost',
-                    'shipping_cost', 'profit', 'date', 'bak')
+                    'shipping_cost', 'profit', 'tracking_number',
+                    'logistic_company', 'ship_date')
     inlines = [ProductOrderInline, PaymentInline]
     actions = [make_month_profit]
 
 
 @admin.register(models.Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    exclude = ('user', )
+    exclude = ('user', 'order')
     list_filter = ('date', )
     search_fields = ('sender_info', )
     list_display = (
         'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
-        'payment_method', 'rmb', 'date', 'bak')
+        'payment_method', 'rmb', 'date')
 
     def get_queryset(self, req):
         return super().get_queryset(req).filter(order__user=req.user)

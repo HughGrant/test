@@ -9,8 +9,11 @@ class Order(models.Model):
     user = models.ForeignKey(User)
     client = models.ForeignKey(
         Client, blank=True, null=True, verbose_name='客户')
+    tracking_number = models.CharField('跟踪号', blank=True, max_length=200)
+    logistic_company = models.CharField('货代公司', blank=True, max_length=200)
+    date = models.DateTimeField('创建日期', auto_now=True)
+    ship_date = models.DateField('发贷日期', null=True)
     bak = models.TextField('备注', blank=True, max_length=500)
-    date = models.DateTimeField('日期', auto_now=True)
 
     def po_excel_str(self):
         descriptions = []
@@ -93,7 +96,6 @@ class ProductOrder(models.Model):
     product = models.ForeignKey(DifferentPrice, verbose_name='产品价格')
     quantity = models.IntegerField('数量', default=1)
     shipping_cost = models.FloatField('运费', default=0)
-    bak = models.CharField('备注', blank=True, max_length=200)
 
     def __str__(self):
         return self.product.__str__()
@@ -118,8 +120,7 @@ class Payment(models.Model):
     exchange_rate = models.FloatField('对人民币汇率', default=6.2)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
-    date = models.DateTimeField('日期', auto_now=True)
-    bak = models.CharField('备注', blank=True, max_length=200)
+    date = models.DateField('日期')
 
     class Meta:
         verbose_name = verbose_name_plural = '付款信息'
