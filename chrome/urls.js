@@ -1,5 +1,5 @@
-var DOMAIN = 'http://localhost:8000/';
-// var DOMAIN = "http://112.74.83.16/";
+// var DOMAIN = 'http://localhost:8000/';
+var DOMAIN = "http://112.74.83.16/";
 var ADMIN_URL = DOMAIN + 'admin/';
 var LOGIN_URL = DOMAIN + 'chrome_login/';
 var LOGOUT_URL = DOMAIN + 'logout/';
@@ -7,3 +7,4 @@ var KW_URL = DOMAIN + 'products/keyword/';
 var CAPTURE_PRODUCT_URL = DOMAIN + 'products/capture/';
 var SEARCH_HOT_KEYWORD_URL = 'http://hz.my.data.alibaba.com/industry/keywords.htm';
 var UPLOAD_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/posting.htm';
+var MANAGE_PRODUCT_URL = 'http://hz.productposting.alibaba.com/product/products_manage.htm';

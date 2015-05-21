@@ -105,7 +105,13 @@ function exec_cmd(cmd) {
 		open_url(UPLOAD_PRODUCT_URL);
 	} else if (cmd === 'search keyword') {
 		open_url(SEARCH_HOT_KEYWORD_URL);
+	} else if (cmd === 'manage product') {
+		open_url(MANAGE_PRODUCT_URL);
+	} else if (cmd === 'capture product') {
+		// invoke function from scratch.js
+		capture_product(scratch());
 	}
+	toggle_plate();
 }
 
 function set_li(index) {

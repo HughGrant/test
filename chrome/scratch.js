@@ -1,12 +1,4 @@
-$(function() {
-    $('.buttons').append('<div class="item"><a id="capture_trigger" class="ui-button ui-button-normal ui-button-large atm dot-app-pd atmonline">抓取</a></div>');
-
-    $('#capture_trigger').click(function() {
-        product = scratch();
-        capture_product(product);
-    });
-});
-
+// invoked at command_plaste.js
 var capture_product = function(product) {
     product.rich_text = [];
     data = {
@@ -24,6 +16,14 @@ var capture_product = function(product) {
     });
 }
 
+function get_inner_text(css_selector, default_str) {
+    var attr = $(css_selector);
+    if (attr.length) {
+        return $.trim(attr[0].innerText);
+    }
+    return default_str || '';
+}
+
 function scratch() {
     var product = {}
     product.name = $('h1.fn')[0].innerText
@@ -33,7 +33,7 @@ function scratch() {
     product.unkown_category_id = $('.num').html().replace(/[()]/g, '');
 
     product.photos = []
-        // main img src
+    // main img src
     product.photos.push($('#J-image-icontent img')[0].src)
     product.attrs = []
     keys = $('.J-name')
@@ -42,24 +42,28 @@ function scratch() {
         product.attrs.push([keys[i].innerText.replace(/:/g, ''), $.trim(values[i].innerText)])
     }
 
-    product.consignment_term = $('td:contains("Delivery Detail:") + td')[0].innerText
-    product.packaging_desc = $('td:contains("Packaging Detail:") + td')[0].innerText
+    product.consignment_term = get_inner_text('td:contains("Delivery Detail:") + td')
+    product.packaging_desc = get_inner_text('td:contains("Packaging Details:") + td')
 
-    var priceInfo = $('th:contains("FOB Price:") + td')[0].innerText
-    if (priceInfo == "Get Latest Price") {
+    // Example on page: "US $ 130 - 165 / Set | Get Latest Price"
+    var priceInfo = $('th:contains("FOB Price:") + td')[0]
+    if (priceInfo.childElementCount == 1) {
+        // means it only got a <a> contains "Get Latest Price"
         product.price_range_min = 0;
         product.price_range_max = 0;
         // in preset.py money_type USD is 1
         product.money_type = 1;
         product.price_unit = 20;
     } else {
-        priceInfo = priceInfo.replace(/,/g, '').split('/')
-        var unitInfo = $.trim(priceInfo[1]).split(' ')[0]
-        product.price_unit = unitType[unitInfo]
-        var moneyInfo = priceInfo[0].split(' ')
-        product.money_type = moneyType[moneyInfo[0]].value
-        product.price_range_max = parseInt(moneyInfo[3])
-        product.price_range_min = parseInt(moneyInfo[1].substring(1))
+        priceInfo = $.trim(priceInfo.childNodes[0].textContent).split(' ');
+        if (priceInfo.length != 7) {
+            alert('FOB Price: is changed, please update the corresponding code');
+            return {};
+        }
+        product.price_unit = unitType[priceInfo[6]]
+        product.money_type = moneyType[priceInfo[0]].value
+        product.price_range_min = parseInt(priceInfo[2])
+        product.price_range_max = parseInt(priceInfo[4])
     }
 
     var MOQ = $('th:contains("Min.Order Quantity:") + td')[0].innerText
@@ -68,12 +72,8 @@ function scratch() {
     product.min_order_unit = unitType[MOQ[1]]
 
 
-    var port = $('th:contains("Port:") + td');
-    if (port.length) {
-        product.port = $.trim(port[0].innerText);
-    } else {
-        product.port = 'NingBo';
-    }
+    product.port = get_inner_text('th:contains("Port:") + td', 'NingBo');
+
 
     var pm = $('th:contains("Payment Terms:") + td')[0].innerText
     product.payment_terms = array_trim(pm.split(','))

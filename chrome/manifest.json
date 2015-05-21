@@ -3,7 +3,7 @@
 
   "name": "PortiaProject",
   "description": "A little help on Alibaba.",
-  "version": "0.3",
+  "version": "0.31",
 
   "background": {
     "scripts": ["jquery.js", "urls.js", "background.js"],
@@ -14,7 +14,7 @@
     {
       "matches": ["*://*.alibaba.com/*"],
       "js": [
-        "jquery.js", "nprogress.js", "urls.js", "nprogress_setup.js",
+        "jquery.js", "config.js", "nprogress.js", "urls.js", "nprogress_setup.js",
         "utils.js", "command_plate.js", "string_score.min.js"
       ],
       "css": ["nprogress.css"]
