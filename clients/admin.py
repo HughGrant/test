@@ -7,7 +7,8 @@ from . import models
 class CountryAdmin(admin.ModelAdmin):
     search_fields = ('cn_name', 'en_name', 'code')
     list_display = ('cn_name', 'en_name', 'code', 'voltage', 'socket')
-    readonly_fields = ('ibt_id', 'cn_name', 'en_name', 'code')
+    # readonly_fields = ('ibt_id', 'cn_name', 'en_name', 'code')
+    list_filter = ('voltage', 'socket')
 
 
 class ClientCountryFilter(admin.SimpleListFilter):

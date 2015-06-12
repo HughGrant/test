@@ -26,15 +26,14 @@ function get_inner_text(css_selector, default_str) {
 
 function scratch() {
     var product = {}
-    product.name = $('h1.fn')[0].innerText
+    product.name = get_product_name();
 
     product.category = array_trim($('.ui-breadcrumb').attr('content').split('>'))
 
     product.unkown_category_id = $('.num').html().replace(/[()]/g, '');
+    // main images src
+    product.photos = get_main_pictures()
 
-    product.photos = []
-    // main img src
-    product.photos.push($('#J-image-icontent img')[0].src)
     product.attrs = []
     keys = $('.J-name')
     values = $('.J-value')
@@ -47,7 +46,7 @@ function scratch() {
 
     // Example on page: "US $ 130 - 165 / Set | Get Latest Price"
     var priceInfo = $('th:contains("FOB Price:") + td')[0]
-    if (priceInfo.childElementCount == 1) {
+    if (priceInfo.childElementCount != 4) {
         // means it only got a <a> contains "Get Latest Price"
         product.price_range_min = 0;
         product.price_range_max = 0;
@@ -55,15 +54,13 @@ function scratch() {
         product.money_type = 1;
         product.price_unit = 20;
     } else {
-        priceInfo = $.trim(priceInfo.childNodes[0].textContent).split(' ');
-        if (priceInfo.length != 7) {
-            alert('FOB Price: is changed, please update the corresponding code');
-            return {};
-        }
-        product.price_unit = unitType[priceInfo[6]]
-        product.money_type = moneyType[priceInfo[0]].value
-        product.price_range_min = parseInt(priceInfo[2])
-        product.price_range_max = parseInt(priceInfo[4])
+        var nt = $.trim(priceInfo.childNodes[5].textContent).split(' ')[1]
+        product.price_unit = unitType[nt]
+        // currency short name: such as US
+        var csn = priceInfo.childNodes[1].textContent.split(' ')[0]
+        product.money_type = moneyType[csn].value
+        product.price_range_min = parseInt(priceInfo.childNodes[2].textContent)
+        product.price_range_max = parseInt(priceInfo.childNodes[4].textContent)
     }
 
     var MOQ = $('th:contains("Min.Order Quantity:") + td')[0].innerText
@@ -95,6 +92,18 @@ function scratch() {
     }
     product.photos.reverse();
     return product;
+}
+
+function get_product_name() {
+    return $('.title.fn')[0].innerText;
+}
+
+function get_main_pictures() {
+    var mp = [];
+    $('.inav.util-clearfix img').each(function() {
+        mp.push($(this).attr('src'));
+    });
+    return mp;
 }
 
 function get_rich_text() {

@@ -86,7 +86,7 @@ make_month_profit.short_description = '生成利润表'
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client', )
-    list_filter = ('ship_date', )
+    list_filter = ordering = ('ship_date', )
     list_display = ('client', 'payments_rmb', 'po_list', 'prime_cost',
                     'shipping_cost', 'profit', 'tracking_number',
                     'logistic_company', 'ship_date')

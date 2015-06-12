@@ -110,6 +110,8 @@ function exec_cmd(cmd) {
 	} else if (cmd === 'capture product') {
 		// invoke function from scratch.js
 		capture_product(scratch());
+	} else if (cmd === 'download images') {
+		download_images();
 	}
 	toggle_plate();
 }
