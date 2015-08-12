@@ -123,7 +123,9 @@ class ExtendAdmin(AutoUserAdmin):
     list_filter = ('basic__cn_name', )
     exclude = ('user', )
     ordering = ('basic__cn_name', 'basic__model', 'basic__name')
-    list_display = ('__str__', 'has_rich_text', 'upload_button')
+    list_display = (
+        '__str__', 'has_rich_text', 'upload_button', 'titles_count',
+        'keywords_count')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':

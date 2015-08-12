@@ -195,6 +195,16 @@ class Extend(models.Model):
         else:
             self.basic.name
 
+    def titles_count(self):
+        return self.head_set.count()
+    titles_count.short_description = '可用标题数量'
+
+    def keywords_count(self):
+        if self.basic.keyword:
+            return Keyword.objects.filter(name=self.basic.keyword).count()
+        return 0
+    keywords_count.short_description = '可用关键字数量'
+
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'
 
