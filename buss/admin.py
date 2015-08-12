@@ -21,12 +21,18 @@ class AutoUserAdmin(admin.ModelAdmin):
 
 class ProductOrderInline(admin.TabularInline):
     model = models.ProductOrder
-    extra = 1
+    raw_id_fields = ('product', )
+    extra = 0
+
+
+class ExtraCostInline(admin.TabularInline):
+    model = models.ExtraCost
+    extra = 0
 
 
 class PaymentInline(admin.TabularInline):
     model = models.Payment
-    extra = 1
+    extra = 0
     exclude = ('user', )
 
 
@@ -66,6 +72,11 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_string(row, 13, qs.logistic_company)
         worksheet.write_string(row, 14, qs.ship_date.strftime('%Y-%m-%d'))
         row += 1
+        # the extra cost
+        for ec in qs.extracost_set.all():
+            worksheet.write_string(row, 10, ec.discription)
+            worksheet.write_number(row, 11, -ec.cost)
+            row += 1
 
     center_algin = workbook.add_format({'align': 'center'})
     worksheet.set_column('A:O', 15, center_algin)
@@ -86,12 +97,18 @@ make_month_profit.short_description = '生成利润表'
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client', )
-    list_filter = ordering = ('ship_date', )
-    list_display = ('client', 'payments_rmb', 'po_list', 'prime_cost',
-                    'shipping_cost', 'profit', 'tracking_number',
-                    'logistic_company', 'ship_date')
-    inlines = [ProductOrderInline, PaymentInline]
+    list_filter = ordering = ('date', 'ship_date')
+    list_display = ('date', 'client', 'payments_rmb', 'po_list', 'prime_cost',
+                    'shipping_cost', 'profit', 'logistic', 'ship_date')
+    raw_id_fields = ('client', )
+    inlines = [ProductOrderInline, ExtraCostInline, PaymentInline]
     actions = [make_month_profit]
+
+
+@admin.register(models.DifferentPrice)
+class ProductOrderAdmin(admin.ModelAdmin):
+    search_fields = ('basic__cn_name', 'basic__name', 'basic__model')
+    list_filter = ('basic__cn_name', )
 
 
 @admin.register(models.Payment)
@@ -100,8 +117,8 @@ class PaymentAdmin(admin.ModelAdmin):
     list_filter = ('date', )
     search_fields = ('sender_info', )
     list_display = (
-        'sender_info', 'collected_money', 'currency_type', 'exchange_rate',
-        'payment_method', 'rmb', 'date')
+        'date', 'sender_info', 'collected_money', 'currency_type',
+        'exchange_rate', 'payment_method', 'rmb')
 
     def get_queryset(self, req):
         return super().get_queryset(req).filter(order__user=req.user)

@@ -1,4 +1,5 @@
-var plate_html;
+var plate_html = '';
+var copy = '';
 $.get(chrome.extension.getURL("plate.html"), function(data) {
     plate_html = data;
 });
@@ -7,6 +8,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.action == "upload_product") {
 		upload_product(request.product);
 	}
+
+    if (request.action == "copy_product") {
+        copy = request.product;
+        sendResponse({'status': true});
+    }
+
+    if (request.action == "paste_product") {
+        sendResponse({'product': copy});
+    }
 
     if (request.action == "command_plate") {
         sendResponse({'html': plate_html});

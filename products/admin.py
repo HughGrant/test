@@ -7,12 +7,12 @@ from buss.admin import AutoUserAdmin
 
 class DifferentPriceInline(admin.TabularInline):
     model = models.DifferentPrice
-    extra = 1
+    extra = 0
 
 
 class AccesscoryInline(admin.TabularInline):
     model = models.Accessory
-    extra = 1
+    extra = 0
 
 
 @admin.register(models.Basic)
@@ -99,17 +99,23 @@ class FobPriceAdmin(admin.ModelAdmin):
 
 class AttrInline(admin.TabularInline):
     model = models.Attr
-    extra = 1
+    extra = 0
 
 
 class PictureInline(admin.TabularInline):
     model = models.Picture
-    extra = 1
+    extra = 0
+
+
+class TitleInline(admin.TabularInline):
+    model = models.Head
+    extra = 0
 
 
 @admin.register(models.Extend)
 class ExtendAdmin(AutoUserAdmin):
     inlines = [
+        TitleInline,
         AttrInline,
         PictureInline
     ]

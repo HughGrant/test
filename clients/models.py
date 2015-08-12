@@ -21,12 +21,13 @@ class Country(models.Model):
 class Client(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('姓名', max_length=200)
-    email = models.EmailField('邮箱')
+    email = models.EmailField('邮箱', blank=True)
     address = models.CharField('地址', blank=True, max_length=200)
     code = models.CharField('邮编', blank=True, max_length=200)
     contact = models.CharField('号码', blank=True, max_length=200)
     company = models.CharField('公司', blank=True, max_length=200)
-    country = models.ForeignKey(Country, verbose_name='国家')
+    country = models.ForeignKey(
+        Country, verbose_name='国家', blank=True, null=True)
 
     def __str__(self):
         return '%s(%s)' % (self.name, self.country)

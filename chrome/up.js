@@ -55,23 +55,23 @@ function check_payment_box(values) {
 }
 
 function check_box(elem, values) {
-	elem = $(elem)
+	elem = $(elem);
 	var defaults = elem.find('span').map(function() {
-		return $(this).text()
+		return $(this).text();
 	})
 
-	var left = []
+	var left = [];
 	for (var i = values.length - 1; i >= 0; i--) {
-		var find = false
+		var find = false;
 		for (var j = defaults.length - 1; j >= 0; j--) {
 			if (values[i] == defaults[j]) {
-				find = true
-				elem.find('input:eq(' + j + ')').prop('checked', true)
-				break
+				find = true;
+				elem.find('input:eq(' + j + ')').prop('checked', true);
+				break;
 			}
 		}
 		if (find == false) {
-			left.push(values[i])
+			left.push(values[i]);
 		}
 	}
 
@@ -133,128 +133,150 @@ function fill_keywords(search_keyword) {
     });
 }
 
+function paste_product() {
+	chrome.runtime.sendMessage({'action': 'paste_product'}, function(resp) {
+		var temp = resp.product;
+		if (temp === '') {
+			alert('请先复制产品');
+			return;
+		}
+		auto_fill_product(temp);
+	});
+}
+
+function auto_fill_product(product) {
+	// find out what lang that this page is in
+	var is_en = $('.ui-header-lan-display-text').html() == 'English';
+	if (!is_en) {
+		alert('请先把页面语言设置为英文');
+		return false;
+	}
+	// set up product object
+	for (var i = product.attrs.length - 1; i >= 0; i--) {
+		product.attrs[i][2] = false;
+	}
+
+	product.get_attr_val = function(key) {
+		for (var i = 0; i < product.attrs.length; i++) {
+			if (product.attrs[i][0] == key) {
+				product.attrs[i][2] = true;
+				return product.attrs[i][1];
+			}
+		}
+		return false;
+	}
+
+	window.scrollTo(0, document.body.scrollHeight);
+	// start to fill
+	// first name and primary product keyword
+	$('#productName').val(product.name);
+	// if the keyword is set, then we click to set 3 keywords
+	if ($.trim(product.keyword) != '') {
+        $('#addMoreKeywords').click(function() {
+            setTimeout(function() {
+                fill_keywords(product.keyword);
+            }, 1000);
+        });
+	};
+	// attrs needs to fill
+	var attrs = [];
+	$('.attr-title').map(function() {
+		attrs.push($(this).html().replace(':', ''));
+	});
+	// attrs's value
+	var values = $('.attribute-table-td');
+
+	attrs.forEach(function(attr_name, index) {
+		var attr_val = product.get_attr_val(attr_name);
+		if (attr_name == 'Place of Origin') {
+			$('[name=contryValue]').val('CN-China (Mainland)');
+			return;
+		}
+		// start to fill
+		if (attr_val !== false) {
+			fill_attr(values[index], attr_val);
+		} else {
+			mark_empty_attr(values[index]);
+			console.log("should have this standarded attr:" + attr_name);
+		}
+	});
+	// loop through all attrs to finish the unfilled attr
+	product.attrs.forEach(function(attr) {
+		if (!attr[2]) {
+			add_more_attr(attr[0], attr[1]);
+		}
+	});
+
+	// trade information
+	$('#minOrderQuantity').val(product.min_order_quantity);
+	$('#minOrderUnit').val(product.min_order_unit);
+	$('#moneyType').val(product.money_type);
+	$('#priceRangeMin').val(product.price_range_min);
+	$('#priceRangeMax').val(product.price_range_max);
+	$('#priceUnit').val(product.price_unit);
+	$('#port').val(product.port);
+	check_payment_box(product.payment_terms);
+	$('#supplyQuantity').val(product.supply_quantity);
+	$('#supplyUnit').val(product.supply_unit);
+	$('#supplyPeriod').val(product.supply_period);
+	$('#consignmentTerm').val(product.consignment_term);
+	$('#packagingDesc').val(product.packaging_desc);
+}
+
+function auto_fill_rich_text(product) {
+	var rich_f = function(content) {
+		if (content.constructor === Array) {
+			content = content.join('');
+		}
+		tinyMCE.activeEditor.setContent(content);
+	}
+	var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')';
+	var script = document.createElement('script');
+	script.textContent = rich_code;
+	setTimeout(function() {
+		(document.head || document.documentElement).appendChild(script);
+		script.parentNode.removeChild(script);
+	}, 1000);
+}
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	if (request.action == 'set_product') {
 		product = request.product;
 
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
-		$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>');
-		$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>');
 
-		$('#download_imgs').click(function() {
-			var name = $('#productName').val();
-			if ($.trim(name) == '') {
-				name = product.name;
-			}
-			for (var i = product.photos.length - 1; i >= 0; i--) {
-				download_url(product.photos[i], name + '.jpg');
-			}
-		});
+		if (product.photos.length) {
+			$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>');
+			$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>');
 
-		$('#check_imgs').click(function() {
-			for (var i = product.photos.length - 1; i >= 0; i--) {
-				check_img(product.photos[i]);
-			}
-		})
+			$('#download_imgs').click(function() {
+				var name = $('#productName').val();
+				if ($.trim(name) == '') {
+					name = product.name;
+				}
+				for (var i = product.photos.length - 1; i >= 0; i--) {
+					download_url(product.photos[i], name + '.jpg');
+				}
+			});
+
+			$('#check_imgs').click(function() {
+				for (var i = product.photos.length - 1; i >= 0; i--) {
+					check_img(product.photos[i]);
+				}
+			})
+		}
 
 		$('#auto_fill').click(function() {
-			// find out what lang that this page is in
-			var is_en = $('.ui-header-lan-display-text').html() == 'English';
-			if (!is_en) {
-				alert('请先把页面语言设置为英文');
-				return false;
-			}
-			// set up product object
-			for (var i = product.attrs.length - 1; i >= 0; i--) {
-				product.attrs[i][2] = false;
-			}
-
-			product.get_attr_val = function(key) {
-				for (var i = 0; i < product.attrs.length; i++) {
-					if (product.attrs[i][0] == key) {
-						product.attrs[i][2] = true;
-						return product.attrs[i][1];
-					}
-				}
-				return false;
-			}
-
-			window.scrollTo(0, document.body.scrollHeight);
-			// start to fill
-			// first name and primary product keyword
-			$('#productName').val(product.name);
-			if ($.trim(product.keyword) != '') {
-                $('#addMoreKeywords').click(function() {
-                    setTimeout(function() {
-                        fill_keywords(product.keyword);
-                    }, 1000);
-                });
-			};
-			// attrs needs to fill
-			var attrs = [];
-			$('.attr-title').map(function() {
-				attrs.push($(this).html().replace(':', ''));
-			});
-			// attrs's value
-			var values = $('.attribute-table-td');
-
-			attrs.forEach(function(attr_name, index) {
-				var attr_val = product.get_attr_val(attr_name);
-				if (attr_name == 'Place of Origin') {
-					$('[name=contryValue]').val('CN-China (Mainland)');
-					return;
-				}
-				// start to fill
-				if (attr_val !== false) {
-					fill_attr(values[index], attr_val);
-				} else {
-					mark_empty_attr(values[index]);
-					console.log("should have this standarded attr:" + attr_name);
-				}
-			});
-			// loop through all attrs to finish the unfilled attr
-			product.attrs.forEach(function(attr) {
-				if (!attr[2]) {
-					add_more_attr(attr[0], attr[1]);
-				}
-			});
-
-			// trade information
-			$('#minOrderQuantity').val(product.min_order_quantity)
-			$('#minOrderUnit').val(product.min_order_unit)
-			$('#moneyType').val(product.money_type)
-			$('#priceRangeMin').val(product.price_range_min)
-			$('#priceRangeMax').val(product.price_range_max)
-			$('#priceUnit').val(product.price_unit)
-			$('#port').val(product.port)
-			check_payment_box(product.payment_terms)
-			$('#supplyQuantity').val(product.supply_quantity)
-			$('#supplyUnit').val(product.supply_unit)
-			$('#supplyPeriod').val(product.supply_period)
-			$('#consignmentTerm').val(product.consignment_term)
-			$('#packagingDesc').val(product.packaging_desc)
-			// rich text
-			var rich_f = function(content) {
-				if (content.constructor === Array) {
-					content = content.join('');
-				}
-				tinyMCE.activeEditor.setContent(content);
-			}
-			var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')';
-			var script = document.createElement('script');
-			script.textContent = rich_code;
-			setTimeout(function() {
-				(document.head || document.documentElement).appendChild(script);
-				script.parentNode.removeChild(script);
-			}, 1000);
+			auto_fill_product(product);
+			auto_fill_rich_text(product);
 		});
 	}
 
 	// set the category
 	if (request.action == 'set_category') {
-		$('#search-keyword').val(request.category[request.category.length - 1])
-		$('button[type=submit]').click()
+		$('#search-keyword').val(request.category[request.category.length - 1]);
+		$('button[type=submit]').click();
 	}
 
 });

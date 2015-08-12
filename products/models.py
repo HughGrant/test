@@ -115,8 +115,8 @@ class DifferentPrice(models.Model):
     volume_weight = models.FloatField('积重(KG)', default=0)
 
     def __str__(self):
-        return '%s-%s: %s' % (
-            self.basic.cn_name, self.difference, self.price)
+        return '%s(%s)-%s: %s' % (
+            self.basic.cn_name, self.basic.model, self.difference, self.price)
 
     def weight(self):
         return max(self.net_weight, self.gross_weight, self.volume_weight)
@@ -149,10 +149,21 @@ class Picture(models.Model):
         verbose_name = verbose_name_plural = '产品图片'
 
 
+class Head(models.Model):
+    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
+    name = models.CharField('标题', blank=True, max_length=200)
+    count = models.IntegerField('使用计数', default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = verbose_name_plural = '产品可用标题'
+
+
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
     user = models.ForeignKey(User)
-    title = models.CharField('标题', blank=True, max_length=200)
     category = models.ForeignKey('Category', verbose_name='产品分类')
     moq = models.ForeignKey(
         'MOQ', verbose_name='最小起订量')
@@ -165,9 +176,7 @@ class Extend(models.Model):
     rich_text = models.TextField('产品正文', blank=True, max_length=100000)
 
     def __str__(self):
-        if not self.title:
-            return self.basic.__str__()
-        return self.title
+        return self.basic.__str__()
 
     def upload_button(self):
         return '<button id="%s" class="ali_upload">上传</button>' % self.id
@@ -178,6 +187,13 @@ class Extend(models.Model):
         return self.rich_text != ''
     has_rich_text.boolean = True
     has_rich_text.short_description = '产品正文'
+
+    def get_title(self):
+        q = Head.objects.filter(extend_id=self.id).order_by('count')
+        if q.exists():
+            return q.get().name
+        else:
+            self.basic.name
 
     class Meta:
         verbose_name = verbose_name_plural = '产品详细信息'

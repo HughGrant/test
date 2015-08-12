@@ -1,7 +1,7 @@
 setInterval(detect_update, 2000);
 
 function detect_update() {
-	var list = $('.list-date');
+	var list = $('.manager-list-col-updated');
 	if (list.length == 0) {
 		return false;
 	}

@@ -95,14 +95,28 @@ function fix_plate() {
 
 		if (kw == 13) {
 			var cmd = $('#cmd_list').find('li:eq(' + current_li + ')').attr('cmd');
-			exec_cmd(cmd);
+			if (cmd) {
+				exec_cmd(cmd);
+			} else {
+				var cmd = $('#cmd_field').val();
+				var cmds = cmd.split(' ');
+				var new_cmds = [];
+				cmds.forEach(function(i) {
+					new_cmds.push(encodeURIComponent(i))
+				});
+				var url = SEARCH_PRODUCT_URL + new_cmds.join('+');
+				open_url(url);
+			}
 		}
 	});
 }
 
 function exec_cmd(cmd) {
 	if (cmd === 'upload product') {
-		open_url(UPLOAD_PRODUCT_URL);
+		chrome.runtime.sendMessage({
+			action: 'upload_product', 
+			product: scratch()
+		});
 	} else if (cmd === 'search keyword') {
 		open_url(SEARCH_HOT_KEYWORD_URL);
 	} else if (cmd === 'manage product') {
@@ -112,6 +126,19 @@ function exec_cmd(cmd) {
 		capture_product(scratch());
 	} else if (cmd === 'download images') {
 		download_images();
+	} else if (cmd === 'copy product') {
+		chrome.runtime.sendMessage({
+			action: 'copy_product', 
+			product: scratch()
+		}, function(resp) {
+			if (resp.status) {
+				alert('复制成功');
+			};
+		});
+	} else if (cmd === 'paste product') {
+		paste_product();
+	} else if (cmd === 'fill keywords') {
+		fill_keywords($('#cmd_field').val())
 	}
 	toggle_plate();
 }

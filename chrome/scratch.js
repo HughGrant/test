@@ -44,24 +44,16 @@ function scratch() {
     product.consignment_term = get_inner_text('td:contains("Delivery Detail:") + td')
     product.packaging_desc = get_inner_text('td:contains("Packaging Details:") + td')
 
-    // Example on page: "US $ 130 - 165 / Set | Get Latest Price"
-    var priceInfo = $('th:contains("FOB Price:") + td')[0]
-    if (priceInfo.childElementCount != 4) {
-        // means it only got a <a> contains "Get Latest Price"
-        product.price_range_min = 0;
-        product.price_range_max = 0;
-        // in preset.py money_type USD is 1
-        product.money_type = 1;
-        product.price_unit = 20;
-    } else {
-        var nt = $.trim(priceInfo.childNodes[5].textContent).split(' ')[1]
-        product.price_unit = unitType[nt]
-        // currency short name: such as US
-        var csn = priceInfo.childNodes[1].textContent.split(' ')[0]
-        product.money_type = moneyType[csn].value
-        product.price_range_min = parseInt(priceInfo.childNodes[2].textContent)
-        product.price_range_max = parseInt(priceInfo.childNodes[4].textContent)
+    product.price_range_min = 0;
+    product.price_range_max = 0;
+    if ($('span[itemProp="priceCurrency"]').length == 1) {
+        product.price_range_min = parseInt($('span[itemProp="lowPrice"]').html().replace(/,/g, ""))
+        product.price_range_max = parseInt($('span[itemProp="highPrice"]').html().replace(/,/g, ""))
     }
+    // in preset.py money_type USD is 1
+    product.money_type = 1;
+    // SET/SETS
+    product.price_unit = 20;
 
     var MOQ = $('th:contains("Min.Order Quantity:") + td')[0].innerText
     MOQ = MOQ.split(' ')
@@ -91,6 +83,7 @@ function scratch() {
         }
     }
     product.photos.reverse();
+    // console.log(product);
     return product;
 }
 

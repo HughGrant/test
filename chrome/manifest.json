@@ -3,7 +3,7 @@
 
   "name": "PortiaProject",
   "description": "A little help on Alibaba.",
-  "version": "0.31",
+  "version": "0.4",
 
   "background": {
     "scripts": ["jquery.js", "urls.js", "background.js"],
@@ -22,7 +22,8 @@
     {
       "matches": [
         "*://hz.productposting.alibaba.com/product/post_product_interface.*",
-        "*://hz.productposting.alibaba.com/product/posting.*"
+        "*://hz.productposting.alibaba.com/product/posting.*",
+        "*://hz.productposting.alibaba.com/product/editing.*"
       ],
       "js": ["up.js"]
     },
@@ -34,11 +35,6 @@
       "matches": ["*://hz.productposting.alibaba.com/product/products_manage.*"],
       "js": ["product_manage.js"]
     },
-    // {
-    //   "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
-    //   "js": ["jquery.js", "nprogress.js", "config.js", "product_edit.js"],
-    //   "css": ["nprogress.css"]
-    // },
     {
       "matches": ["*://*.alibaba.com/product-detail/*"],
       "js": ["jquery.js", "nprogress.js", "config.js", "scratch.js"],

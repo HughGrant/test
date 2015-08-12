@@ -21,10 +21,7 @@ class CaptureView(View):
         ext = Extend.objects.get(pk=int(pk))
         data = {}
         data['extend_id'] = ext.id
-        if not ext.title:
-            data['name'] = ext.basic.name
-        else:
-            data['name'] = ext.title
+        data['name'] = ext.get_title()
         data['keyword'] = ext.basic.keyword
         data['category'] = ext.category.slug_name().split('>')
         data['port'] = ext.port
