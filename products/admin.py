@@ -170,3 +170,8 @@ class KeywordAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'count')
     list_filter = ('name', )
     search_fields = ('name', 'word')
+
+
+@admin.register(models.Head)
+class TitlesAdmin(admin.ModelAdmin):
+    pass
