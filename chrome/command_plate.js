@@ -137,8 +137,6 @@ function exec_cmd(cmd) {
 		});
 	} else if (cmd === 'paste product') {
 		paste_product();
-	} else if (cmd === 'fill keywords') {
-		fill_keywords($('#cmd_field').val())
 	}
 	toggle_plate();
 }

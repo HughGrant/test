@@ -15,9 +15,15 @@ class AccesscoryInline(admin.TabularInline):
     extra = 0
 
 
+class KeywordInline(admin.TabularInline):
+    model = models.Keyword
+    extra = 0
+
+
 @admin.register(models.Basic)
 class BasicAdmin(admin.ModelAdmin):
     inlines = [
+        KeywordInline,
         DifferentPriceInline,
         AccesscoryInline
     ]
@@ -26,7 +32,8 @@ class BasicAdmin(admin.ModelAdmin):
     # Filting products only belongs to this user
     list_filter = ('cn_name', )
     search_fields = ('name', 'cn_name', 'model')
-    list_display = ('__str__', 'price', 'has_accessory', 'has_video')
+    list_display = (
+        '__str__', 'price', 'has_accessory', 'has_video', 'keywords_count')
 
 
 class MOQForm(forms.ModelForm):
@@ -102,11 +109,6 @@ class AttrInline(admin.TabularInline):
     extra = 0
 
 
-class PictureInline(admin.TabularInline):
-    model = models.Picture
-    extra = 0
-
-
 class TitleInline(admin.TabularInline):
     model = models.Head
     extra = 0
@@ -116,13 +118,12 @@ class TitleInline(admin.TabularInline):
 class ExtendAdmin(AutoUserAdmin):
     inlines = [
         TitleInline,
-        AttrInline,
-        PictureInline
+        AttrInline
     ]
     search_fields = ('basic__cn_name', 'basic__name', 'basic__model')
     list_filter = ('basic__cn_name', )
     exclude = ('user', )
-    ordering = ('basic__cn_name', 'basic__model', 'basic__name')
+    ordering = ('basic__model', 'basic__name', 'basic__cn_name')
     list_display = (
         '__str__', 'has_rich_text', 'upload_button', 'titles_count',
         'keywords_count')
@@ -167,11 +168,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Keyword)
 class KeywordAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'count')
-    list_filter = ('name', )
-    search_fields = ('name', 'word')
-
-
-@admin.register(models.Head)
-class TitlesAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'basic_cn_name', 'basic_model', 'count')
+    list_filter = ('basic__cn_name', )
+    search_fields = ('basic__cn_name', 'basic__model', 'basic__name')

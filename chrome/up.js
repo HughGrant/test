@@ -17,12 +17,12 @@ function create_other_input(name, value) {
 	// this function is used to create a input box which should be
 	// visible on the page after you select a "other" value
 	var input_name = 'otherAttrContext' + name.replace('sysAttrValueIdAndValue', '');
-	var input = '<input value="' + value + '" id="" name="' + input_name + '" type="text" class="attr-inline type-other TAG:main" maxlength="70" style="width: 180px;">';
+	var input = '<input value="' + value + '" id="" name="' + input_name + '" type="text" class="ui-textfield ui-textfield-system ui-control-m">';
 	return input;
 }
 
 function select_by_text(elem, text) {
-	var name = elem.attr('name');
+	var name = elem.find('select').attr('name');
 	var option = $('[name=' + name + '] option').filter(function() {
 		return ($(this).text() == text);
 	});
@@ -34,7 +34,7 @@ function select_by_text(elem, text) {
 			return ($(this).text() == 'Other')
 		}).prop('selected', true);
 		var input = create_other_input(name, text);
-		$(elem).after(input);
+		elem.append(input);
 	}
 }
 
@@ -55,10 +55,11 @@ function check_payment_box(values) {
 }
 
 function check_box(elem, values) {
-	elem = $(elem);
-	var defaults = elem.find('span').map(function() {
-		return $(this).text();
-	})
+	// elem = $(elem);
+	// get all available default options 
+	var defaults = elem.find('label').map(function() {
+		return $(this).text().trim();
+	});
 
 	var left = [];
 	for (var i = values.length - 1; i >= 0; i--) {
@@ -80,19 +81,18 @@ function check_box(elem, values) {
 		var name = other.attr('name');
 		var input = create_other_input(name, left.join(', '));
 		other.prop('checked', true);
-		var xxx = elem.find('label:eq(' + (defaults.length - 1) + ')');
-		xxx.after(input);
+		// where to put it
+		elem.find('ul').after(input);
 	}
 }
 
 function fill_attr(elem, val) {
-	var a = $(elem);
-
-	if (a.find('input[type=text]').size() > 0) {
-		a.find('input').val(val);
-	} else if (a.find('select').size() > 0) {
-		select_by_text(a.find('select'), val);
-	} else if (a.find('input[type=checkbox]').size() > 0) {
+	var elem = $(elem);
+	if (elem.find('input[type=text]').size() > 0) {
+		elem.find('input').val(val);
+	} else if (elem.find('select').size() > 0) {
+		select_by_text(elem, val);
+	} else if (elem.find('input[type=checkbox]').size() > 0) {
 		check_box(elem, val.split(','));
 	}
 }
@@ -104,33 +104,22 @@ function mark_empty_attr(elem) {
 	$(elem).find('input[type=checkbox]').css('border', '2px solid red');
 }
 
-function fill_keywords(search_keyword) {
-    var url =  KW_URL + '?count=3&name=' + search_keyword
-    $.get(url).done(function(data) {
-        // need to login to continue
-        if (!data.status && data.message) {
-            alert(data.message);
-            return false;
-        }
+function fill_keywords(product) {
+	if (product.keywords.length < 3) {
+		collect_keywords(product.basic_id);
+		return;
+	}
 
-        if (data.status) {
-            var key2 = $('#keywords2'),
-                key3 = $('#keywords3'),
-                key1 = $('#productKeyword');
-            
-            key1.val(data.result.shift());
-            key2.val(data.result.shift());
-            key3.val(data.result.shift());
-        } else {
-            var f = confirm('关键字不足, 否现在去采集?');
-            if (f) {
-                collect_keywords(search_keyword);
-            }
-        }
+	$('#addMoreKeywords').remove();
+	$('#smk-more-keywords-wrapper').show();
+	
+	var key1 = $('#productKeyword'),
+    	key2 = $('#keywords2'),
+    	key3 = $('#keywords3');
 
-    }).fail(function(data) {
-        alert(data.message);
-    });
+	key1.val(product.keywords.shift());
+    key2.val(product.keywords.shift());
+    key3.val(product.keywords.shift());
 }
 
 function paste_product() {
@@ -151,7 +140,7 @@ function auto_fill_product(product) {
 		alert('请先把页面语言设置为英文');
 		return false;
 	}
-	// set up product object
+	// set up inital state for all product attr list
 	for (var i = product.attrs.length - 1; i >= 0; i--) {
 		product.attrs[i][2] = false;
 	}
@@ -168,36 +157,30 @@ function auto_fill_product(product) {
 
 	window.scrollTo(0, document.body.scrollHeight);
 	// start to fill
-	// first name and primary product keyword
+	// first name and three keywords
 	$('#productName').val(product.name);
-	// if the keyword is set, then we click to set 3 keywords
-	if ($.trim(product.keyword) != '') {
-        $('#addMoreKeywords').click(function() {
-            setTimeout(function() {
-                fill_keywords(product.keyword);
-            }, 1000);
-        });
-	};
 	// attrs needs to fill
 	var attrs = [];
+	// attr's key
 	$('.attr-title').map(function() {
-		attrs.push($(this).html().replace(':', ''));
+		attrs.push($(this).html());
 	});
 	// attrs's value
-	var values = $('.attribute-table-td');
-
-	attrs.forEach(function(attr_name, index) {
+	var values = $('#productAttribute').find('.ui-form-control');
+	// walk through it pair by pair
+	attrs.forEach(function(attr_name, key_index) {
+		// get attr value from product's attr list by the key
 		var attr_val = product.get_attr_val(attr_name);
+		// first rule out the attr we don't care
 		if (attr_name == 'Place of Origin') {
 			$('[name=contryValue]').val('CN-China (Mainland)');
 			return;
 		}
-		// start to fill
+		// start to fill if you get attr value
 		if (attr_val !== false) {
-			fill_attr(values[index], attr_val);
+			fill_attr(values[key_index], attr_val);
 		} else {
-			mark_empty_attr(values[index]);
-			console.log("should have this standarded attr:" + attr_name);
+			mark_empty_attr(values[key_index]);
 		}
 	});
 	// loop through all attrs to finish the unfilled attr
@@ -236,7 +219,7 @@ function auto_fill_rich_text(product) {
 	setTimeout(function() {
 		(document.head || document.documentElement).appendChild(script);
 		script.parentNode.removeChild(script);
-	}, 1000);
+	}, 2000);
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -246,29 +229,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
 
-		if (product.photos.length) {
-			$('#browser').after('<button id="download_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">下载原文图片</button>');
-			$('#browser').after('<button id="check_imgs" type="button" class="ui-button ui-button-normal ui-button-small" style="margin-left:5px;">查看原文图片</button>');
-
-			$('#download_imgs').click(function() {
-				var name = $('#productName').val();
-				if ($.trim(name) == '') {
-					name = product.name;
-				}
-				for (var i = product.photos.length - 1; i >= 0; i--) {
-					download_url(product.photos[i], name + '.jpg');
-				}
-			});
-
-			$('#check_imgs').click(function() {
-				for (var i = product.photos.length - 1; i >= 0; i--) {
-					check_img(product.photos[i]);
-				}
-			})
-		}
-
 		$('#auto_fill').click(function() {
 			auto_fill_product(product);
+			fill_keywords(product);
 			auto_fill_rich_text(product);
 		});
 	}

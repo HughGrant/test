@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from preset import *
+import random
 
 
 class Basic(models.Model):
     cn_name = models.CharField('中文名', blank=True, max_length=200)
     name = models.CharField('英文名', blank=True, max_length=200)
     model = models.CharField('型号', blank=True, max_length=200)
-    keyword = models.CharField('默认主关键字', blank=True, max_length=200)
     video = models.CharField('视频', blank=True, max_length=200)
     bak = models.TextField('备注', blank=True, max_length=200)
 
@@ -36,20 +36,33 @@ class Basic(models.Model):
     has_video.short_description = '视频'
     has_video.boolean = True
 
+    def keywords_count(self):
+        return self.keyword_set.count()
+
+    keywords_count.short_description = '可用关键字数量'
+
     class Meta:
         verbose_name = verbose_name_plural = '产品基本信息'
 
 
 class Keyword(models.Model):
-    name = models.CharField('类目', max_length=200)
+    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
     word = models.CharField('关键字', max_length=200)
     count = models.IntegerField('使用计数', default=0)
 
     def __str__(self):
-        return "%s-%s" % (self.name, self.word)
+        return "%s-%s" % (self.word, self.basic.model)
+
+    def basic_model(self):
+        return self.basic.model
+    basic_model.short_description = '所属产品型号'
+
+    def basic_cn_name(self):
+        return self.basic.cn_name
+    basic_cn_name.short_description = '所属产品中文名'
 
     class Meta:
-        unique_together = ('name', 'word')
+        unique_together = ('basic', 'word')
         verbose_name = verbose_name_plural = '产品关键字'
 
 
@@ -141,14 +154,6 @@ class Attr(models.Model):
         verbose_name = verbose_name_plural = '产品属性'
 
 
-class Picture(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
-    url = models.CharField('图片来源', max_length=300)
-
-    class Meta:
-        verbose_name = verbose_name_plural = '产品图片'
-
-
 class Head(models.Model):
     extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
     name = models.CharField('标题', blank=True, max_length=200)
@@ -168,12 +173,10 @@ class Extend(models.Model):
     moq = models.ForeignKey(
         'MOQ', verbose_name='最小起订量')
     fob_price = models.ForeignKey('FobPrice', verbose_name='FOB报价')
-    port = models.CharField('港口', max_length=100)
-    payment_terms = models.CharField('付款方式', max_length=200)
     supply_ability = models.ForeignKey('SupplyAbility', verbose_name='供贷能力')
-    packaging_desc = models.CharField('包装描述', max_length=600)
-    consignment_term = models.CharField('运输时长', max_length=100)
     rich_text = models.TextField('产品正文', blank=True, max_length=100000)
+    # the following attr are fixed by default value
+    # port, payment_terms, consignment_term, packaging_desc
 
     def __str__(self):
         return self.basic.__str__()
@@ -189,19 +192,41 @@ class Extend(models.Model):
     has_rich_text.short_description = '产品正文'
 
     def get_title(self):
-        q = Head.objects.filter(extend_id=self.id).order_by('count')
-        if q.exists():
-            return q.get().name
-        else:
-            self.basic.name
+        heads = Head.objects.filter(extend_id=self.id)
+        total = heads.count()
+        if not total:
+            return '没有可用的标题 速去添加'
+
+        heads = heads.order_by('count')
+        index = random.randint(total//2, total - 1)
+        head = heads.all()[index]
+        head.count += 1
+        head.save()
+        return head.name
+
+    def get_keywords(self):
+        keywords = Keyword.objects.filter(basic_id=self.basic.id)
+        total = keywords.count()
+        if not total:
+            return []
+
+        keywords = keywords.order_by('count')
+        indexs = random.sample(range(total//2, total - 1), 3)
+        kws = []
+        for index in indexs:
+            kw = keywords.all()[index]
+            kws.append(kw.word)
+            kw.count += 1
+            kw.save()
+        return kws
 
     def titles_count(self):
         return self.head_set.count()
     titles_count.short_description = '可用标题数量'
 
     def keywords_count(self):
-        if self.basic.keyword:
-            return Keyword.objects.filter(name=self.basic.keyword).count()
+        if self.basic:
+            return Keyword.objects.filter(basic=self.basic).count()
         return 0
     keywords_count.short_description = '可用关键字数量'
 

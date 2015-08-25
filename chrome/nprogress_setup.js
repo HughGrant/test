@@ -3,7 +3,7 @@ $(document).ajaxStart(function() {
     NProgress.start();
 });
 
-$(document).ajaxStart(function() {
+$(document).ajaxSuccess(function() {
     NProgress.done();
 });
 

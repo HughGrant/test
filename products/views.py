@@ -21,22 +21,20 @@ class CaptureView(View):
         ext = Extend.objects.get(pk=int(pk))
         data = {}
         data['extend_id'] = ext.id
+        data['basic_id'] = ext.basic.id
         data['name'] = ext.get_title()
-        data['keyword'] = ext.basic.keyword
+        data['keywords'] = ext.get_keywords()
         data['category'] = ext.category.slug_name().split('>')
-        data['port'] = ext.port
-        data['consignment_term'] = ext.consignment_term
-        data['packaging_desc'] = ext.packaging_desc
 
         data['attrs'] = []
         for attr in ext.attr_set.all():
             data['attrs'].append([attr.name, attr.value])
 
-        data['photos'] = []
-        for photo in ext.picture_set.all():
-            data['photos'].append(photo.url)
-
-        data['payment_terms'] = ext.payment_terms.split(',')
+        data['consignment_term'] = '3-7 days based on destination by DHL/FedEx/UPS etc.'
+        data['packaging_desc'] = 'standard export package, safe and secure'
+        data['port'] = 'NingBo'
+        default_payment_terms = 'T/T,Western Union,MoneyGram,PayPal'
+        data['payment_terms'] = default_payment_terms.split(',')
 
         data['min_order_quantity'] = ext.moq.min_order_quantity
         data['min_order_unit'] = ext.moq.min_order_unit
@@ -49,7 +47,7 @@ class CaptureView(View):
         data['supply_quantity'] = ext.supply_ability.supply_quantity
         data['supply_unit'] = ext.supply_ability.supply_unit
         data['supply_period'] = ext.supply_ability.supply_period
-        data['rich_text'] = ext.rich_text
+        data['rich_text'] = ext.rich_text.replace('{{title}}', data['name'], 1)
 
         jr['status'] = True
         jr['data'] = data
@@ -63,14 +61,10 @@ class CaptureView(View):
         pd = json.loads(request.POST['json'])
 
         ext = Extend(user=request.user)
-        ext.title = pd['name']
         ext.category = Category.auto_create(pd['category'])
         ext.port = pd['port']
         if pd['rich_text']:
             ext.rich_text = pd['rich_text']
-        ext.consignment_term = pd['consignment_term']
-        ext.packaging_desc = pd['packaging_desc']
-        ext.payment_terms = ','.join(pd['payment_terms'])
 
         ext.moq = MOQ.objects.get_or_create(
             min_order_quantity=pd['min_order_quantity'],
@@ -92,9 +86,6 @@ class CaptureView(View):
         for attr in pd['attrs']:
             Attr(extend=ext, name=attr[0], value=attr[1]).save()
 
-        for photo in pd['photos']:
-            Picture(extend=ext, url=photo).save()
-
         jr['status'] = True
         return JsonResponse(jr)
 
@@ -107,38 +98,25 @@ class CaptureView(View):
 class KeywordView(View):
 
     def post(self, request):
-        name = request.POST['name']
+        basic_id = request.POST['basic_id']
         words = request.POST.getlist('words[]')
         kws = []
         for word in words:
-            if word != name:
-                kw = Keyword(name=name, word=word)
-                try:
-                    kw.validate_unique()
-                except ValidationError:
-                    pass
-                else:
-                    kws.append(kw)
+            kw = Keyword(basic_id=basic_id, word=word)
+            try:
+                kw.validate_unique()
+            except ValidationError:
+                pass
+            else:
+                kws.append(kw)
         if kws:
             Keyword.objects.bulk_create(kws)
         return JsonResponse({'status': True})
 
     def get(self, request):
-        jr = {'status': False}
-        name = request.GET['name'].lower()
-        count = int(request.GET['count'])
-
-        # TODO possible optimization in the future
-        re = Keyword.objects.filter(name=name).order_by('count')[:count]
-        if re.count() == count:
-            jr['status'] = True
-            jr['result'] = []
-            for kw in re:
-                jr['result'].append(kw.word)
-                kw.count += 1
-                kw.save()
-
-        return JsonResponse(jr)
+        basic_id = int(request.GET['basic_id'])
+        kws = Keyword.get_keywords(basic_id)
+        return JsonResponse(kws)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)

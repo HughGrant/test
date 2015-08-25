@@ -32,14 +32,19 @@ $(function() {
 		if (kws.length == 0) {
 			return false;
 		}
+		
+		var basic_id = $('#J-search-keywords').val();
+		if (isNaN(basic_id)) {
+			alert('输入产品基本ID');
+			return;
+		}
 		var list = [];
-		var skw = $('#J-search-keywords').val();
 		kws.map(function(){
 			var v = $(this).attr('value');
 			list.push(v);
 		});
 
-		var words = { name: skw, words: list };
+		var words = { basic_id: basic_id, words: list };
 		$.post(KW_URL, words).done(function(data) {
 			if (data.status) {
 				alert('添加成功');
