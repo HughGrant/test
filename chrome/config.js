@@ -1,3 +1,11 @@
+var ACCOUNT_ID_EMAIL_MAP = {
+        'cn1000931698': 'yasonsale@live.com',
+        'cn220220230': 'yasonsale@outlook.com',
+        'cn1511271321': 'yasonsale@hotmail.com',
+        'cn1511667990': 'yasonpacking@hotmail.com',
+        'cn1515401620nmtn': 'chinapacks@hotmail.com'
+};
+
 var ATTR = [
     ["售后服务体系", "After-sales Service Provided", "select"],
     ["保修期", "Warranty", "input"],

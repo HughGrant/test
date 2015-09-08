@@ -104,24 +104,6 @@ function mark_empty_attr(elem) {
 	$(elem).find('input[type=checkbox]').css('border', '2px solid red');
 }
 
-function fill_keywords(product) {
-	if (product.keywords.length < 3) {
-		collect_keywords(product.basic_id);
-		return;
-	}
-
-	$('#addMoreKeywords').remove();
-	$('#smk-more-keywords-wrapper').show();
-	
-	var key1 = $('#productKeyword'),
-    	key2 = $('#keywords2'),
-    	key3 = $('#keywords3');
-
-	key1.val(product.keywords.shift());
-    key2.val(product.keywords.shift());
-    key3.val(product.keywords.shift());
-}
-
 function paste_product() {
 	chrome.runtime.sendMessage({'action': 'paste_product'}, function(resp) {
 		var temp = resp.product;
@@ -155,10 +137,13 @@ function auto_fill_product(product) {
 		return false;
 	}
 
-	window.scrollTo(0, document.body.scrollHeight);
+	$('html, body').animate({
+        scrollTop: $("#submitFormBtnA").offset().top
+    }, 500);
+
 	// start to fill
 	// first name and three keywords
-	$('#productName').val(product.name);
+	fill_product_name(product.name);
 	// attrs needs to fill
 	var attrs = [];
 	// attr's key
@@ -191,12 +176,16 @@ function auto_fill_product(product) {
 	});
 
 	// trade information
+	$('label[for="price-setting-fob-radio"').click();
+
 	$('#minOrderQuantity').val(product.min_order_quantity);
 	$('#minOrderUnit').val(product.min_order_unit);
+
 	$('#moneyType').val(product.money_type);
 	$('#priceRangeMin').val(product.price_range_min);
 	$('#priceRangeMax').val(product.price_range_max);
 	$('#priceUnit').val(product.price_unit);
+
 	$('#port').val(product.port);
 	check_payment_box(product.payment_terms);
 	$('#supplyQuantity').val(product.supply_quantity);
@@ -230,9 +219,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
 
 		$('#auto_fill').click(function() {
-			auto_fill_product(product);
-			fill_keywords(product);
-			auto_fill_rich_text(product);
+			var re = fill_keywords(product.keywords, product.basic_id);
+			if (re) {
+				auto_fill_product(product);
+				auto_fill_rich_text(product);
+			}
 		});
 	}
 

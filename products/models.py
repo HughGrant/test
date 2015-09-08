@@ -4,6 +4,45 @@ from preset import *
 import random
 
 
+class TrackingList(models.Model):
+    account = models.CharField('帐户', max_length=50)
+    pid = models.CharField('ID', max_length=50)
+    title = models.CharField('标题', max_length=200)
+    model = models.CharField('型号', max_length=50)
+
+    def __str__(self):
+        return "%s %s(%s) - %s" % (
+            self.account, self.title, self.pid, self.model)
+
+    def public_address(self):
+        link = 'http://www.alibaba.com/product-detail/'
+        link += '-'.join(self.title.split(' '))
+        link += '_%s.html' % self.pid
+        return '<a href="%s" target="_blank">%s</a>' % (link, self.title)
+    public_address.allow_tags = True
+    public_address.short_description = '产品链接'
+
+    def edit_address(self):
+        link = 'http://hz.productposting.alibaba.com/product/editing.htm?id='
+        link += self.pid
+        return '<a href="%s" target="_blank">编辑</a>' % link
+    edit_address.allow_tags = True
+    edit_address.short_description = '编辑链接'
+
+    def is_title_saved(self):
+        q = Basic.objects.filter(model=self.model)
+        if not q.exists():
+            return None
+        e = q.get().extend_set.get()
+        return Head.objects.filter(extend_id=e.id, name=self.title).exists()
+    is_title_saved.boolean = True
+    is_title_saved.short_description = '标题是否已存'
+
+    class Meta:
+        unique_together = ('account', 'pid')
+        verbose_name = verbose_name_plural = '产品已传列表'
+
+
 class Basic(models.Model):
     cn_name = models.CharField('中文名', blank=True, max_length=200)
     name = models.CharField('英文名', blank=True, max_length=200)
@@ -163,6 +202,7 @@ class Head(models.Model):
         return self.name
 
     class Meta:
+        unique_together = ('extend', 'name')
         verbose_name = verbose_name_plural = '产品可用标题'
 
 
@@ -193,13 +233,10 @@ class Extend(models.Model):
 
     def get_title(self):
         heads = Head.objects.filter(extend_id=self.id)
-        total = heads.count()
-        if not total:
+        if heads.count() == 0:
             return '没有可用的标题 速去添加'
 
-        heads = heads.order_by('count')
-        index = random.randint(total//2, total - 1)
-        head = heads.all()[index]
+        head = heads.order_by('count')[:1].get()
         head.count += 1
         head.save()
         return head.name

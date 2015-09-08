@@ -122,3 +122,57 @@ class KeywordView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+class TitleKeyView(View):
+
+    def post(self, request):
+        pass
+
+    def get(self, request):
+        model = request.GET['model']
+        data = {'name': 'no model find %s' % model, 'keywords': []}
+        basic = Basic.objects.filter(model=model)
+        if basic.exists():
+            basic = basic.get()
+            ext = basic.extend_set.get()
+            data['name'] = ext.get_title()
+            data['keywords'] = ext.get_keywords()
+        return JsonResponse(data)
+
+    @method_decorator(login_required(login_url='/login_required_jr/'))
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TrackingListView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        plist = json.loads(request.POST['json'])
+        tls = []
+        edit = 0
+        for p in plist:
+            t = TrackingList.objects.filter(
+                    account=p['account'], pid=p['pid'])
+            if t.exists():
+                t = t.get()
+                if t.title != p['title'] or t.model != p['model']:
+                    t.title = p['title']
+                    t.model = p['model']
+                    t.save()
+                    edit += 1
+            else:
+                tls.append(TrackingList(**p))
+        if tls:
+            TrackingList.objects.bulk_create(tls)
+        msg = '成功检索并添加%d个, 更新%d产品' % (len(tls), edit)
+        return JsonResponse({'status': True, 'msg': msg})
+
+    @method_decorator(login_required(login_url='/login_required_jr/'))
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)

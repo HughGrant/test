@@ -4,51 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Yason Technology</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="nprogress.css">
   </head>
-  <body style="width:300px;">
-    <div class="container">
-
-      <div class="row">
-        <div class="col-xs-12 text-center">
-          <h4>阿里小助手  <small>亚新</small></h4>
-          <hr>
-        </div>
+  <body style="width:180px;">
+    <h4>阿里小助手  <small>亚新</small></h4>
+    <hr>
+    <form>
+      <div>
+        <label for="username">用户名</label>
+        <input type="text" id="username" placeholder="请输入用户名">
       </div>
-
-      <div class="row">
-        <div class="col-xs-offset-1 col-xs-10">
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label for="username">用户名</label>
-              <input type="text" class="form-control" id="username" placeholder="请输入用户名">
-            </div>
-            <div class="form-group">
-              <label for="password">密码</label>
-              <input type="password" class="form-control" id="password" placeholder="请输入密码">
-            </div>
-            <div class="form-group">
-              <button id="login" type="button" class="btn btn-default">登入</button>
-            </div>
-          </form>
-        </div>
+      <div>
+        <label for="password">密码</label>
+        <input type="password" id="password" placeholder="请输入密码">
       </div>
-
-      <div class="row text-center">
-        <div id="btns" class="col-xs-12" style="display:none;margin-bottom:10px;">
-          <div class="btn-group">
-            <button id="site" type="button" class="btn btn-success">管理后台</button>
-            <button id="logout" type="button" class="btn btn-success">切换帐号</button>
-          </div>
-        </div>
+      <div>
+        <button id="login" type="button">登入</button>
       </div>
+    </form>
 
+
+    <div id="btns" style="display:none;margin-bottom:10px;">
+      <button id="site" type="button">管理后台</button>
+      <button id="logout" type="button">切换帐号</button>
     </div>
 
-    <script src="reactive.min.js"></script>
+    <script src="ractive.min.js"></script>
     <script src="jquery.js"></script>
-    <script src="nprogress.js"></script>
     <script src="config.js"></script>
     <script src="urls.js"></script>
     <script src="popup.js"></script>

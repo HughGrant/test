@@ -171,3 +171,11 @@ class KeywordAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'basic_cn_name', 'basic_model', 'count')
     list_filter = ('basic__cn_name', )
     search_fields = ('basic__cn_name', 'basic__model', 'basic__name')
+
+
+@admin.register(models.TrackingList)
+class TrackingListAdmin(admin.ModelAdmin):
+    list_display = ('account', 'pid', 'model', 'public_address',
+                    'is_title_saved', 'edit_address')
+    list_filter = ('account', 'model')
+    search_fields = ('title', 'model')

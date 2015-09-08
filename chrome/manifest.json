@@ -14,10 +14,9 @@
     {
       "matches": ["*://*.alibaba.com/*"],
       "js": [
-        "jquery.js", "config.js", "nprogress.js", "urls.js", "nprogress_setup.js",
-        "utils.js", "command_plate.js", "string_score.min.js"
-      ],
-      "css": ["nprogress.css"]
+        "jquery.js", "config.js","urls.js", "ractive.min.js", "utils.js", 
+        "command_plate.js", "string_score.min.js"
+      ]
     },
     {
       "matches": [
@@ -26,6 +25,12 @@
         "*://hz.productposting.alibaba.com/product/editing.*"
       ],
       "js": ["up.js"]
+    },
+    {
+      "matches": [
+        "*://hz.productposting.alibaba.com/product/post_product_interface.*"
+      ],
+      "js": ["fill_title_key.js"]
     },
     {
       "matches": ["*://hz.my.data.alibaba.com/industry/keywords.*"],
@@ -53,12 +58,17 @@
     }
   ],
 
+  "web_accessible_resources": [
+    "get_login_id.js"
+  ],
+
   "permissions": [
     "tabs",
     "activeTab",
     "background",
     "downloads",
     "management",
+    "clipboardWrite",
     "*://*.aliimg.com/*",
     "*://127.0.0.1:*/*",
     "*://localhost:*/*",

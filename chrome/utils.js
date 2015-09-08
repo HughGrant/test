@@ -1,15 +1,13 @@
-function model_insert(model_name, data, success_msg, error_msg) {
-    $.ajax({
-        url: DOMAIN + model_name,
-        data: JSON.stringify(data),
-        type: 'POST',
-        success: function(data) {
-            alert(success_msg)
-        },
-        error: function(data) {
-            alert(error_msg)
-        }
-    })
+// var jq = document.createElement('script');
+// jq.src = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
+// document.getElementsByTagName('head')[0].appendChild(jq);
+
+function inject_script(file) {
+    var th = document.getElementsByTagName('head')[0];
+    var s = document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    s.setAttribute('src', file);
+    th.appendChild(s);
 }
 
 function open_url(url) {
@@ -38,4 +36,40 @@ function download_images() {
 
 function check_img(url) {
     open_url(url);
+}
+
+function fill_product_name(name) {
+    $('#productName').val(name);
+}
+
+function fill_keywords(keywords, basic_id) {
+    if (keywords.length < 3) {
+        collect_keywords(basic_id);
+        return false;
+    }
+
+    $('#addMoreKeywords').remove();
+    $('#smk-more-keywords-wrapper').show();
+    
+    var key1 = $('#productKeyword'),
+        key2 = $('#keywords2'),
+        key3 = $('#keywords3');
+
+    key1.val(keywords.shift());
+    key1.focus();
+    key2.val(keywords.shift());
+    key3.val(keywords.shift());
+
+    return true;
+}
+
+function move_down_to_submit() {
+    $('html, body').animate({
+        scrollTop: $("#submitFormBtnA").offset().top
+    }, 500);
+}
+
+function validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
 }

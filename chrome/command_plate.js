@@ -102,7 +102,7 @@ function fix_plate() {
 				var cmds = cmd.split(' ');
 				var new_cmds = [];
 				cmds.forEach(function(i) {
-					new_cmds.push(encodeURIComponent(i))
+					new_cmds.push(encodeURIComponent(i));
 				});
 				var url = SEARCH_PRODUCT_URL + new_cmds.join('+');
 				open_url(url);
