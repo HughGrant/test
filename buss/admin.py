@@ -101,7 +101,7 @@ class OrderAdmin(AutoUserAdmin):
     list_display = ('date', 'client', 'payments_rmb', 'po_list', 'prime_cost',
                     'shipping_cost', 'profit', 'logistic', 'ship_date')
     raw_id_fields = ('client', )
-    inlines = [ProductOrderInline, ExtraCostInline, PaymentInline]
+    inlines = [PaymentInline, ProductOrderInline, ExtraCostInline]
     actions = [make_month_profit]
 
 

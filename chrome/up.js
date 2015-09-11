@@ -136,14 +136,6 @@ function auto_fill_product(product) {
 		}
 		return false;
 	}
-
-	$('html, body').animate({
-        scrollTop: $("#submitFormBtnA").offset().top
-    }, 500);
-
-	// start to fill
-	// first name and three keywords
-	fill_product_name(product.name);
 	// attrs needs to fill
 	var attrs = [];
 	// attr's key
@@ -211,6 +203,21 @@ function auto_fill_rich_text(product) {
 	}, 2000);
 }
 
+window.addEventListener("upload_from_back", function(data) {
+	var email = ACCOUNT_ID_EMAIL_MAP[data.detail];
+	if (email) {
+	    upload_begin(email);
+	} else {
+		alert('帐户没有设置对应邮箱');
+	}
+}, false)
+
+function upload_begin(email) {
+	fill_title_keywords_by_email_model(email, product.model)
+	auto_fill_product(product);
+	auto_fill_rich_text(product);
+}
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	if (request.action == 'set_product') {
@@ -219,11 +226,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
 
 		$('#auto_fill').click(function() {
-			var re = fill_keywords(product.keywords, product.basic_id);
-			if (re) {
-				auto_fill_product(product);
-				auto_fill_rich_text(product);
-			}
+			inject_script(chrome.extension.getURL('get_login_id.js'));
 		});
 	}
 

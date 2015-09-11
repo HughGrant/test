@@ -21,17 +21,14 @@ class KeywordInline(admin.TabularInline):
 
 
 @admin.register(models.Basic)
-class BasicAdmin(admin.ModelAdmin):
+class BasicAdmin(AutoUserAdmin):
     inlines = [
-        KeywordInline,
         DifferentPriceInline,
-        AccesscoryInline
+        AccesscoryInline,
+        KeywordInline
     ]
-    ordering = ('cn_name', 'model', 'name')
-    # TODO: using a custom filter
-    # Filting products only belongs to this user
-    list_filter = ('cn_name', )
-    search_fields = ('name', 'cn_name', 'model')
+    exclude = ('user', )
+    ordering = list_filter = search_fields = ('cn_name', )
     list_display = (
         '__str__', 'price', 'has_accessory', 'has_video', 'keywords_count')
 
@@ -104,8 +101,23 @@ class FobPriceAdmin(admin.ModelAdmin):
         return perms
 
 
+# class AttrForm(forms.ModelForm):
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         qs = models.DifferentPrice.objects.values_list(
+#             'model', flat=True).distinct()
+#         self.fields['model'] = forms.ModelChoiceField(queryset=qs, required=False)
+
+#     class Meta:
+#         fields = ('model', 'name', 'value')
+#         model = models.Attr
+
+
 class AttrInline(admin.TabularInline):
     model = models.Attr
+    # form = AttrForm
+    ordering = ('name', 'model')
     extra = 0
 
 
@@ -114,19 +126,24 @@ class TitleInline(admin.TabularInline):
     extra = 0
 
 
+class RichTextInline(admin.StackedInline):
+    model = models.RichText
+    ordering = ('model', )
+    extra = 0
+
+
 @admin.register(models.Extend)
 class ExtendAdmin(AutoUserAdmin):
     inlines = [
+        RichTextInline,
         TitleInline,
         AttrInline
     ]
-    search_fields = ('basic__cn_name', 'basic__name', 'basic__model')
-    list_filter = ('basic__cn_name', )
+    raw_id_fields = ('basic', )
     exclude = ('user', )
-    ordering = ('basic__model', 'basic__name', 'basic__cn_name')
-    list_display = (
-        '__str__', 'has_rich_text', 'upload_button', 'titles_count',
-        'keywords_count')
+    search_fields = list_filter = ordering = ('basic__cn_name', )
+    list_display = ('__str__', 'quality_test', 'titles_count',
+                    'keywords_count', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':
@@ -168,9 +185,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Keyword)
 class KeywordAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'basic_cn_name', 'basic_model', 'count')
+    list_display = ('__str__', 'basic_cn_name', 'count')
     list_filter = ('basic__cn_name', )
-    search_fields = ('basic__cn_name', 'basic__model', 'basic__name')
+    search_fields = ('basic__cn_name', )
 
 
 @admin.register(models.TrackingList)

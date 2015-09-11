@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError, PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.utils.decorators import method_decorator
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from products.models import *
 
@@ -12,26 +13,25 @@ from products.models import *
 class CaptureView(View):
 
     def get(self, request):
-        jr = {'status': False, 'message': 'test ok'}
+        jr = {'status': False, 'message': ''}
         pk = request.GET.get('id')
-        if not pk:
-            jr['message'] = 'lack of id'
-            return JsonResponse(jr)
+        model = request.GET.get('model')
 
         ext = Extend.objects.get(pk=int(pk))
         data = {}
         data['extend_id'] = ext.id
         data['basic_id'] = ext.basic.id
-        data['name'] = ext.get_title()
-        data['keywords'] = ext.get_keywords()
+        data['model'] = model
         data['category'] = ext.category.slug_name().split('>')
 
         data['attrs'] = []
-        for attr in ext.attr_set.all():
+        for attr in ext.attr_set.filter(Q(model=model) | Q(model='')):
             data['attrs'].append([attr.name, attr.value])
+        data['attrs'].append(['Model Number', model])
 
-        data['consignment_term'] = '3-7 days based on destination by DHL/FedEx/UPS etc.'
-        data['packaging_desc'] = 'standard export package, safe and secure'
+        s = '3-7 days based on destination, shipping by DHL/FedEx/UPS etc.'
+        data['consignment_term'] = s
+        data['packaging_desc'] = 'standard export packaging, safe and secure'
         data['port'] = 'NingBo'
         default_payment_terms = 'T/T,Western Union,MoneyGram,PayPal'
         data['payment_terms'] = default_payment_terms.split(',')
@@ -47,7 +47,7 @@ class CaptureView(View):
         data['supply_quantity'] = ext.supply_ability.supply_quantity
         data['supply_unit'] = ext.supply_ability.supply_unit
         data['supply_period'] = ext.supply_ability.supply_period
-        data['rich_text'] = ext.rich_text.replace('{{title}}', data['name'], 1)
+        data['rich_text'] = ext.richtext_set.filter(model=model).get().content
 
         jr['status'] = True
         jr['data'] = data
@@ -114,9 +114,10 @@ class KeywordView(View):
         return JsonResponse({'status': True})
 
     def get(self, request):
-        basic_id = int(request.GET['basic_id'])
-        kws = Keyword.get_keywords(basic_id)
-        return JsonResponse(kws)
+        pass
+        # basic_id = int(request.GET['basic_id'])
+        # kws = Basic.objects.filter(pk=basic_id).get().keywords()
+        # return JsonResponse(kws)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)
@@ -131,13 +132,13 @@ class TitleKeyView(View):
 
     def get(self, request):
         model = request.GET['model']
+        email = request.GET['email']
         data = {'name': 'no model find %s' % model, 'keywords': []}
-        basic = Basic.objects.filter(model=model)
-        if basic.exists():
-            basic = basic.get()
-            ext = basic.extend_set.get()
-            data['name'] = ext.get_title()
-            data['keywords'] = ext.get_keywords()
+        rt = RichText.objects.filter(model=model)
+        if rt.exists():
+            ext = rt.get().extend
+            data['name'] = ext.title_by_email_model(email, model)
+            data['keywords'] = ext.basic.keywords()
         return JsonResponse(data)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))
@@ -156,16 +157,24 @@ class TrackingListView(View):
         tls = []
         edit = 0
         for p in plist:
-            t = TrackingList.objects.filter(
-                    account=p['account'], pid=p['pid'])
-            if t.exists():
-                t = t.get()
-                if t.title != p['title'] or t.model != p['model']:
-                    t.title = p['title']
-                    t.model = p['model']
+            q = TrackingList.objects.filter(
+                account=p['account'], title=p['title'], model=p['model'])
+            if q.exists():
+                t = q.get()
+                # first, set pid for those uploaded product
+                if not t.pid:
+                    t.pid = p['pid']
                     t.save()
                     edit += 1
+                else:
+                    # second, upate by pid for already tracked product
+                    if t.title != p['title'] or t.model != p['model']:
+                        t.title = p['title']
+                        t.model = p['model']
+                        t.save()
+                        edit += 1
             else:
+                # last, append these not tracked products
                 tls.append(TrackingList(**p))
         if tls:
             TrackingList.objects.bulk_create(tls)

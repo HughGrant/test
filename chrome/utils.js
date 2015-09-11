@@ -38,11 +38,33 @@ function check_img(url) {
     open_url(url);
 }
 
+function copy_title() {
+    var input = document.getElementById('productName');
+    input.focus();
+    input.select();
+    document.execCommand('copy');
+}
+
 function fill_product_name(name) {
     $('#productName').val(name);
 }
 
+function fill_title_keywords_by_email_model(email, model) {
+    var data = {model:model, email: email};
+    $.get(TITLE_KEY_URL, data).done(function(data) {
+        fill_product_name(data.name);
+        copy_title();
+        var re = fill_keywords(data.keywords);
+        if (re) {
+            move_down_to_submit();
+        }
+    }).fail(function() {
+        alert('出错啦');
+    });
+}
+
 function fill_keywords(keywords, basic_id) {
+    console.log(keywords);
     if (keywords.length < 3) {
         collect_keywords(basic_id);
         return false;
