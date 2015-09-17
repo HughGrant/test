@@ -73,6 +73,7 @@ function check_box(elem, values) {
 			if (v == d) {
 				find = true;
 				elem.find('input:eq(' + position + ')').prop('checked', true);
+				return;
 			}
 		})
 		if (find == false) {
@@ -151,6 +152,8 @@ function auto_fill_product(product) {
 		// first rule out the attr we don't care
 		if (attr_name == 'Place of Origin') {
 			$('[name=contryValue]').val('CN-China (Mainland)');
+			// maybe create a input to mimic a select
+			$('[name="provinceValue"]').val('GUA-Guangdong');
 			return;
 		}
 		// clear some data that's already there
@@ -168,6 +171,7 @@ function auto_fill_product(product) {
 		}
 	});
 	// loop through all attrs to finish the unfilled attr
+	$('.del-custom-attr.icon-del').click();
 	product.attrs.forEach(function(attr) {
 		if (!attr[2]) {
 			add_more_attr(attr[0], attr[1]);
