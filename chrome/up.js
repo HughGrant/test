@@ -39,55 +39,54 @@ function select_by_text(elem, text) {
 }
 
 function check_payment_box(values) {
-	values.map(function(v) {
-		var v = $.trim(v);
+	$('.paymentMethod-count input').prop('checked', false);
+	left = []
+	values.forEach(function(v) {
+		var v = v.trim();
 		var input = $('input[value="' + v + '"]');
-		if (input) {
+		if (input.length) {
 			input.prop('checked', true);
 		} else {
-			$('#paymentMethodOther').prop('checked', true);
-			var pm = $('#paymentMethodOtherDesc');
-			var pre = pm.val();
-			var now = pre + ',' + 'v';
-			pm.val(now);
+			left.push(v)
 		}
 	})
+
+	if (left.length) {
+		$('label[for="paymentMethodOther"]').click()
+		$('#paymentMethodOtherDesc').val(left.join(','))
+	}
 }
 
 function check_box(elem, values) {
 	// elem = $(elem);
 	// get all available default options 
-	var defaults = elem.find('label').map(function() {
-		return $(this).text().trim();
+	var defaults = [];
+	elem.find('label').map(function() {
+		defaults.push($(this).text().trim());
 	});
 
 	var left = [];
-	for (var i = values.length - 1; i >= 0; i--) {
+	values.forEach(function(v) {
 		var find = false;
-		for (var j = defaults.length - 1; j >= 0; j--) {
-			if (values[i] == defaults[j]) {
+		var v = v.trim();
+		defaults.forEach(function(d, position) {
+			if (v == d) {
 				find = true;
-				elem.find('input:eq(' + j + ')').prop('checked', true);
-				break;
+				elem.find('input:eq(' + position + ')').prop('checked', true);
 			}
-		}
+		})
 		if (find == false) {
-			left.push(values[i]);
+			left.push(v);
 		}
-	}
+	})
 
 	if (left.length != 0) {
-		var other = elem.find('input:eq(0)');
-		var name = other.attr('name');
-		var input = create_other_input(name, left.join(', '));
-		other.prop('checked', true);
-		// where to put it
-		elem.find('ul').after(input);
+		elem.find('input:eq(0)').parent().click();
+		elem.find('input[type="text"]').val(left.join(','));
 	}
 }
 
 function fill_attr(elem, val) {
-	var elem = $(elem);
 	if (elem.find('input[type=text]').size() > 0) {
 		elem.find('input').val(val);
 	} else if (elem.find('select').size() > 0) {
@@ -148,16 +147,24 @@ function auto_fill_product(product) {
 	attrs.forEach(function(attr_name, key_index) {
 		// get attr value from product's attr list by the key
 		var attr_val = product.get_attr_val(attr_name);
+		var values_tag = $(values[key_index]);
 		// first rule out the attr we don't care
 		if (attr_name == 'Place of Origin') {
 			$('[name=contryValue]').val('CN-China (Mainland)');
 			return;
 		}
+		// clear some data that's already there
+		if (attr_name == 'Packaging Material') {
+			values_tag.find('input[type="checkbox"]').prop('checked', false);
+		}
+		if (attr_name == 'Application') {
+			values_tag.find('input[type="checkbox"]').prop('checked', false);
+		}
 		// start to fill if you get attr value
 		if (attr_val !== false) {
-			fill_attr(values[key_index], attr_val);
+			fill_attr(values_tag, attr_val);
 		} else {
-			mark_empty_attr(values[key_index]);
+			mark_empty_attr(values_tag);
 		}
 	});
 	// loop through all attrs to finish the unfilled attr

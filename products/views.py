@@ -10,6 +10,70 @@ from django.contrib.auth.decorators import login_required
 from products.models import *
 
 
+class UpdateByModel(View):
+
+    def get(self, request):
+        jr = {'status': True, 'message': ''}
+        data = {}
+        email = request.GET['email']
+        pid = request.GET['pid']
+        model = request.GET.get('model')
+
+        rt = RichText.objects.filter(model=model)
+        if not rt.exists():
+            jr['status'] = False
+            jr['message'] = '没有型号产品%s的正文' % model
+            return JsonResponse(jr)
+
+        rt = rt.get()
+        ext = rt.extend
+        title = data['name'] = ext.title_by_email_model(email, model, pid)
+        data['keywords'] = ext.basic.keywords()
+        data['model'] = model
+        data['extend_id'] = ext.id
+        data['basic_id'] = ext.basic.id
+        data['category'] = ext.category.slug_name().split('>')
+
+        data['attrs'] = []
+        for attr in ext.attr_set.filter(Q(model=model) | Q(model='')):
+            data['attrs'].append([attr.name, attr.value])
+        data['attrs'].append(['Model Number', model])
+
+        s = '3-7 days based on destination, shipping by DHL/FedEx/UPS etc.'
+        data['consignment_term'] = s
+        data['packaging_desc'] = 'standard export packaging, safe and secure'
+        data['port'] = 'NingBo'
+        default_payment_terms = 'T/T,Western Union,MoneyGram,PayPal'
+        data['payment_terms'] = default_payment_terms.split(',')
+
+        data['min_order_quantity'] = ext.moq.min_order_quantity
+        data['min_order_unit'] = ext.moq.min_order_unit
+
+        # USD
+        data['money_type'] = 1
+        dp = ext.basic.differentprice_set.filter(model=model)[0]
+        data['price_range_min'] = dp.min_profit()
+        data['price_range_max'] = dp.max_profit()
+        # set/sets
+        data['price_unit'] = 20
+
+        data['supply_quantity'] = ext.supply_ability.supply_quantity
+        data['supply_unit'] = ext.supply_ability.supply_unit
+        data['supply_period'] = ext.supply_ability.supply_period
+        data['rich_text'] = rt.content.replace('{{title}}', title)
+
+        jr['data'] = data
+        return JsonResponse(jr)
+
+    def post(self, request):
+        pass
+
+    @method_decorator(login_required(login_url='/login_required_jr/'))
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 class CaptureView(View):
 
     def get(self, request):
@@ -39,10 +103,13 @@ class CaptureView(View):
         data['min_order_quantity'] = ext.moq.min_order_quantity
         data['min_order_unit'] = ext.moq.min_order_unit
 
-        data['money_type'] = ext.fob_price.money_type
-        data['price_range_min'] = ext.fob_price.price_range_min
-        data['price_range_max'] = ext.fob_price.price_range_max
-        data['price_unit'] = ext.fob_price.price_unit
+        # USD
+        data['money_type'] = 1
+        dp = ext.basic.differentprice_set.filter(model=model)[0]
+        data['price_range_min'] = dp.min_profit()
+        data['price_range_max'] = dp.max_profit()
+        # set/sets
+        data['price_unit'] = 20
 
         data['supply_quantity'] = ext.supply_ability.supply_quantity
         data['supply_unit'] = ext.supply_ability.supply_unit
@@ -62,19 +129,10 @@ class CaptureView(View):
 
         ext = Extend(user=request.user)
         ext.category = Category.auto_create(pd['category'])
-        ext.port = pd['port']
-        if pd['rich_text']:
-            ext.rich_text = pd['rich_text']
 
         ext.moq = MOQ.objects.get_or_create(
             min_order_quantity=pd['min_order_quantity'],
             min_order_unit=pd['min_order_unit'])[0]
-
-        ext.fob_price = FobPrice.objects.get_or_create(
-            money_type=pd['money_type'],
-            price_range_min=pd['price_range_min'],
-            price_range_max=pd['price_range_max'],
-            price_unit=pd['price_unit'])[0]
 
         ext.supply_ability = SupplyAbility.objects.get_or_create(
             supply_quantity=pd['supply_quantity'],
@@ -156,6 +214,7 @@ class TrackingListView(View):
         plist = json.loads(request.POST['json'])
         tls = []
         edit = 0
+        edit_id = 0
         for p in plist:
             q = TrackingList.objects.filter(
                 account=p['account'], title=p['title'], model=p['model'])
@@ -165,7 +224,7 @@ class TrackingListView(View):
                 if not t.pid:
                     t.pid = p['pid']
                     t.save()
-                    edit += 1
+                    edit_id += 1
                 else:
                     # second, upate by pid for already tracked product
                     if t.title != p['title'] or t.model != p['model']:
@@ -178,7 +237,7 @@ class TrackingListView(View):
                 tls.append(TrackingList(**p))
         if tls:
             TrackingList.objects.bulk_create(tls)
-        msg = '成功检索并添加%d个, 更新%d产品' % (len(tls), edit)
+        msg = '添加%d个, 更新%d个, 更新ID%d个' % (len(tls), edit, edit_id)
         return JsonResponse({'status': True, 'msg': msg})
 
     @method_decorator(login_required(login_url='/login_required_jr/'))

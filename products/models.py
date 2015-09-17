@@ -11,21 +11,25 @@ class TrackingList(models.Model):
     model = models.CharField('型号', max_length=50)
 
     def __str__(self):
-        return "%s %s(%s) - %s" % (
-            self.account, self.title, self.pid, self.model)
+        return "%s %s - %s" % (
+            self.account, self.title, self.model)
 
     def public_address(self):
-        link = 'http://www.alibaba.com/product-detail/'
-        link += '-'.join(self.title.split(' '))
-        link += '_%s.html' % self.pid
-        return '<a href="%s" target="_blank">%s</a>' % (link, self.title)
+        if self.pid:
+            link = 'http://www.alibaba.com/product-detail/'
+            link += '-'.join(self.title.split(' '))
+            link += '_%s.html' % self.pid
+            return '<a href="%s" target="_blank">%s</a>' % (link, self.title)
+        return self.title
     public_address.allow_tags = True
     public_address.short_description = '产品链接'
 
     def edit_address(self):
-        link = 'http://hz.productposting.alibaba.com/product/editing.htm?id='
-        link += self.pid
-        return '<a href="%s" target="_blank">编辑</a>' % link
+        if self.pid:
+            l = 'http://hz.productposting.alibaba.com/product/editing.htm?id='
+            l += self.pid
+            return '<a href="%s" target="_blank">编辑</a>' % l
+        return ''
     edit_address.allow_tags = True
     edit_address.short_description = '编辑链接'
 
@@ -164,7 +168,7 @@ class DifferentPrice(models.Model):
     model = models.CharField('型号', blank=True, max_length=200)
     difference = models.CharField('描述', max_length=100)
     price = models.FloatField('成本(RMB)', default=0)
-    # profit = models.FloatField('利润', default=0)
+    profit = models.FloatField('利润', default=0)
     size = models.CharField('尺寸(CM)', blank=True, max_length=200)
     net_weight = models.FloatField('净重(KG)', default=0)
     gross_weight = models.FloatField('毛重(KG)', default=0)
@@ -173,6 +177,16 @@ class DifferentPrice(models.Model):
     def __str__(self):
         return '%s(%s)-%s: %s' % (
             self.basic.cn_name, self.model, self.difference, self.price)
+
+    def min_profit(self):
+        if self.profit:
+            return round((self.price + self.profit) / 6)
+        return 0
+
+    def max_profit(self):
+        if self.profit:
+            return round((self.price + self.profit) * 1.1 / 6)
+        return 0
 
     def weight(self):
         return max(self.net_weight, self.gross_weight, self.volume_weight)
@@ -227,7 +241,7 @@ class Extend(models.Model):
     user = models.ForeignKey(User)
     category = models.ForeignKey('Category', verbose_name='产品分类')
     moq = models.ForeignKey('MOQ', verbose_name='最小起订量')
-    fob_price = models.ForeignKey('FobPrice', verbose_name='FOB报价')
+    # fob_price = models.ForeignKey('FobPrice', verbose_name='FOB报价')
     supply_ability = models.ForeignKey('SupplyAbility', verbose_name='供贷能力')
     # the following attr are fixed by default value
     # port, payment_terms, consignment_term, packaging_desc
@@ -267,11 +281,11 @@ class Extend(models.Model):
     def title_by_model(self, model):
         if self.head_set.count() == 0:
             return '没有可用的标题 速去添加'
-        r = random.randint(0, self.head_set.count())
-        head = self.head_set[r]
+        r = random.randint(0, self.head_set.count() - 1)
+        head = self.head_set.all()[r]
         return head.name + ' ' + model
 
-    def title_by_email_model(self, email, model):
+    def title_by_email_model(self, email, model, pid=None):
         tl = TrackingList.objects.filter(account=email, model=model)
         if tl.count() == 0:
             return self.title_by_model(model)
@@ -284,9 +298,20 @@ class Extend(models.Model):
         usable = heads_set - set(used_set)
         if len(usable) == 0:
             return '标题不够用了，请手动添加'
+
         title = usable.pop() + ' ' + model
-        t = TrackingList(
-            account=email, title=title, model=model)
+        if pid:
+            t = TrackingList.objects.filter(pid=pid, account=email)
+            if t.exists():
+                t = t.get()
+                t.title = title
+                t.model = model
+            else:
+                t = TrackingList(
+                    pid=pid, account=email, title=title, model=model)
+        else:
+            t = TrackingList(
+                pid=pid, account=email, title=title, model=model)
         t.save()
         return title
 
@@ -319,26 +344,26 @@ class MOQ(models.Model):
         verbose_name = verbose_name_plural = '最小起订量'
 
 
-class FobPrice(models.Model):
-    money_type = models.IntegerField('货币类型', default=1, choices=CURRENCY_TYPE)
-    price_range_min = models.FloatField('最低报价', default=0)
-    price_range_max = models.FloatField('最高报价', default=0)
-    price_unit = models.IntegerField('报价单位', default=20, choices=UNIT_TYPE)
+# class FobPrice(models.Model):
+#     money_type = models.IntegerField('货币类型', default=1, choices=CURRENCY_TYPE)
+#     price_range_min = models.FloatField('最低报价', default=0)
+#     price_range_max = models.FloatField('最高报价', default=0)
+#     price_unit = models.IntegerField('报价单位', default=20, choices=UNIT_TYPE)
 
-    def __str__(self):
-        return '%s %s-%s %s' % (
-            self.get_money_type_display(),
-            self.price_range_min,
-            self.price_range_max,
-            self.get_price_unit_display())
+#     def __str__(self):
+#         return '%s %s-%s %s' % (
+#             self.get_money_type_display(),
+#             self.price_range_min,
+#             self.price_range_max,
+#             self.get_price_unit_display())
 
-    class Meta:
-        unique_together = (
-            'money_type',
-            'price_range_min',
-            'price_range_max',
-            'price_unit')
-        verbose_name = verbose_name_plural = 'FOB报价'
+#     class Meta:
+#         unique_together = (
+#             'money_type',
+#             'price_range_min',
+#             'price_range_max',
+#             'price_unit')
+#         verbose_name = verbose_name_plural = 'FOB报价'
 
 
 class SupplyAbility(models.Model):

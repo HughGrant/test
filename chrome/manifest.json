@@ -41,6 +41,10 @@
       "js": ["product_manage.js"]
     },
     {
+      "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
+      "js": ["update_product.js"]
+    },
+    {
       "matches": ["*://*.alibaba.com/product-detail/*"],
       "js": ["jquery.js", "config.js", "scratch.js"]
     },

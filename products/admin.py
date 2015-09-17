@@ -76,29 +76,29 @@ class SupplyAbilityAdmin(admin.ModelAdmin):
         return perms
 
 
-class FobPriceForm(forms.ModelForm):
+# class FobPriceForm(forms.ModelForm):
 
-    def clean(self):
-        if models.FobPrice.objects.filter(**self.cleaned_data).exists():
-            raise ValidationError('已存在，无需重复创建')
+#     def clean(self):
+#         if models.FobPrice.objects.filter(**self.cleaned_data).exists():
+#             raise ValidationError('已存在，无需重复创建')
 
-    class Meta:
-        fields = (
-            'money_type',
-            'price_range_min',
-            'price_range_max',
-            'price_unit')
-        model = models.FobPrice
+#     class Meta:
+#         fields = (
+#             'money_type',
+#             'price_range_min',
+#             'price_range_max',
+#             'price_unit')
+#         model = models.FobPrice
 
 
-@admin.register(models.FobPrice)
-class FobPriceAdmin(admin.ModelAdmin):
-    form = FobPriceForm
+# @admin.register(models.FobPrice)
+# class FobPriceAdmin(admin.ModelAdmin):
+#     form = FobPriceForm
 
-    def get_model_perms(self, request):
-        perms = super().get_model_perms(request)
-        perms['hide_from_index'] = True
-        return perms
+#     def get_model_perms(self, request):
+#         perms = super().get_model_perms(request)
+#         perms['hide_from_index'] = True
+#         return perms
 
 
 # class AttrForm(forms.ModelForm):
@@ -195,4 +195,4 @@ class TrackingListAdmin(admin.ModelAdmin):
     list_display = ('account', 'pid', 'model', 'public_address',
                     'is_title_saved', 'edit_address')
     list_filter = ('account', 'model')
-    search_fields = ('title', 'model')
+    search_fields = ('title', 'model', 'pid')

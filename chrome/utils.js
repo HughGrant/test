@@ -50,8 +50,7 @@ function fill_product_name(name) {
 }
 
 function fill_title_keywords_by_email_model(email, model) {
-    var data = {model:model, email: email};
-    $.get(TITLE_KEY_URL, data).done(function(data) {
+    $.get(TITLE_KEY_URL, {email, model}).done(function(data) {
         fill_product_name(data.name);
         copy_title();
         var re = fill_keywords(data.keywords);
@@ -64,7 +63,6 @@ function fill_title_keywords_by_email_model(email, model) {
 }
 
 function fill_keywords(keywords, basic_id) {
-    console.log(keywords);
     if (keywords.length < 3) {
         collect_keywords(basic_id);
         return false;
@@ -94,4 +92,19 @@ function move_down_to_submit() {
 function validateEmail(email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
+}
+
+function find_model() {
+    var x = $('.attr-title').map(function(i) {
+        if ($(this).html() == 'Model Number') {
+            var model = $('#productAttribute').find('.ui-form-control')[i];
+            return $(model).find('input').val();
+        }
+    });
+
+    if (x.length == 1) {
+        return x[0];
+    } else {
+        return false;
+    }
 }

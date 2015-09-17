@@ -18,16 +18,11 @@ window.addEventListener("fill_product_title_keywords", function(data) {
 }, false)
 
 function fill_title_keywords_begin(email) {
-	var x = $('.attr-title').map(function(i) {
-		if ($(this).html() == 'Model Number') {
-			var model = $('#productAttribute').find('.ui-form-control')[i];
-			return $(model).find('input').val();
-		}
-	});
+	var model = find_model();
 
-	if (x.length == 1) {
-		fill_title_keywords_by_email_model(email, x[0])
-	} else {
+	if (model === false) {
 		alert('没有型号');
+	} else {
+		fill_title_keywords_by_email_model(email, model)
 	}
 }

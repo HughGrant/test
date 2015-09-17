@@ -146,7 +146,7 @@ class Payment(models.Model):
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
         '货币类型', default=1, choices=CURRENCY_TYPE)
-    exchange_rate = models.FloatField('对人民币汇率', default=6.16)
+    exchange_rate = models.FloatField('对人民币汇率', default=6.34)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
     date = models.DateField('日期')
