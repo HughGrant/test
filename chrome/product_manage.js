@@ -49,12 +49,23 @@ window.addEventListener("tracking_products", function(data) {
 }, false)
 
 function collect_product_list(account) {
-	var ids = []
+	var ids = [];
+	var titles = [];
 	$('.manager-list-col-title>a').map(function() {
 		var id = $(this).attr('href').split('id=')[1];
 		var title = $(this).attr('title')
+		titles.push(title);
 		ids.push({account: account, pid: id, title: title, model: ''});
 	});
+
+	// detect duplicate titles
+	titles = titles.sort()
+	for (var i = 0; i < titles.length - 1; i++) {
+		if (titles[i + 1] === titles[i]) {
+			alert('重复标题:' + titles[i]);
+			return false;
+		}
+	}
 
 	var models = []
 	$('.icon-list>i').map(function() {

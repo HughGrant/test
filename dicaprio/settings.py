@@ -21,11 +21,11 @@ SECRET_KEY = '!1=!0@tr#w(1rr73_5+7@06_^*3a0$8%r^r!9ca8rw(!4ueioj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+# TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+# TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 CSRF_COOKIE_HTTPONLY = True
 
@@ -35,6 +35,30 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 X_FRAME_OPTIONS = 'DENY'
 # Application definition
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.admin',

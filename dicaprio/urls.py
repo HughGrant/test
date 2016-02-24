@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -35,11 +35,10 @@ def user_logout(request):
 def login_required_jr(request):
     return JsonResponse({'status': False, 'message': '请先登入'})
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^products/', include('products.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chrome_login/', ChromeLoginView.as_view(), name='chrome_login'),
     url(r'^login_required_jr/', login_required_jr, name='login_required_jr'),
     url(r'^logout/', user_logout, name='user_logout'),
-)
+]

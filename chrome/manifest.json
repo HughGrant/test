@@ -69,7 +69,6 @@
   "permissions": [
     "tabs",
     "activeTab",
-    "background",
     "downloads",
     "management",
     "clipboardWrite",

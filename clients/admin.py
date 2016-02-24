@@ -11,6 +11,12 @@ class CountryAdmin(admin.ModelAdmin):
     list_filter = ('voltage', 'socket')
 
 
+class AddressInline(admin.StackedInline):
+    model = models.Address
+    raw_id_fields = ('country', )
+    extra = 0
+
+
 class ClientCountryFilter(admin.SimpleListFilter):
     title = '国家'
     parameter_name = 'country'
@@ -31,6 +37,7 @@ class ClientCountryFilter(admin.SimpleListFilter):
 @admin.register(models.Client)
 class ClientAdmin(AutoUserAdmin):
     exclude = ('user', )
+    inlines = [AddressInline, ]
     search_fields = ('name', 'email')
     raw_id_fields = ('country', )
     list_display = ('__str__', 'email')

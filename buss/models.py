@@ -25,6 +25,8 @@ class Order(models.Model):
         descriptions = []
         for po in self.productorder_set.all():
             descriptions.append(po.description())
+        for ec in self.extracost_set.all():
+            descriptions.append(ec.discription)
         return '<br><br>'.join(descriptions)
     po_list.short_description = '定单内容'
     po_list.allow_tags = True
@@ -73,7 +75,16 @@ class Order(models.Model):
         for po in self.productorder_set.all():
             cost += po.prime_cost()
         return cost
-    prime_cost.short_description = '贷物成本(RMB)'
+
+    def prime_cost_split(self):
+        cost = []
+        for po in self.productorder_set.all():
+            cost.append(str(po.prime_cost()))
+        for ec in self.extracost_set.all():
+            cost.append(str(ec.cost))
+        return '<br><br>'.join(cost)
+    prime_cost_split.allow_tags = True
+    prime_cost_split.short_description = '贷物成本(RMB)'
 
     def prime_excel_cost(self):
         cost = []
@@ -104,7 +115,7 @@ class Order(models.Model):
         return '%s-定单ID:%s' % (self.client.__str__(), self.id)
 
     class Meta:
-        verbose_name = verbose_name_plural = '定单'
+        verbose_name = verbose_name_plural = '定单信息'
 
 
 class ExtraCost(models.Model):
@@ -146,7 +157,7 @@ class Payment(models.Model):
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
         '货币类型', default=1, choices=CURRENCY_TYPE)
-    exchange_rate = models.FloatField('对人民币汇率', default=6.34)
+    exchange_rate = models.FloatField('对人民币汇率', default=6.4)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
     date = models.DateField('日期')
@@ -155,9 +166,15 @@ class Payment(models.Model):
         verbose_name = verbose_name_plural = '付款信息'
 
     def rmb(self):
-        m = self.collected_money * self.exchange_rate
+        # RMB converting rule
+        m = self.collected_money
+        if self.currency_type != 2:
+            m = self.collected_money * self.exchange_rate
+
         if self.payment_method == 1:
             m /= 1.04
+        if self.payment_method == 9:
+            m /= 1.05
         return float("%.2f" % m)
     rmb.short_description = '折RMB实际收款额'
 

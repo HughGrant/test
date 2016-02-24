@@ -28,9 +28,10 @@ PAYMENT_METHOD = (
     (3, 'T/T'),
     (4, '国内银行转账'),
     (5, 'L/C'),
-    (6, 'D/A'),
+    (6, '信保订单'),
     (7, 'D/P'),
     (8, 'MoneyGram'),
+    (9, '信用卡'),
 )
 
 UNIT_TYPE_PLURAL = (

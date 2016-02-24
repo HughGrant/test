@@ -19,16 +19,21 @@ class UpdateByModel(View):
         pid = request.GET['pid']
         model = request.GET.get('model')
 
-        rt = RichText.objects.filter(model=model)
-        if not rt.exists():
+        df = DifferentPrice.objects.filter(model=model)
+        if not df.exists():
+            jr['status'] = False
+            jr['message'] = '没有产品型号:%s' % model
+            return JsonResponse(jr)
+
+        ext = df.get().extend
+
+        if not ext.content:
             jr['status'] = False
             jr['message'] = '没有型号产品%s的正文' % model
             return JsonResponse(jr)
 
-        rt = rt.get()
-        ext = rt.extend
         title = data['name'] = ext.title_by_email_model(email, model, pid)
-        data['keywords'] = ext.basic.keywords()
+        data['keywords'] = ext.keywords()
         data['model'] = model
         data['extend_id'] = ext.id
         data['basic_id'] = ext.basic.id
@@ -60,7 +65,7 @@ class UpdateByModel(View):
         data['supply_quantity'] = ext.supply_ability.supply_quantity
         data['supply_unit'] = ext.supply_ability.supply_unit
         data['supply_period'] = ext.supply_ability.supply_period
-        data['rich_text'] = rt.content.replace('{{title}}', title)
+        data['rich_text'] = ext.content.replace('{{title}}', title)
 
         jr['data'] = data
         return JsonResponse(jr)
@@ -89,9 +94,8 @@ class CaptureView(View):
         data['category'] = ext.category.slug_name().split('>')
 
         data['attrs'] = []
-        for attr in ext.attr_set.filter(Q(model=model) | Q(model='')):
+        for attr in ext.attr_set.all():
             data['attrs'].append([attr.name, attr.value])
-        data['attrs'].append(['Model Number', model])
 
         s = '3-7 days based on destination, shipping by DHL/FedEx/UPS etc.'
         data['consignment_term'] = s
@@ -114,7 +118,7 @@ class CaptureView(View):
         data['supply_quantity'] = ext.supply_ability.supply_quantity
         data['supply_unit'] = ext.supply_ability.supply_unit
         data['supply_period'] = ext.supply_ability.supply_period
-        data['rich_text'] = ext.richtext_set.filter(model=model).get().content
+        data['rich_text'] = ext.content
 
         jr['status'] = True
         jr['data'] = data
@@ -192,11 +196,11 @@ class TitleKeyView(View):
         model = request.GET['model']
         email = request.GET['email']
         data = {'name': 'no model find %s' % model, 'keywords': []}
-        rt = RichText.objects.filter(model=model)
-        if rt.exists():
-            ext = rt.get().extend
-            data['name'] = ext.title_by_email_model(email, model)
-            data['keywords'] = ext.basic.keywords()
+        df = DifferentPrice.objects.filter(model=model)
+        if df.exists():
+            ext = df.get().extend
+            data['name'] = ext.title_by_model(model)
+            data['keywords'] = ext.keywords()
         return JsonResponse(data)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))
@@ -236,6 +240,8 @@ class TrackingListView(View):
                 # last, append these not tracked products
                 tls.append(TrackingList(**p))
         if tls:
+            for t in tls:
+                print(t.pid)
             TrackingList.objects.bulk_create(tls)
         msg = '添加%d个, 更新%d个, 更新ID%d个' % (len(tls), edit, edit_id)
         return JsonResponse({'status': True, 'msg': msg})

@@ -5,6 +5,7 @@ $(document).keydown(function(event) {
 	
 	if (event.ctrlKey) {
 		if (event.keyCode == 81) {
+			// CTRL + Q
 			toggle_plate();
 		}
 	}

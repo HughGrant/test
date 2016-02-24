@@ -47,25 +47,10 @@ class TrackingList(models.Model):
 class Basic(models.Model):
     user = models.ForeignKey(User)
     cn_name = models.CharField('中文名', blank=True, max_length=200)
-    video = models.CharField('视频', blank=True, max_length=200)
     bak = models.TextField('备注', blank=True, max_length=200)
 
     def __str__(self):
         return self.cn_name
-
-    def keywords(self):
-        total = self.keyword_set.count()
-        if not total:
-            return []
-        keywords = self.keyword_set.order_by('count')
-        indexs = random.sample(range(total//2, total - 1), 3)
-        kws = []
-        for index in indexs:
-            kw = keywords[index]
-            kws.append(kw.word)
-            kw.count += 1
-            kw.save()
-        return kws
 
     def price(self):
         qs = DifferentPrice.objects.filter(basic_id=self.id)
@@ -76,39 +61,21 @@ class Basic(models.Model):
     price.short_description = '报价'
     price.allow_tags = True
 
-    def has_accessory(self):
-        return Accessory.objects.filter(basic_id=self.id).exists()
-    has_accessory.short_description = '配件'
-    has_accessory.boolean = True
-
-    def has_video(self):
-        return self.video != ''
-    has_video.short_description = '视频'
-    has_video.boolean = True
-
-    def keywords_count(self):
-        return self.keyword_set.count()
-    keywords_count.short_description = '可用关键字数量'
-
     class Meta:
-        verbose_name = verbose_name_plural = '产品基本信息'
+        verbose_name = verbose_name_plural = '基本信息'
 
 
 class Keyword(models.Model):
-    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
-    word = models.CharField('关键字', max_length=200)
-    count = models.IntegerField('使用计数', default=0)
+    extend = models.ForeignKey('Extend', verbose_name='详细信息')
+    word = models.CharField('内容', max_length=200)
+    count = models.IntegerField('计数', default=0)
 
     def __str__(self):
-        return "%s-%s" % (self.basic.cn_name, self.word)
-
-    def basic_cn_name(self):
-        return self.basic.cn_name
-    basic_cn_name.short_description = '所属产品'
+        return "%s-%s" % (self.word, self.count)
 
     class Meta:
-        unique_together = ('basic', 'word')
-        verbose_name = verbose_name_plural = '产品关键字'
+        unique_together = ('extend', 'word')
+        verbose_name = verbose_name_plural = '关键字'
 
 
 class Category(models.Model):
@@ -152,7 +119,7 @@ class Category(models.Model):
 
 
 class Accessory(models.Model):
-    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
+    basic = models.ForeignKey('Basic', verbose_name='基本信息')
     difference = models.CharField('描述', max_length=100)
     price = models.FloatField('价钱(RMB)', default=0)
 
@@ -164,11 +131,12 @@ class Accessory(models.Model):
 
 
 class DifferentPrice(models.Model):
-    basic = models.ForeignKey('Basic', verbose_name='产品基本信息')
+    basic = models.ForeignKey('Basic', verbose_name='基本信息')
     model = models.CharField('型号', blank=True, max_length=200)
     difference = models.CharField('描述', max_length=100)
     price = models.FloatField('成本(RMB)', default=0)
     profit = models.FloatField('利润', default=0)
+    video = models.CharField('视频', blank=True, max_length=200)
     size = models.CharField('尺寸(CM)', blank=True, max_length=200)
     net_weight = models.FloatField('净重(KG)', default=0)
     gross_weight = models.FloatField('毛重(KG)', default=0)
@@ -196,12 +164,11 @@ class DifferentPrice(models.Model):
             self.model, self.difference, self.price, self.weight(), self.size)
 
     class Meta:
-        verbose_name = verbose_name_plural = '产品差异价'
+        verbose_name = verbose_name_plural = '差异价'
 
 
 class Attr(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
-    model = models.CharField('型号', blank=True, max_length=200)
+    extend = models.ForeignKey('Extend', verbose_name='详细信息')
     name = models.CharField('属性名', max_length=100)
     value = models.CharField('属性值', max_length=200)
 
@@ -209,40 +176,30 @@ class Attr(models.Model):
         return '%s: %s' % (self.name, self.value)
 
     class Meta:
-        verbose_name = verbose_name_plural = '产品共有属性'
+        verbose_name = verbose_name_plural = '属性'
 
 
-class Head(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='产品详细信息')
-    name = models.CharField('标题', blank=True, max_length=200)
-
+class Title(models.Model):
+    extend = models.ForeignKey('Extend', verbose_name='详细信息')
+    name = models.CharField('内容', blank=True, max_length=200)
+    count = models.IntegerField('计数', default=0)
     def __str__(self):
         return self.name
 
     class Meta:
         unique_together = ('extend', 'name')
-        verbose_name = verbose_name_plural = '产品标题'
-
-
-class RichText(models.Model):
-    extend = models.ForeignKey('Extend', null=True, verbose_name='产品详细信息')
-    model = models.CharField('型号', blank=True, max_length=200)
-    content = models.TextField('产品正文', blank=True, max_length=100000)
-
-    def __str__(self):
-        return self.extend.basic.__str__() + '-' + self.model
-
-    class Meta:
-        verbose_name = verbose_name_plural = '产品正文'
+        verbose_name = verbose_name_plural = '标题'
 
 
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
+    different_price = models.ForeignKey(
+        'DifferentPrice', null=True, verbose_name='差异价')
     user = models.ForeignKey(User)
-    category = models.ForeignKey('Category', verbose_name='产品分类')
+    category = models.ForeignKey('Category', verbose_name='分类')
     moq = models.ForeignKey('MOQ', verbose_name='最小起订量')
-    # fob_price = models.ForeignKey('FobPrice', verbose_name='FOB报价')
     supply_ability = models.ForeignKey('SupplyAbility', verbose_name='供贷能力')
+    content = models.TextField('正文', blank=True, max_length=100000)
     # the following attr are fixed by default value
     # port, payment_terms, consignment_term, packaging_desc
 
@@ -250,39 +207,31 @@ class Extend(models.Model):
         return self.basic.__str__()
 
     def upload_button(self):
-        models = DifferentPrice.objects.filter(
-            basic=self.basic).values_list('model', flat=True).distinct()
-        links = ''
-        for m in models:
-            links += '<button id="%s" class="ali_u">%s</button>' % (self.id, m)
-        return links
+        return '<button id="%s" class="ali_u">上传</button>' % (self.id)
+
     upload_button.allow_tags = True
     upload_button.short_description = '动作'
 
-    def rich_text_count(self):
-        return self.richtext_set.count()
-
-    def models_count(self):
-        if not self.basic:
-            return 0
-        return self.basic.differentprice_set.values_list(
-            'model').distinct().count()
-
-    def quality_test(self):
-        a = self.rich_text_count()
-        b = self.models_count()
-        if a == b:
-            return '<p style="color:green">%s-%s<p>' % (a, b)
-        else:
-            return '<p style="color:red">%s-%s<p>' % (a, b)
-    quality_test.allow_tags = True
-    quality_test.short_description = '正文-型号'
+    def keywords(self):
+        total = self.keyword_set.count()
+        if not total:
+            return []
+        keywords = self.keyword_set.order_by('count')
+        indexs = random.sample(range(total//2, total - 1), 3)
+        kws = []
+        for index in indexs:
+            kw = keywords[index]
+            kws.append(kw.word)
+            kw.count += 1
+            kw.save()
+        return kws
 
     def title_by_model(self, model):
         if self.head_set.count() == 0:
             return '没有可用的标题 速去添加'
-        r = random.randint(0, self.head_set.count() - 1)
-        head = self.head_set.all()[r]
+        head = self.head_set.order_by('count').first()
+        head.count += 1
+        head.save()
         return head.name + ' ' + model
 
     def title_by_email_model(self, email, model, pid=None):
@@ -315,18 +264,9 @@ class Extend(models.Model):
         t.save()
         return title
 
-    def titles_count(self):
-        return self.head_set.count()
-    titles_count.short_description = '标题数'
-
-    def keywords_count(self):
-        if self.basic:
-            return Keyword.objects.filter(basic=self.basic).count()
-        return 0
-    keywords_count.short_description = '关键字数'
 
     class Meta:
-        verbose_name = verbose_name_plural = '产品详细信息'
+        verbose_name = verbose_name_plural = '详细信息'
 
 
 class MOQ(models.Model):

@@ -15,22 +15,15 @@ class AccesscoryInline(admin.TabularInline):
     extra = 0
 
 
-class KeywordInline(admin.TabularInline):
-    model = models.Keyword
-    extra = 0
-
-
 @admin.register(models.Basic)
 class BasicAdmin(AutoUserAdmin):
     inlines = [
         DifferentPriceInline,
-        AccesscoryInline,
-        KeywordInline
+        AccesscoryInline
     ]
     exclude = ('user', )
     ordering = list_filter = search_fields = ('cn_name', )
-    list_display = (
-        '__str__', 'price', 'has_accessory', 'has_video', 'keywords_count')
+    list_display = ('__str__', 'price')
 
 
 class MOQForm(forms.ModelForm):
@@ -76,74 +69,36 @@ class SupplyAbilityAdmin(admin.ModelAdmin):
         return perms
 
 
-# class FobPriceForm(forms.ModelForm):
+@admin.register(models.DifferentPrice)
+class DifferentPriceAdmin(admin.ModelAdmin):
 
-#     def clean(self):
-#         if models.FobPrice.objects.filter(**self.cleaned_data).exists():
-#             raise ValidationError('已存在，无需重复创建')
-
-#     class Meta:
-#         fields = (
-#             'money_type',
-#             'price_range_min',
-#             'price_range_max',
-#             'price_unit')
-#         model = models.FobPrice
-
-
-# @admin.register(models.FobPrice)
-# class FobPriceAdmin(admin.ModelAdmin):
-#     form = FobPriceForm
-
-#     def get_model_perms(self, request):
-#         perms = super().get_model_perms(request)
-#         perms['hide_from_index'] = True
-#         return perms
-
-
-# class AttrForm(forms.ModelForm):
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         qs = models.DifferentPrice.objects.values_list(
-#             'model', flat=True).distinct()
-#         self.fields['model'] = forms.ModelChoiceField(queryset=qs, required=False)
-
-#     class Meta:
-#         fields = ('model', 'name', 'value')
-#         model = models.Attr
+    def get_model_perms(self, request):
+        perms = super().get_model_perms(request)
+        perms['hide_from_index'] = True
+        return perms
 
 
 class AttrInline(admin.TabularInline):
     model = models.Attr
-    # form = AttrForm
-    ordering = ('name', 'model')
+    ordering = ('name', )
     extra = 0
 
 
 class TitleInline(admin.TabularInline):
-    model = models.Head
-    extra = 0
-
-
-class RichTextInline(admin.StackedInline):
-    model = models.RichText
-    ordering = ('model', )
+    model = models.Title
     extra = 0
 
 
 @admin.register(models.Extend)
 class ExtendAdmin(AutoUserAdmin):
     inlines = [
-        RichTextInline,
         TitleInline,
         AttrInline
     ]
-    raw_id_fields = ('basic', )
+    raw_id_fields = ('basic', 'different_price')
     exclude = ('user', )
     search_fields = list_filter = ordering = ('basic__cn_name', )
-    list_display = ('__str__', 'quality_test', 'titles_count',
-                    'keywords_count', 'upload_button')
+    list_display = ('__str__', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':
@@ -154,45 +109,30 @@ class ExtendAdmin(AutoUserAdmin):
         js = ('js/tinymce/tinymce.min.js', 'js/upload_to_ali.js')
 
 
-class CategoryFilter(admin.SimpleListFilter):
-    title = '产品类目'
-    parameter_name = 'is_last'
+# class CategoryFilter(admin.SimpleListFilter):
+#     title = '产品类目'
+#     parameter_name = 'is_last'
 
-    def lookups(self, request, model_admin):
-        return (('is_last', '只显示最终类目'), )
+#     def lookups(self, request, model_admin):
+#         return (('is_last', '只显示最终类目'), )
 
-    def queryset(self, request, queryset):
-        if self.value() == 'is_last':
-            # can be replaced with category__isnull = True
-            return queryset.filter(category=None)
-        return queryset
-
-
-@admin.register(models.Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'has_ali_id')
-    readonly_fields = ('name', )
-    search_fields = ('name', )
-    list_filter = (CategoryFilter, )
-
-    def get_form(self, request, obj=None, **kwargs):
-        if obj:
-            self.exclude = ('level', 'parent')
-        else:
-            self.exclude = ('level', )
-        return super().get_form(request, obj, **kwargs)
+#     def queryset(self, request, queryset):
+#         if self.value() == 'is_last':
+#             # can be replaced with category__isnull = True
+#             return queryset.filter(category=None)
+#         return queryset
 
 
-@admin.register(models.Keyword)
-class KeywordAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'basic_cn_name', 'count')
-    list_filter = ('basic__cn_name', )
-    search_fields = ('basic__cn_name', )
+# @admin.register(models.Category)
+# class CategoryAdmin(admin.ModelAdmin):
+#     list_display = ('__str__', 'has_ali_id')
+#     readonly_fields = ('name', )
+#     search_fields = ('name', )
+#     list_filter = (CategoryFilter, )
 
-
-@admin.register(models.TrackingList)
-class TrackingListAdmin(admin.ModelAdmin):
-    list_display = ('account', 'pid', 'model', 'public_address',
-                    'is_title_saved', 'edit_address')
-    list_filter = ('account', 'model')
-    search_fields = ('title', 'model', 'pid')
+#     def get_form(self, request, obj=None, **kwargs):
+#         if obj:
+#             self.exclude = ('level', 'parent')
+#         else:
+#             self.exclude = ('level', )
+#         return super().get_form(request, obj, **kwargs)
