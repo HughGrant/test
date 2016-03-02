@@ -20,28 +20,28 @@
     },
     {
       "matches": [
-        "*://hz.productposting.alibaba.com/product/post_product_interface.*",
-        "*://hz.productposting.alibaba.com/product/posting.*",
-        "*://hz.productposting.alibaba.com/product/editing.*"
+        "*://hz-productposting.alibaba.com/product/post_product_interface.*",
+        "*://hz-productposting.alibaba.com/product/posting.*",
+        "*://hz-productposting.alibaba.com/product/editing.*"
       ],
       "js": ["up.js"]
     },
     {
       "matches": [
-        "*://hz.productposting.alibaba.com/product/post_product_interface.*"
+        "*://hz-productposting.alibaba.com/product/post_product_interface.*"
       ],
       "js": ["fill_title_key.js"]
     },
     {
-      "matches": ["*://hz.my.data.alibaba.com/industry/keywords.*"],
+      "matches": ["*://hz-mydata.alibaba.com/industry/keywords.*"],
       "js": ["keyword.js"]
     },
     {
-      "matches": ["*://hz.productposting.alibaba.com/product/products_manage.*"],
+      "matches": ["*://hz-productposting.alibaba.com/product/products_manage.*"],
       "js": ["product_manage.js"]
     },
     {
-      "matches": ["*://hz.productposting.alibaba.com/product/editing.*"],
+      "matches": ["*://hz-productposting.alibaba.com/product/editing.*"],
       "js": ["update_product.js"]
     },
     {

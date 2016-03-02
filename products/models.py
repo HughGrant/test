@@ -4,46 +4,6 @@ from preset import *
 import random
 
 
-class TrackingList(models.Model):
-    account = models.CharField('帐户', max_length=50)
-    pid = models.CharField('ID', blank=True, null=True, max_length=50)
-    title = models.CharField('标题', max_length=200)
-    model = models.CharField('型号', max_length=50)
-
-    def __str__(self):
-        return "%s %s - %s" % (
-            self.account, self.title, self.model)
-
-    def public_address(self):
-        if self.pid:
-            link = 'http://www.alibaba.com/product-detail/'
-            link += '-'.join(self.title.split(' '))
-            link += '_%s.html' % self.pid
-            return '<a href="%s" target="_blank">%s</a>' % (link, self.title)
-        return self.title
-    public_address.allow_tags = True
-    public_address.short_description = '产品链接'
-
-    def edit_address(self):
-        if self.pid:
-            l = 'http://hz.productposting.alibaba.com/product/editing.htm?id='
-            l += self.pid
-            return '<a href="%s" target="_blank">编辑</a>' % l
-        return ''
-    edit_address.allow_tags = True
-    edit_address.short_description = '编辑链接'
-
-    def is_title_saved(self):
-        title = self.title.replace(self.model, '').strip()
-        return Head.objects.filter(name=title).exists()
-    is_title_saved.boolean = True
-    is_title_saved.short_description = '标题是否已存'
-
-    class Meta:
-        unique_together = ('account', 'pid')
-        verbose_name = verbose_name_plural = '产品已传列表'
-
-
 class Basic(models.Model):
     user = models.ForeignKey(User)
     cn_name = models.CharField('中文名', blank=True, max_length=200)
@@ -65,17 +25,29 @@ class Basic(models.Model):
         verbose_name = verbose_name_plural = '基本信息'
 
 
-class Keyword(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='详细信息')
-    word = models.CharField('内容', max_length=200)
+class TitleKeyword(models.Model):
+    user = models.ForeignKey(User)
+    model = models.CharField('型号', max_length=200, default="")
+    title = models.CharField('标题', max_length=200, default="")
+    word = models.CharField('内容', max_length=200, default="")
     count = models.IntegerField('计数', default=0)
+
+    @classmethod
+    def get_pair(cls, model):
+        tk = cls.objects.filter(model=model)
+        if tk.exists():
+            tk = tk.order_by('count')[:1].get()
+            tk.count += 1
+            tk.save()
+            return tk
+        return None
 
     def __str__(self):
         return "%s-%s" % (self.word, self.count)
 
     class Meta:
-        unique_together = ('extend', 'word')
-        verbose_name = verbose_name_plural = '关键字'
+        unique_together = ('title', 'word')
+        verbose_name = verbose_name_plural = '标题与关键字'
 
 
 class Category(models.Model):
@@ -179,18 +151,6 @@ class Attr(models.Model):
         verbose_name = verbose_name_plural = '属性'
 
 
-class Title(models.Model):
-    extend = models.ForeignKey('Extend', verbose_name='详细信息')
-    name = models.CharField('内容', blank=True, max_length=200)
-    count = models.IntegerField('计数', default=0)
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        unique_together = ('extend', 'name')
-        verbose_name = verbose_name_plural = '标题'
-
-
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
     different_price = models.ForeignKey(
@@ -211,20 +171,6 @@ class Extend(models.Model):
 
     upload_button.allow_tags = True
     upload_button.short_description = '动作'
-
-    def keywords(self):
-        total = self.keyword_set.count()
-        if not total:
-            return []
-        keywords = self.keyword_set.order_by('count')
-        indexs = random.sample(range(total//2, total - 1), 3)
-        kws = []
-        for index in indexs:
-            kw = keywords[index]
-            kws.append(kw.word)
-            kw.count += 1
-            kw.save()
-        return kws
 
     def title_by_model(self, model):
         if self.head_set.count() == 0:
@@ -263,7 +209,6 @@ class Extend(models.Model):
                 pid=pid, account=email, title=title, model=model)
         t.save()
         return title
-
 
     class Meta:
         verbose_name = verbose_name_plural = '详细信息'

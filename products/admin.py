@@ -84,17 +84,9 @@ class AttrInline(admin.TabularInline):
     extra = 0
 
 
-class TitleInline(admin.TabularInline):
-    model = models.Title
-    extra = 0
-
-
 @admin.register(models.Extend)
 class ExtendAdmin(AutoUserAdmin):
-    inlines = [
-        TitleInline,
-        AttrInline
-    ]
+    inlines = [AttrInline, ]
     raw_id_fields = ('basic', 'different_price')
     exclude = ('user', )
     search_fields = list_filter = ordering = ('basic__cn_name', )
@@ -109,30 +101,9 @@ class ExtendAdmin(AutoUserAdmin):
         js = ('js/tinymce/tinymce.min.js', 'js/upload_to_ali.js')
 
 
-# class CategoryFilter(admin.SimpleListFilter):
-#     title = '产品类目'
-#     parameter_name = 'is_last'
-
-#     def lookups(self, request, model_admin):
-#         return (('is_last', '只显示最终类目'), )
-
-#     def queryset(self, request, queryset):
-#         if self.value() == 'is_last':
-#             # can be replaced with category__isnull = True
-#             return queryset.filter(category=None)
-#         return queryset
-
-
-# @admin.register(models.Category)
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = ('__str__', 'has_ali_id')
-#     readonly_fields = ('name', )
-#     search_fields = ('name', )
-#     list_filter = (CategoryFilter, )
-
-#     def get_form(self, request, obj=None, **kwargs):
-#         if obj:
-#             self.exclude = ('level', 'parent')
-#         else:
-#             self.exclude = ('level', )
-#         return super().get_form(request, obj, **kwargs)
+@admin.register(models.TitleKeyword)
+class TitleKeywordAdmin(AutoUserAdmin):
+    exclude = ('user', 'count')
+    search_fields = list_filter = ordering = ('model', )
+    list_editable = ('title', 'model')
+    list_display = ('word', 'title', 'model', 'count')

@@ -33,8 +33,8 @@ $(function() {
 			return false;
 		}
 		
-		var basic_id = $('#J-search-keywords').val();
-		if (isNaN(basic_id)) {
+		var model = $('#J-search-keywords').val();
+		if ($.trim(model) == '') {
 			alert('输入产品基本ID');
 			return;
 		}
@@ -44,7 +44,7 @@ $(function() {
 			list.push(v);
 		});
 
-		var words = { basic_id: basic_id, words: list };
+		var words = { model: model, words: list };
 		$.post(KW_URL, words).done(function(data) {
 			if (data.status) {
 				alert('添加成功');

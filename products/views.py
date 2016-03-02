@@ -157,14 +157,14 @@ class CaptureView(View):
         return super().dispatch(request, *args, **kwargs)
 
 
-class KeywordView(View):
+class TitleKeywordView(View):
 
     def post(self, request):
-        basic_id = request.POST['basic_id']
+        model = request.POST['model']
         words = request.POST.getlist('words[]')
         kws = []
         for word in words:
-            kw = Keyword(basic_id=basic_id, word=word)
+            kw = TitleKeyword(model=model, word=word, user=request.user)
             try:
                 kw.validate_unique()
             except ValidationError:
@@ -172,79 +172,17 @@ class KeywordView(View):
             else:
                 kws.append(kw)
         if kws:
-            Keyword.objects.bulk_create(kws)
+            TitleKeyword.objects.bulk_create(kws)
         return JsonResponse({'status': True})
 
     def get(self, request):
-        pass
-        # basic_id = int(request.GET['basic_id'])
-        # kws = Basic.objects.filter(pk=basic_id).get().keywords()
-        # return JsonResponse(kws)
-
-    @method_decorator(login_required(login_url='/login_required_jr/'))
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-
-class TitleKeyView(View):
-
-    def post(self, request):
-        pass
-
-    def get(self, request):
         model = request.GET['model']
-        email = request.GET['email']
-        data = {'name': 'no model find %s' % model, 'keywords': []}
-        df = DifferentPrice.objects.filter(model=model)
-        if df.exists():
-            ext = df.get().extend
-            data['name'] = ext.title_by_model(model)
-            data['keywords'] = ext.keywords()
+        data = {'title': '', 'word': ''}
+        tk = TitleKeyword.get_pair(model)
+        if tk:
+            data['title'] = tk.title
+            data['word'] = tk.word
         return JsonResponse(data)
-
-    @method_decorator(login_required(login_url='/login_required_jr/'))
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-
-class TrackingListView(View):
-
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        plist = json.loads(request.POST['json'])
-        tls = []
-        edit = 0
-        edit_id = 0
-        for p in plist:
-            q = TrackingList.objects.filter(
-                account=p['account'], title=p['title'], model=p['model'])
-            if q.exists():
-                t = q.get()
-                # first, set pid for those uploaded product
-                if not t.pid:
-                    t.pid = p['pid']
-                    t.save()
-                    edit_id += 1
-                else:
-                    # second, upate by pid for already tracked product
-                    if t.title != p['title'] or t.model != p['model']:
-                        t.title = p['title']
-                        t.model = p['model']
-                        t.save()
-                        edit += 1
-            else:
-                # last, append these not tracked products
-                tls.append(TrackingList(**p))
-        if tls:
-            for t in tls:
-                print(t.pid)
-            TrackingList.objects.bulk_create(tls)
-        msg = '添加%d个, 更新%d个, 更新ID%d个' % (len(tls), edit, edit_id)
-        return JsonResponse({'status': True, 'msg': msg})
 
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)

@@ -49,12 +49,18 @@ function fill_product_name(name) {
     $('#productName').val(name);
 }
 
-function fill_title_keywords_by_email_model(email, model) {
-    $.get(TITLE_KEY_URL, {email, model}).done(function(data) {
-        fill_product_name(data.name);
+function fill_product_keyword(keyword) {
+    $('#productKeyword').val(keyword);
+}
+
+function fill_title_keyword_by_model(model) {
+    $.get(KW_URL, {model: model}).done(function(data) {
+        fill_product_name(data.title);
+        fill_product_keyword(data.word);
         copy_title();
-        var re = fill_keywords(data.keywords);
-        if (re) {
+        if ($.trim(data.word) == '' || $.trim(data.title) == '') {
+            return false;
+        } else {
             move_down_to_submit();
         }
     }).fail(function() {
@@ -62,26 +68,6 @@ function fill_title_keywords_by_email_model(email, model) {
     });
 }
 
-function fill_keywords(keywords, basic_id) {
-    if (keywords.length < 3) {
-        collect_keywords(basic_id);
-        return false;
-    }
-
-    $('#addMoreKeywords').remove();
-    $('#smk-more-keywords-wrapper').show();
-    
-    var key1 = $('#productKeyword'),
-        key2 = $('#keywords2'),
-        key3 = $('#keywords3');
-
-    key1.val(keywords.shift());
-    key1.focus();
-    key2.val(keywords.shift());
-    key3.val(keywords.shift());
-
-    return true;
-}
 
 function move_down_to_submit() {
     $('html, body').animate({
@@ -105,6 +91,7 @@ function find_model() {
     if (x.length == 1) {
         return x[0];
     } else {
+        alert('没有填写型号或当前页面不是英文')
         return false;
     }
 }

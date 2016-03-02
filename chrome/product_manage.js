@@ -1,5 +1,5 @@
 setInterval(detect_update, 2000);
-setInterval(tracking_products, 2000);
+// setInterval(tracking_products, 2000);
 
 function detect_update() {
 	var list = $('.manager-list-col-updated');
@@ -28,65 +28,65 @@ function detect_update() {
 	});
 }
 
-function tracking_products() {
-	if ($('#tp_btn').length == 0) {
-		var btn = '<a id="tp_btn" class="ui2-button ui2-button-default ui2-button-normal ui2-button-small" title="">Tracking Products</a>';
-		$('.manage-action-buttons').append(btn);
+// function tracking_products() {
+// 	if ($('#tp_btn').length == 0) {
+// 		var btn = '<a id="tp_btn" class="ui2-button ui2-button-default ui2-button-normal ui2-button-small" title="">Tracking Products</a>';
+// 		$('.manage-action-buttons').append(btn);
 
-		$('#tp_btn').click(function() {
-			inject_script(chrome.extension.getURL('get_login_id.js'));
-		});
-	}
-}
+// 		$('#tp_btn').click(function() {
+// 			inject_script(chrome.extension.getURL('get_login_id.js'));
+// 		});
+// 	}
+// }
 
-window.addEventListener("tracking_products", function(data) {
-	var email = ACCOUNT_ID_EMAIL_MAP[data.detail];
-	if (email) {
-	    collect_product_list(email);
-	} else {
-		alert('帐户没有设置对应邮箱');
-	}
-}, false)
+// window.addEventListener("tracking_products", function(data) {
+// 	var email = ACCOUNT_ID_EMAIL_MAP[data.detail];
+// 	if (email) {
+// 	    collect_product_list(email);
+// 	} else {
+// 		alert('帐户没有设置对应邮箱');
+// 	}
+// }, false)
 
-function collect_product_list(account) {
-	var ids = [];
-	var titles = [];
-	$('.manager-list-col-title>a').map(function() {
-		var id = $(this).attr('href').split('id=')[1];
-		var title = $(this).attr('title')
-		titles.push(title);
-		ids.push({account: account, pid: id, title: title, model: ''});
-	});
+// function collect_product_list(account) {
+// 	var ids = [];
+// 	var titles = [];
+// 	$('.manager-list-col-title>a').map(function() {
+// 		var id = $(this).attr('href').split('id=')[1];
+// 		var title = $(this).attr('title')
+// 		titles.push(title);
+// 		ids.push({account: account, pid: id, title: title, model: ''});
+// 	});
 
-	// detect duplicate titles
-	titles = titles.sort()
-	for (var i = 0; i < titles.length - 1; i++) {
-		if (titles[i + 1] === titles[i]) {
-			alert('重复标题:' + titles[i]);
-			return false;
-		}
-	}
+// 	// detect duplicate titles
+// 	titles = titles.sort()
+// 	for (var i = 0; i < titles.length - 1; i++) {
+// 		if (titles[i + 1] === titles[i]) {
+// 			alert('重复标题:' + titles[i]);
+// 			return false;
+// 		}
+// 	}
 
-	var models = []
-	$('.icon-list>i').map(function() {
-		models.push($.trim($(this).html().replace('(', '').replace(')', '')));
-	});
+// 	var models = []
+// 	$('.icon-list>i').map(function() {
+// 		models.push($.trim($(this).html().replace('(', '').replace(')', '')));
+// 	});
 
-	if (ids.length != models.length) {
-		alert('长度不一致');
-		return false;
-	}
+// 	if (ids.length != models.length) {
+// 		alert('长度不一致');
+// 		return false;
+// 	}
 
-	models.forEach(function(m, i) {
-		ids[i].model = m;
-	});
+// 	models.forEach(function(m, i) {
+// 		ids[i].model = m;
+// 	});
 
-	data = {'json': JSON.stringify(ids)}
-	$.post(TRACKING_LIST_URL, data).done(function(data) {
-		if (data.status) {
-			alert(data.msg)
-		}
-	}).fail(function() {
-		alert('server error');
-	});
-}
+// 	data = {'json': JSON.stringify(ids)}
+// 	$.post(TRACKING_LIST_URL, data).done(function(data) {
+// 		if (data.status) {
+// 			alert(data.msg)
+// 		}
+// 	}).fail(function() {
+// 		alert('server error');
+// 	});
+// }
