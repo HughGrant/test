@@ -98,11 +98,12 @@ class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client', )
     list_filter = ordering = ('date', 'ship_date')
-    list_display = ('date', 'client', 'payments_rmb', 'po_list', 'prime_cost_split',
-                    'shipping_cost', 'profit', 'logistic', 'ship_date')
+    list_display = ('date', 'client', 'payments_rmb', 'po_list',
+                    'prime_cost_split', 'shipping_cost', 'profit', 'logistic',
+                    'ship_date')
     raw_id_fields = ('client', )
     inlines = [PaymentInline, ProductOrderInline, ExtraCostInline]
-    actions = [make_month_profit]
+    actions = [make_month_profit, ]
 
 
 @admin.register(models.Payment)

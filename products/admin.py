@@ -7,6 +7,7 @@ from buss.admin import AutoUserAdmin
 
 class DifferentPriceInline(admin.TabularInline):
     model = models.DifferentPrice
+    ordering = ('model', 'difference')
     extra = 0
 
 
@@ -71,6 +72,7 @@ class SupplyAbilityAdmin(admin.ModelAdmin):
 
 @admin.register(models.DifferentPrice)
 class DifferentPriceAdmin(admin.ModelAdmin):
+    search_fields = ('model', 'basic__cn_name')
 
     def get_model_perms(self, request):
         perms = super().get_model_perms(request)
@@ -101,9 +103,22 @@ class ExtendAdmin(AutoUserAdmin):
         js = ('js/tinymce/tinymce.min.js', 'js/upload_to_ali.js')
 
 
+def duplicate_word(modeladmin, req, queryset):
+    for qs in queryset:
+        qs.count = 0
+        qs.title = ''
+        qs.model = ''
+        qs.id = None
+        qs.save()
+duplicate_word.short_description = '重复关键字'
+
+
 @admin.register(models.TitleKeyword)
 class TitleKeywordAdmin(AutoUserAdmin):
     exclude = ('user', 'count')
-    search_fields = list_filter = ordering = ('model', )
-    list_editable = ('title', 'model')
-    list_display = ('word', 'title', 'model', 'count')
+    search_fields = ('word', 'title')
+    list_filter = ordering = ('model', )
+    list_editable = ('title', 'model', 'word', 'count')
+    list_display = ('list_link', 'word', 'title', 'model', 'count')
+    list_display_links = ('list_link', )
+    actions = [duplicate_word, ]

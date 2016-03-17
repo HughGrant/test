@@ -27,8 +27,9 @@ function setup_update() {
 // }, false)
 function update_title_keyword(email) {
 	var model = find_model();
-	if (model !== false) {
+	if (model === false) {
 		alert('没有型号');
+	} else {
 		fill_title_keyword_by_model(model);
 	}
 }

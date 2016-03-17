@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from preset import *
-import random
 
 
 class Basic(models.Model):
@@ -16,6 +15,7 @@ class Basic(models.Model):
         qs = DifferentPrice.objects.filter(basic_id=self.id)
         if not qs.exists():
             return '未设置: 0 RMB, 0KG, 0*0*0CM'
+        qs = qs.order_by('model', 'difference')
         fs = '<br><br>'.join([dp.description() for dp in qs.all()])
         return fs
     price.short_description = '报价'
@@ -42,11 +42,15 @@ class TitleKeyword(models.Model):
             return tk
         return None
 
+    def list_link(self):
+        return self.title
+    list_link.short_description = '链接'
+
     def __str__(self):
         return "%s-%s" % (self.word, self.count)
 
     class Meta:
-        unique_together = ('title', 'word')
+        unique_together = ('model', 'word')
         verbose_name = verbose_name_plural = '标题与关键字'
 
 
@@ -110,9 +114,7 @@ class DifferentPrice(models.Model):
     profit = models.FloatField('利润', default=0)
     video = models.CharField('视频', blank=True, max_length=200)
     size = models.CharField('尺寸(CM)', blank=True, max_length=200)
-    net_weight = models.FloatField('净重(KG)', default=0)
-    gross_weight = models.FloatField('毛重(KG)', default=0)
-    volume_weight = models.FloatField('积重(KG)', default=0)
+    weight = models.FloatField('积重(KG)', default=0)
 
     def __str__(self):
         return '%s(%s)-%s: %s' % (
@@ -128,12 +130,9 @@ class DifferentPrice(models.Model):
             return round((self.price + self.profit) * 1.1 / 6)
         return 0
 
-    def weight(self):
-        return max(self.net_weight, self.gross_weight, self.volume_weight)
-
     def description(self):
         return '%s-%s: %sRMB, %sKG, %sCM' % (
-            self.model, self.difference, self.price, self.weight(), self.size)
+            self.model, self.difference, self.price, self.weight, self.size)
 
     class Meta:
         verbose_name = verbose_name_plural = '差异价'
