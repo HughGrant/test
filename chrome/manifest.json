@@ -46,7 +46,7 @@
     },
     {
       "matches": ["*://*.alibaba.com/product-detail/*"],
-      "js": ["jquery.js", "config.js", "scratch.js"]
+      "js": ["jquery.js", "config.js"]
     },
     {
       "matches": ["*://*.alibaba.com/product/*"],

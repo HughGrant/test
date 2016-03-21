@@ -15,6 +15,14 @@ class Order(models.Model):
     ship_date = models.DateField('发贷日期', blank=True, null=True)
     bak = models.TextField('备注', blank=True, max_length=500)
 
+    def client_email(self):
+        # line_feed = '%0d%0a'
+        email = '<a href="mailto:%s?subject=%s&body=%s">%s</a>' % (
+            self.client.email, 'test', 'test', self.client.email)
+        return self.client.__str__() + '<br><br>' + email
+    client_email.short_description = '客户信息'
+    client_email.allow_tags = True
+
     def po_excel_str(self):
         descriptions = []
         for po in self.productorder_set.all():
@@ -157,7 +165,7 @@ class Payment(models.Model):
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
         '货币类型', default=1, choices=CURRENCY_TYPE)
-    exchange_rate = models.FloatField('对人民币汇率', default=6.4)
+    exchange_rate = models.FloatField('对人民币汇率', default=6.45)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
     date = models.DateField('日期')

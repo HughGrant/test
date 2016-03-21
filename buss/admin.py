@@ -98,7 +98,7 @@ class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client', )
     list_filter = ordering = ('date', 'ship_date')
-    list_display = ('date', 'client', 'payments_rmb', 'po_list',
+    list_display = ('date', 'client_email', 'payments_rmb', 'po_list',
                     'prime_cost_split', 'shipping_cost', 'profit', 'logistic',
                     'ship_date')
     raw_id_fields = ('client', )

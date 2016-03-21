@@ -43,7 +43,7 @@ class TitleKeyword(models.Model):
         return None
 
     def list_link(self):
-        return self.title
+        return self.word
     list_link.short_description = '链接'
 
     def __str__(self):

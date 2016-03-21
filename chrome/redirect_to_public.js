@@ -1,6 +1,6 @@
 $(function() {
 	var title = $('h1>span');
-    var new_link = '<a href="' + public_view_url() + '">' + title.html() + '</a>';
+    var new_link = '<a id="title_to_link" href="' + public_view_url() + '">' + title.html() + '</a>';
     title.html(new_link);
 });
 
