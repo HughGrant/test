@@ -181,7 +181,6 @@ function scratch() {
         }
     }
     product.photos.reverse();
-    // console.log(product);
     return product;
 }
 
