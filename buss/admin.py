@@ -96,7 +96,7 @@ make_month_profit.short_description = '生成利润表'
 @admin.register(models.Order)
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
-    search_fields = ('client', )
+    search_fields = ('client__name', 'client__email')
     list_filter = ordering = ('date', 'ship_date')
     list_display = ('date', 'client_email', 'payments_rmb', 'po_list',
                     'prime_cost_split', 'shipping_cost', 'profit', 'logistic',

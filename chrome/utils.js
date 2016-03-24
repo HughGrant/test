@@ -28,7 +28,7 @@ function collect_keywords(name) {
 
 function download_images() {
     var name = get_product_name();
-    var images = get_rich_text().imgs.concat(get_main_pictures());
+    var images = get_main_pictures().concat(get_rich_text().imgs);
     for (var i = images.length - 1; i >= 0; i--) {
         download_url(images[i], name + ' (' + i + ').jpg');
     }
@@ -53,8 +53,14 @@ function fill_product_keyword(keyword) {
     $('#productKeyword').val(keyword);
 }
 
-function fill_title_keyword_by_model(model) {
-    $.get(KW_URL, {model: model}).done(function(data) {
+// update titlte and keyword, by passing model, alibaba product id, alibaba login id
+function fill_tk_by_m_a_l(model, apid, login_id) {
+    $.get(KW_URL, {model, apid, login_id}).done(function(data) {
+        if (data.msg) {
+            alert(msg);
+            return false;
+        }
+
         fill_product_name(data.title);
         fill_product_keyword(data.word);
         copy_title();
@@ -68,6 +74,9 @@ function fill_title_keyword_by_model(model) {
     });
 }
 
+function get_apid() {
+    return parseInt(window.location.search.match(/\d+/g)[0]);
+}
 
 function move_down_to_submit() {
     $('html, body').animate({
@@ -203,12 +212,19 @@ function get_main_pictures() {
     $('.inav.util-clearfix img').each(function() {
         mp.push('http:' + $(this).attr('src').replace("_50x50.jpg", ""));
     });
+
+    if (mp.length === 0) {
+        $('.ui-image-viewer-image-frame img').each(function(){
+            mp.push('http:' + $(this).attr('src'));
+        });
+    }
+    $.unique(mp);
     return mp;
 }
 
 function get_rich_text() {
     // this function return a dict
-    if (is_preview_page) {
+    if (is_preview_page()) {
         var div = $('#richTextContainer');
     } else {
         var div = $('#J-rich-text-description');
@@ -229,6 +245,7 @@ function get_rich_text() {
     for (var i = imgs.length - 1; i >= 0; i--) {
         var src = $(imgs[i].innerText).attr('src');
         rich.imgs.push(src);
+        $.unique(rich.imgs);
     }
     return rich;
 }

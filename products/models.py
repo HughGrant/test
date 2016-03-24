@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from preset import *
+from clients.models import LoginEmail
 
 
 class Basic(models.Model):
@@ -23,6 +24,24 @@ class Basic(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = '基本信息'
+
+
+class QuotationTemplate(models.Model):
+    user = models.ForeignKey(User)
+    dp = models.ForeignKey('DifferentPrice', null=True, verbose_name='产品')
+    content = models.TextField('正文', blank=True, max_length=100000)
+
+    def copy_link(self):
+        return '拷贝模板'
+    copy_link.short_description = '动作'
+    copy_link.allow_tags = True
+
+    def show_model(self):
+        return self.dp.__str__()
+    show_model.short_description = '产品型号'
+
+    class Meta:
+        verbose_name = verbose_name_plural = '报价模板'
 
 
 class TitleKeyword(models.Model):
@@ -51,7 +70,40 @@ class TitleKeyword(models.Model):
 
     class Meta:
         unique_together = ('model', 'word')
-        verbose_name = verbose_name_plural = '标题与关键字'
+        verbose_name = verbose_name_plural = '更新数据'
+
+
+class Trace(models.Model):
+    user = models.ForeignKey(User)
+    tkw = models.ForeignKey('TitleKeyword', verbose_name='标题与关键字')
+    # login email information
+    le = models.ForeignKey(LoginEmail, verbose_name='帐户信息', null=True)
+    # alibaba product id
+    apid = models.IntegerField('阿里产品ID', default=0)
+    model = models.CharField('型号', max_length=200, default="")
+    update_time = models.DateTimeField('最后更新时间', auto_now_add=True)
+
+    @classmethod
+    def tracing(cls, **kwargs):
+        cls.objects.update_or_create(**kwargs)
+
+    def title(self):
+        return self.tkw.title
+    title.short_description = '标题'
+
+    def email(self):
+        return self.le.email
+    email.short_description = '对应邮箱帐号'
+
+    def link(self):
+        l = "http://hz-productposting.alibaba.com/product/editing.htm?id=%d" % self.apid
+        return '<a target="blank" href="%s">点击更新</a>' % l
+    link.short_description = '更新链接'
+    link.allow_tags = True
+
+    class Meta:
+        unique_together = ('tkw', 'apid')
+        verbose_name = verbose_name_plural = '更新记录'
 
 
 class Category(models.Model):
@@ -163,7 +215,7 @@ class Extend(models.Model):
     # port, payment_terms, consignment_term, packaging_desc
 
     def __str__(self):
-        return self.basic.__str__()
+        return self.different_price.__str__()
 
     def upload_button(self):
         return '<button id="%s" class="ali_u">上传</button>' % (self.id)
@@ -226,28 +278,6 @@ class MOQ(models.Model):
     class Meta:
         unique_together = ('min_order_quantity', 'min_order_unit')
         verbose_name = verbose_name_plural = '最小起订量'
-
-
-# class FobPrice(models.Model):
-#     money_type = models.IntegerField('货币类型', default=1, choices=CURRENCY_TYPE)
-#     price_range_min = models.FloatField('最低报价', default=0)
-#     price_range_max = models.FloatField('最高报价', default=0)
-#     price_unit = models.IntegerField('报价单位', default=20, choices=UNIT_TYPE)
-
-#     def __str__(self):
-#         return '%s %s-%s %s' % (
-#             self.get_money_type_display(),
-#             self.price_range_min,
-#             self.price_range_max,
-#             self.get_price_unit_display())
-
-#     class Meta:
-#         unique_together = (
-#             'money_type',
-#             'price_range_min',
-#             'price_range_max',
-#             'price_unit')
-#         verbose_name = verbose_name_plural = 'FOB报价'
 
 
 class SupplyAbility(models.Model):

@@ -91,7 +91,8 @@ class ExtendAdmin(AutoUserAdmin):
     inlines = [AttrInline, ]
     raw_id_fields = ('basic', 'different_price')
     exclude = ('user', )
-    search_fields = list_filter = ordering = ('basic__cn_name', )
+    search_fields = ('basic__cn_name', 'different_price__model')
+    list_filter = ordering = ('basic__cn_name', )
     list_display = ('__str__', 'upload_button')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -122,3 +123,20 @@ class TitleKeywordAdmin(AutoUserAdmin):
     list_display = ('list_link', 'word', 'title', 'model', 'count')
     list_display_links = ('list_link', )
     actions = [duplicate_word, ]
+
+
+@admin.register(models.QuotationTemplate)
+class QuotationTemplateAdmin(AutoUserAdmin):
+    exclude = ('user', )
+    raw_id_fields = ('dp', )
+    search_fields = ('dp__model', )
+    list_filter = ordering = ('dp__model', )
+    list_display = ('show_model', 'copy_link')
+
+
+@admin.register(models.Trace)
+class TraceAdmin(AutoUserAdmin):
+    exclude = ('user', )
+    search_fields = ('model', 'twk__title')
+    list_filter = ('model', 'le__email')
+    list_display = ('title', 'model', 'email', 'update_time', 'link')

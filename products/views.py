@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from products.models import *
+from clients.models import LoginEmail
 
 
 class UpdateByModel(View):
@@ -44,8 +45,7 @@ class UpdateByModel(View):
             data['attrs'].append([attr.name, attr.value])
         data['attrs'].append(['Model Number', model])
 
-        s = '3-7 days based on destination, shipping by DHL/FedEx/UPS etc.'
-        data['consignment_term'] = s
+        data['consignment_term'] = 3
         data['packaging_desc'] = 'standard export packaging, safe and secure'
         data['port'] = 'NingBo'
         default_payment_terms = 'T/T,Western Union,MoneyGram,PayPal'
@@ -176,12 +176,20 @@ class TitleKeywordView(View):
         return JsonResponse({'status': True})
 
     def get(self, request):
+        lid = request.GET['login_id']
+        le = LoginEmail.objects.filter(login_id=lid)
+        if le.count() != 1:
+            return JsonResponse({'msg': '请先设置帐户信息'})
+
         model = request.GET['model']
+        apid = request.GET['apid']
         data = {'title': '', 'word': ''}
-        tk = TitleKeyword.get_pair(model)
-        if tk:
-            data['title'] = tk.title
-            data['word'] = tk.word
+        tkw = TitleKeyword.get_pair(model)
+        if tkw:
+            Trace.tracing(le=le.get(), apid=apid, tkw=tkw,
+                          user=request.user, model=model)
+            data['title'] = '%s %s' % (tkw.title, model)
+            data['word'] = tkw.word
         return JsonResponse(data)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))

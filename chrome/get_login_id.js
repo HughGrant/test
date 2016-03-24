@@ -1,6 +1,6 @@
 //manage product
 if (window.location.pathname.indexOf('products_manage') != -1) {
-	var evt = new CustomEvent('build', {'detail': MANAGEAPP.loginID});
+	var evt = new CustomEvent('build', {'detail': MANAGEAPP.loginId});
 	evt.initEvent("tracking_products", true, true);
 	window.dispatchEvent(evt);
 }
@@ -22,6 +22,6 @@ if (window.location.pathname.indexOf('posting') != -1) {
 // update product
 if (window.location.pathname.indexOf('editing') != -1) {
 	var evt = new CustomEvent('build', {'detail': POSTDATAMAP.loginId});
-	evt.initEvent("update_product_all", true, true);
+	evt.initEvent("from_product_editing_page", true, true);
 	window.dispatchEvent(evt);
 }
