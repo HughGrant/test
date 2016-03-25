@@ -1,4 +1,4 @@
-setTimeout(set_up_btn, 2000) 
+setTimeout(set_up_btn, 1500) 
 
 function set_up_btn() {
 	$('#productName').after('<button id="auto_fill_tk" type="button" class="ui-button ui-button-normal ui-button-big">填写</button>');
@@ -6,7 +6,10 @@ function set_up_btn() {
 	$('#auto_fill_tk').click(function() {
 		var model = find_model();
 		if (model !== false) {
-			fill_title_keyword_by_model(model)
+			var action = 'copy';
+			var params = {model, action};
+			fill_tk_by_params(params);
+			$('#auto_fill_tk').remove();
 		}
 		// inject_script(chrome.extension.getURL('get_login_id.js'));
 	});

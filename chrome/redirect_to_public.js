@@ -1,5 +1,5 @@
 $(function() {
-	var title = $('h1>span');
+	var title = $('h1>span').first();
     var new_link = '<a id="title_to_link" href="' + public_view_url() + '">' + title.html() + '</a>';
     title.html(new_link);
 });

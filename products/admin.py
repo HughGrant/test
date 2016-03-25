@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models import Sum
 from . import models
 from buss.admin import AutoUserAdmin
 
@@ -114,11 +115,34 @@ def duplicate_word(modeladmin, req, queryset):
 duplicate_word.short_description = '重复关键字'
 
 
+class TKWFilter(admin.SimpleListFilter):
+    title = '产品型号'
+    parameter_name = 'model'
+
+    def lookups(self, request, model_admin):
+        # returns a tuple
+        pairs = []
+        names = models.TitleKeyword.objects.values_list('model').distinct()
+        for n in names:
+            r = models.TitleKeyword.objects.filter(model=n[0])
+            total = r.count()
+            used = r.aggregate(Sum('count'))['count__sum']
+            pairs.append((n[0], "%s (%d-%d)" % (n[0], used, total)))
+        return pairs
+
+    def queryset(self, request, queryset):
+        # self.value() represents the filter value
+        if self.value():
+            return queryset.filter(model=self.value())
+        return queryset
+
+
 @admin.register(models.TitleKeyword)
 class TitleKeywordAdmin(AutoUserAdmin):
     exclude = ('user', 'count')
     search_fields = ('word', 'title')
-    list_filter = ordering = ('model', )
+    list_filter = (TKWFilter, )
+    ordering = ('model', )
     list_editable = ('title', 'model', 'word', 'count')
     list_display = ('list_link', 'word', 'title', 'model', 'count')
     list_display_links = ('list_link', )
@@ -137,6 +161,6 @@ class QuotationTemplateAdmin(AutoUserAdmin):
 @admin.register(models.Trace)
 class TraceAdmin(AutoUserAdmin):
     exclude = ('user', )
-    search_fields = ('model', 'twk__title')
-    list_filter = ('model', 'le__email')
-    list_display = ('title', 'model', 'email', 'update_time', 'link')
+    search_fields = ('twk__model', 'twk__title')
+    list_filter = ('le__email', )
+    list_display = ('title', 'modelx', 'apid', 'email', 'update_time', 'link')

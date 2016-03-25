@@ -53,13 +53,14 @@ class TitleKeyword(models.Model):
 
     @classmethod
     def get_pair(cls, model):
-        tk = cls.objects.filter(model=model)
+        tk = cls.objects.filter(model=model).exclude(title="")
         if tk.exists():
-            tk = tk.order_by('count')[:1].get()
-            tk.count += 1
-            tk.save()
-            return tk
+            return tk.order_by('count')[:1].get()
         return None
+
+    def count_plus(self):
+        self.count += 1
+        self.save()
 
     def list_link(self):
         return self.word
@@ -80,12 +81,23 @@ class Trace(models.Model):
     le = models.ForeignKey(LoginEmail, verbose_name='帐户信息', null=True)
     # alibaba product id
     apid = models.IntegerField('阿里产品ID', default=0)
-    model = models.CharField('型号', max_length=200, default="")
     update_time = models.DateTimeField('最后更新时间', auto_now_add=True)
 
     @classmethod
     def tracing(cls, **kwargs):
-        cls.objects.update_or_create(**kwargs)
+        le = kwargs['le']
+        apid = kwargs['apid']
+        twk = kwargs['tkw']
+        user = kwargs['user']
+
+        t = cls.objects.filter(le=le, apid=apid, user=user)
+        if t.exists():
+            t = t.get()
+            t.twk = twk
+            t.save()
+        else:
+            t = cls(**kwargs)
+            t.save()
 
     def title(self):
         return self.tkw.title
@@ -94,6 +106,10 @@ class Trace(models.Model):
     def email(self):
         return self.le.email
     email.short_description = '对应邮箱帐号'
+
+    def modelx(self):
+        return self.tkw.model
+    modelx.short_description = '产品型号'
 
     def link(self):
         l = "http://hz-productposting.alibaba.com/product/editing.htm?id=%d" % self.apid

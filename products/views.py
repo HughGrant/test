@@ -176,20 +176,29 @@ class TitleKeywordView(View):
         return JsonResponse({'status': True})
 
     def get(self, request):
-        lid = request.GET['login_id']
-        le = LoginEmail.objects.filter(login_id=lid)
-        if le.count() != 1:
-            return JsonResponse({'msg': '请先设置帐户信息'})
-
         model = request.GET['model']
-        apid = request.GET['apid']
-        data = {'title': '', 'word': ''}
         tkw = TitleKeyword.get_pair(model)
-        if tkw:
+        if tkw is None:
+            return JsonResponse({"msg": "没有可用数据"})
+
+        action = request.GET['action']
+        data = {'title': '', 'word': ''}
+        if action == 'copy':
+            tkw.count_plus()
+
+        if action == 'update':
+            lid = request.GET['login_id']
+            le = LoginEmail.objects.filter(login_id=lid)
+            if le.count() != 1:
+                return JsonResponse({'msg': '请先设置帐户信息'})
+
+            apid = request.GET['apid']
             Trace.tracing(le=le.get(), apid=apid, tkw=tkw,
-                          user=request.user, model=model)
-            data['title'] = '%s %s' % (tkw.title, model)
-            data['word'] = tkw.word
+                          user=request.user)
+            tkw.count_plus()
+
+        data['title'] = '%s %s' % (tkw.title, model)
+        data['word'] = tkw.word
         return JsonResponse(data)
 
     @method_decorator(login_required(login_url='/login_required_jr/'))

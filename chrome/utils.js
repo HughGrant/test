@@ -54,8 +54,8 @@ function fill_product_keyword(keyword) {
 }
 
 // update titlte and keyword, by passing model, alibaba product id, alibaba login id
-function fill_tk_by_m_a_l(model, apid, login_id) {
-    $.get(KW_URL, {model, apid, login_id}).done(function(data) {
+function fill_tk_by_params(params) {
+    $.get(KW_URL, params).done(function(data) {
         if (data.msg) {
             alert(msg);
             return false;

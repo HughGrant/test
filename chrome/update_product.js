@@ -1,4 +1,4 @@
-setTimeout(setup_update, 2000) 
+setTimeout(setup_update, 1500) 
 
 function setup_update() {
 	$('#productName').after('<button id="setup_update" type="button" class="ui-button ui-button-normal ui-button-big">更新</button>');
@@ -19,8 +19,10 @@ window.addEventListener("from_product_editing_page", function(data) {
 		alert('没有型号');
 	}
 
-	var apid = get_apid()
-	fill_tk_by_m_a_l(model, apid, login_id);
+	var apid = get_apid();
+	var action = 'update';
+	var params = {model, apid, login_id, action};
+	fill_tk_by_params(params);
 	$('#setup_update').remove();
 }, false)
 
