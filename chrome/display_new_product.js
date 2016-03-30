@@ -38,25 +38,6 @@ function select_by_text(elem, text) {
 	}
 }
 
-function check_payment_box(values) {
-	$('.paymentMethod-count input').prop('checked', false);
-	left = []
-	values.forEach(function(v) {
-		var v = v.trim();
-		var input = $('input[value="' + v + '"]');
-		if (input.length) {
-			input.prop('checked', true);
-		} else {
-			left.push(v)
-		}
-	})
-
-	if (left.length) {
-		$('label[for="paymentMethodOther"]').click()
-		$('#paymentMethodOtherDesc').val(left.join(','))
-	}
-}
-
 function check_box(elem, values) {
 	// elem = $(elem);
 	// get all available default options 

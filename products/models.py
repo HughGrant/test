@@ -47,7 +47,7 @@ class QuotationTemplate(models.Model):
 class TitleKeyword(models.Model):
     user = models.ForeignKey(User)
     model = models.CharField('型号', max_length=200, default="")
-    title = models.CharField('标题', max_length=200, default="")
+    title = models.CharField('标题', max_length=200, blank=True, default="")
     word = models.CharField('内容', max_length=200, default="")
     count = models.IntegerField('计数', default=0)
 

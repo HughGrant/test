@@ -27,6 +27,18 @@ class BasicAdmin(AutoUserAdmin):
     ordering = list_filter = search_fields = ('cn_name', )
     list_display = ('__str__', 'price')
 
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        if search_term == '':
+            return queryset, use_distinct
+        qs = models.DifferentPrice.objects.filter(model__icontains=search_term)
+        if qs.count == 0:
+            return qs, use_distinct
+
+        ids = qs.values_list('basic_id', flat=True).distinct()
+        qs = models.Basic.objects.filter(id=ids)
+        return qs, use_distinct
+
 
 class MOQForm(forms.ModelForm):
 
@@ -161,6 +173,20 @@ class QuotationTemplateAdmin(AutoUserAdmin):
 @admin.register(models.Trace)
 class TraceAdmin(AutoUserAdmin):
     exclude = ('user', )
-    search_fields = ('twk__model', 'twk__title')
+    search_fields = ('apid', )
     list_filter = ('le__email', )
     list_display = ('title', 'modelx', 'apid', 'email', 'update_time', 'link')
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        if search_term == '':
+            return queryset, use_distinct
+        if search_term.isnumeric():
+            return queryset, use_distinct
+        qs = models.TitleKeyword.objects.filter(model=search_term)
+        if qs.count == 0:
+            return queryset, use_distinct
+
+        ids = qs.values_list('id', flat=True)
+        qs = models.Trace.objects.filter(tkw__in=ids)
+        return qs, use_distinct
