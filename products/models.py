@@ -234,7 +234,8 @@ class Extend(models.Model):
         return self.different_price.__str__()
 
     def upload_button(self):
-        return '<button id="%s" class="ali_u">上传</button>' % (self.id)
+        return '<button id="%s" class="ali_u" model="%s">上传</button>' % (
+                self.id, self.different_price.model)
 
     upload_button.allow_tags = True
     upload_button.short_description = '动作'

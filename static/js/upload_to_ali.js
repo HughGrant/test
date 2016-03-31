@@ -1,7 +1,7 @@
 django.jQuery(function($) {
     $('.ali_u').click(function() {
         var id = $(this).attr('id');
-        var model = $(this).html();
+        var model = $(this).attr('model');
         var url = location.origin + '/products/capture/';
         var data = {id: id, model: model}
         $.get(url, data).done(function(data) {

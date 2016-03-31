@@ -170,13 +170,11 @@ function auto_fill_product(product) {
 	$('#priceRangeMax').val(product.price_range_max);
 	$('#priceUnit').val(product.price_unit);
 
-	$('#port').val(product.port);
-	check_payment_box(product.payment_terms);
 	$('#supplyQuantity').val(product.supply_quantity);
 	$('#supplyUnit').val(product.supply_unit);
 	$('#supplyPeriod').val(product.supply_period);
-	$('#consignmentTerm').val(product.consignment_term);
-	$('#packagingDesc').val(product.packaging_desc);
+
+	common_things_to_update();
 }
 
 function auto_fill_rich_text(product) {
@@ -196,26 +194,24 @@ function auto_fill_rich_text(product) {
 }
 
 window.addEventListener("upload_from_back", function(data) {
-	var email = ACCOUNT_ID_EMAIL_MAP[data.detail];
-	if (email) {
-	    upload_begin(email);
-	} else {
-		alert('帐户没有设置对应邮箱');
+	if (!data.detail) {
+		alert('未能获取Login ID');
+		return false;
 	}
-}, false)
-
-function upload_begin(email) {
-	fill_title_keywords_by_email_model(email, product.model)
+	var login_id = data.detail;
+	var model = product.model;
+	var action = 'upload';
+	fill_tk_by_params({login_id, model, action})
 	auto_fill_product(product);
 	auto_fill_rich_text(product);
-}
+}, false);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	if (request.action == 'set_product') {
 		product = request.product;
 
-		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">自动填写</button>');
+		$('#productName').after('<button id="auto_fill" type="button" class="ui-button ui-button-normal ui-button-big">填写</button>');
 
 		$('#auto_fill').click(function() {
 			inject_script(chrome.extension.getURL('get_login_id.js'));

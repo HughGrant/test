@@ -109,7 +109,7 @@ class CaptureView(View):
 
         # USD
         data['money_type'] = 1
-        dp = ext.basic.differentprice_set.filter(model=model)[0]
+        dp = DifferentPrice.objects.filter(model=model)[0]
         data['price_range_min'] = dp.min_profit()
         data['price_range_max'] = dp.max_profit()
         # set/sets
@@ -184,6 +184,9 @@ class TitleKeywordView(View):
         action = request.GET['action']
         data = {'title': '', 'word': ''}
         if action == 'copy':
+            tkw.count_plus()
+
+        if action == 'upload':
             tkw.count_plus()
 
         if action == 'update':
