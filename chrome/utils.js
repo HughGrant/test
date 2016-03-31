@@ -68,6 +68,7 @@ function fill_tk_by_params(params) {
             return false;
         } else {
             move_down_to_submit();
+            common_things_to_update();
         }
     }).fail(function() {
         alert('出错啦');
@@ -201,10 +202,13 @@ function is_preview_page() {
 }
 
 function get_product_name() {
+    var name = "";
     if (is_preview_page()) {
-        return $.trim($('#title_to_link').html());
+        name = $.trim($('#title_to_link').html());
+    } else {
+        name = $.trim($('.title.fn')[0].innerText);
     }
-    return $.trim($('.title.fn')[0].innerText);
+    return name.replace(/[\\/:*?"<>|"]/g, '');
 }
 
 function get_main_pictures() {
@@ -255,4 +259,30 @@ function array_trim(arr) {
         arr[i] = $.trim(arr[i]);
     }
     return arr;
+}
+
+function check_payment_box(values) {
+    $('.paymentMethod-count input').prop('checked', false);
+    left = [];
+    values.forEach(function(v) {
+        var v = v.trim();
+        var input = $('input[value="' + v + '"]');
+        if (input.length) {
+            input.prop('checked', true);
+        } else {
+            left.push(v);
+        }
+    })
+
+    if (left.length) {
+        $('label[for="paymentMethodOther"]').click();
+        $('#paymentMethodOtherDesc').val(left.join(','));
+    }
+}
+
+function common_things_to_update() {
+    check_payment_box(['T/T', 'Western Union', 'MoneyGram', 'PayPal']);
+    $('#port').val('NingBo');
+    $('#consignmentTerm').val(3);
+    $('#packagingDesc').val('Standard Export Packaging, Safe And Secure');
 }
