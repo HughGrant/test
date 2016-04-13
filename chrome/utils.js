@@ -57,7 +57,7 @@ function fill_product_keyword(keyword) {
 function fill_tk_by_params(params) {
     $.get(KW_URL, params).done(function(data) {
         if (data.msg) {
-            alert(msg);
+            alert(data.msg);
             return false;
         }
 

@@ -16,8 +16,6 @@ class UpdateByModel(View):
     def get(self, request):
         jr = {'status': True, 'message': ''}
         data = {}
-        email = request.GET['email']
-        pid = request.GET['pid']
         model = request.GET.get('model')
 
         df = DifferentPrice.objects.filter(model=model)
@@ -33,7 +31,6 @@ class UpdateByModel(View):
             jr['message'] = '没有型号产品%s的正文' % model
             return JsonResponse(jr)
 
-        title = data['name'] = ext.title_by_email_model(email, model, pid)
         data['keywords'] = ext.keywords()
         data['model'] = model
         data['extend_id'] = ext.id
@@ -96,13 +93,6 @@ class CaptureView(View):
         data['attrs'] = []
         for attr in ext.attr_set.all():
             data['attrs'].append([attr.name, attr.value])
-
-        s = '3-7 days based on destination, shipping by DHL/FedEx/UPS etc.'
-        data['consignment_term'] = s
-        data['packaging_desc'] = 'standard export packaging, safe and secure'
-        data['port'] = 'NingBo'
-        default_payment_terms = 'T/T,Western Union,MoneyGram,PayPal'
-        data['payment_terms'] = default_payment_terms.split(',')
 
         data['min_order_quantity'] = ext.moq.min_order_quantity
         data['min_order_unit'] = ext.moq.min_order_unit

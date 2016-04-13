@@ -50,8 +50,8 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write(0, col, title, title_format)
     # filling the data
     row = 1
-    for qs in queryset:
-        row_t = (row + 1, row + 1, row + 1)
+    for qs in queryset.order_by('date'):
+        # row_t = (row + 1, row + 1, row + 1)
         worksheet.write_string(row, 0, qs.date.strftime('%Y-%m-%d'))
         is_old = models.Order.objects.filter(client=qs.client).count()
         if is_old == 1:
@@ -67,17 +67,21 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write(row, 8, qs.po_excel_str(), po_format)
         worksheet.write_formula(row, 9, qs.prime_excel_cost())
         worksheet.write_formula(row, 10, qs.shipping_excel_cost())
-        worksheet.write_formula(row, 11, '=H%d-J%d-K%d' % row_t)
+        worksheet.write_formula(row, 11, qs.excel_profit())
         worksheet.write_string(row, 12, qs.tracking_number)
         worksheet.write_string(row, 13, qs.logistic_company)
         worksheet.write_string(row, 14, qs.ship_date.strftime('%Y-%m-%d'))
         row += 1
         # the extra cost
         for ec in qs.extracost_set.all():
-            worksheet.write_string(row, 10, ec.discription)
-            worksheet.write_number(row, 11, -ec.cost)
+            worksheet.write_string(row, 8, ec.discription)
+            worksheet.write_number(row, 9, ec.cost)
             row += 1
-
+        if qs.extracost_set.count():
+            row += 1
+    # total profit sum
+    worksheet.write_string(row, 10, '总利润')
+    worksheet.write_formula(row, 11, 'SUM(L2:L%d)' % row)
     center_algin = workbook.add_format({'align': 'center'})
     worksheet.set_column('A:O', 15, center_algin)
     worksheet.set_column('C:C', 30)

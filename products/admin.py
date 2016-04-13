@@ -25,7 +25,7 @@ class BasicAdmin(AutoUserAdmin):
     ]
     exclude = ('user', )
     ordering = list_filter = search_fields = ('cn_name', )
-    list_display = ('__str__', 'price')
+    list_display = ('__str__', 'price', 'spare_parts')
 
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)

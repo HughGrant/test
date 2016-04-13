@@ -47,6 +47,14 @@ class Order(models.Model):
         return float("%.2f" % m)
     profit.short_description = '净毛利(RMB)'
 
+    def excel_profit(self):
+        m = '%f-%f-%f-%f' % (
+            self.payments_rmb(),
+            self.prime_cost(),
+            self.shipping_cost(),
+            self.extra_cost())
+        return m
+
     def logistic(self):
         if self.logistic_company:
             return self.logistic_company + ':' + self.tracking_number

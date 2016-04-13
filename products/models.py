@@ -22,6 +22,16 @@ class Basic(models.Model):
     price.short_description = '报价'
     price.allow_tags = True
 
+    def spare_parts(self):
+        qs = Accessory.objects.filter(basic_id=self.id)
+        if not qs.exists():
+            return ''
+        # qs = qs.order_by('model', 'difference')
+        fs = '<br><br>'.join([dp.description() for dp in qs.all()])
+        return fs
+    spare_parts.short_description = '配件'
+    spare_parts.allow_tags = True
+
     class Meta:
         verbose_name = verbose_name_plural = '基本信息'
 
@@ -170,6 +180,9 @@ class Accessory(models.Model):
     def __str__(self):
         return '%s: %s' % (self.difference, self.price)
 
+    def description(self):
+        return '%s: %sRMB' % (self.difference, self.price)
+
     class Meta:
         verbose_name = verbose_name_plural = '产品配件'
 
@@ -234,49 +247,13 @@ class Extend(models.Model):
         return self.different_price.__str__()
 
     def upload_button(self):
+        if self.different_price is None:
+            return ''
         return '<button id="%s" class="ali_u" model="%s">上传</button>' % (
                 self.id, self.different_price.model)
 
     upload_button.allow_tags = True
     upload_button.short_description = '动作'
-
-    def title_by_model(self, model):
-        if self.head_set.count() == 0:
-            return '没有可用的标题 速去添加'
-        head = self.head_set.order_by('count').first()
-        head.count += 1
-        head.save()
-        return head.name + ' ' + model
-
-    def title_by_email_model(self, email, model, pid=None):
-        tl = TrackingList.objects.filter(account=email, model=model)
-        if tl.count() == 0:
-            return self.title_by_model(model)
-
-        heads_set = set(self.head_set.values_list('name', flat=True))
-        used_set = []
-        for h in tl.values_list('title', flat=True):
-            used_set.append(h.replace(model, '').strip())
-
-        usable = heads_set - set(used_set)
-        if len(usable) == 0:
-            return '标题不够用了，请手动添加'
-
-        title = usable.pop() + ' ' + model
-        if pid:
-            t = TrackingList.objects.filter(pid=pid, account=email)
-            if t.exists():
-                t = t.get()
-                t.title = title
-                t.model = model
-            else:
-                t = TrackingList(
-                    pid=pid, account=email, title=title, model=model)
-        else:
-            t = TrackingList(
-                pid=pid, account=email, title=title, model=model)
-        t.save()
-        return title
 
     class Meta:
         verbose_name = verbose_name_plural = '详细信息'

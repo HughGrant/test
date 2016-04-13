@@ -178,13 +178,20 @@ function auto_fill_product(product) {
 }
 
 function auto_fill_rich_text(product) {
+	// fisrt select Standard Editing
+	$('input:radio[name=editorselector]:eq(0)').attr('checked', false);
+	$('input:radio[name=editorselector]:eq(1)').attr('checked', true);
+	$('input:radio[name=editorselector]:eq(1)').click();
+
 	var rich_f = function(content) {
 		if (content.constructor === Array) {
 			content = content.join('');
 		}
 		tinyMCE.activeEditor.setContent(content);
 	}
-	var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')';
+	var product_name = $('#productName').val();
+	var rich_text = product.rich_text.replace('{{title}}', product_name);
+	var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(rich_text) + ')';
 	var script = document.createElement('script');
 	script.textContent = rich_code;
 	setTimeout(function() {
