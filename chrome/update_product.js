@@ -21,35 +21,35 @@ window.addEventListener("from_product_editing_page", function(data) {
 
 	var apid = get_apid();
 	var action = 'update';
-	var params = {model, apid, login_id, action};
-	fill_tk_by_params(params);
+	var ajax = {
+		action: 'ajax_from_back',
+		method: 'get',
+		url: KW_URL,
+		params: {model, apid, login_id, action}
+	};
+
+	chrome.runtime.sendMessage(ajax, function(resp) {
+
+		resp.ajax.done(function(data){
+			if (data.msg) {
+				alert(data.msg);
+				return false;
+			}
+
+			fill_product_name(data.title);
+			fill_product_keyword(data.word);
+			copy_title();
+			if ($.trim(data.word) == '' || $.trim(data.title) == '') {
+			    return false;
+			} else {
+			    move_down_to_submit();
+			    common_things_to_update();
+			}
+		});
+
+
+		
+	});
+
 	$('#setup_update').remove();
-}, false)
-
-
-// function update_all(email) {
-// 	var model = find_model();
-// 	if (model === false) {
-// 		alert('没有型号');
-// 		return false;
-// 	}
-// 	var apid = get_apid();
-// 	var data ={model, apid};
-// 	$.get(UPDATE_BY_MODEL, data).done(function(product) {
-// 		if (!product.status) {
-// 			alert(product.message);
-// 			return false;
-// 		}
-// 		// update all
-// 		var p = product.data;
-// 		fill_product_name(p.name);
-// 		var re = fill_keywords(p.keywords);
-// 		if (re) {
-// 			move_down_to_submit();
-// 			auto_fill_product(p)
-// 			auto_fill_rich_text(p)
-// 		}
-// 	}).fail(function() {
-// 		alert('出错啦');
-// 	});
-// }
+}, false);

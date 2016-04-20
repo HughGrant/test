@@ -39,7 +39,6 @@ function select_by_text(elem, text) {
 }
 
 function check_box(elem, values) {
-	// elem = $(elem);
 	// get all available default options 
 	var defaults = [];
 	elem.find('label').map(function() {
@@ -189,15 +188,15 @@ function auto_fill_rich_text(product) {
 		}
 		tinyMCE.activeEditor.setContent(content);
 	}
-	var product_name = $('#productName').val();
-	var rich_text = product.rich_text.replace('{{title}}', product_name);
-	var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(rich_text) + ')';
+
+	// var rich_text = product.rich_text.replace('{{title}}', product_name);
+	var rich_code = '(' + rich_f.toString() + ')(' + JSON.stringify(product.rich_text) + ')';
 	var script = document.createElement('script');
 	script.textContent = rich_code;
 	setTimeout(function() {
 		(document.head || document.documentElement).appendChild(script);
 		script.parentNode.removeChild(script);
-	}, 2000);
+	}, 1500);
 }
 
 window.addEventListener("upload_from_back", function(data) {
@@ -208,6 +207,7 @@ window.addEventListener("upload_from_back", function(data) {
 	var login_id = data.detail;
 	var model = product.model;
 	var action = 'upload';
+	// using promise
 	fill_tk_by_params({login_id, model, action})
 	auto_fill_product(product);
 	auto_fill_rich_text(product);

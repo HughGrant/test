@@ -43,6 +43,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     }
 
+    if (request.action = 'ajax_from_back') {
+        console.log('message recv')
+        if (request.method == 'get') {
+            sendResponse({'ajax': $.get(request.url, request.params)});
+            $.get(request.url, request.params).done(function(data) {
+                console.log('before send ajax')
+                sendResponse({'data': data});
+                console.log('after send ajax')
+            }).fail(function() {
+                sendResponse({'fail': true});
+            });
+        }
+
+        if (request.method == 'post') {
+            $.post(request.url, request.params).done(function(data) {
+                sendResponse({'data': data});
+            }).fail(function() {
+                sendResponse({'fail': true});
+            });
+        }
+    }
+
 });
 
 var upload_product = function(record) {
