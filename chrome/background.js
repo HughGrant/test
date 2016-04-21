@@ -43,29 +43,31 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     }
 
-    if (request.action = 'ajax_from_back') {
-        console.log('message recv')
-        if (request.method == 'get') {
-            sendResponse({'ajax': $.get(request.url, request.params)});
-            $.get(request.url, request.params).done(function(data) {
-                console.log('before send ajax')
-                sendResponse({'data': data});
-                console.log('after send ajax')
-            }).fail(function() {
-                sendResponse({'fail': true});
-            });
-        }
+    if (request.action == 'ajax_get_from_back') {
+        $.get(request.url, request.params).done(function(data) {
+            message_to_active_tab('ajax_in_back_returns', data);
+        }).fail(function() {
+            message_to_active_tab('ajax_in_back_returns', {'fail': true});
+        });
+    }
 
-        if (request.method == 'post') {
-            $.post(request.url, request.params).done(function(data) {
-                sendResponse({'data': data});
-            }).fail(function() {
-                sendResponse({'fail': true});
-            });
-        }
+    if (request.action == 'ajax_post_from_back') {
+        $.post(request.url, request.params).done(function(data) {
+            message_to_active_tab('ajax_in_back_returns', data);
+        }).fail(function() {
+            message_to_active_tab('ajax_in_back_returns', {'fail': true});
+        });
     }
 
 });
+
+var message_to_active_tab = function(action, data) {
+    var query = {active: true, currentWindow: true};
+    var message = {action, data};
+    chrome.tabs.query(query, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, message);
+    });
+}
 
 var upload_product = function(record) {
     chrome.tabs.create({'url':UPLOAD_PRODUCT_URL}, function(tab) {

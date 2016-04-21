@@ -9,13 +9,12 @@
     "scripts": ["jquery.js", "urls.js", "background.js"],
     "persistent": true
   },
-    
+
   "content_scripts": [
     {
       "matches": ["*://*.alibaba.com/*"],
       "js": [
-        "jquery.js", "config.js","urls.js", "ractive.min.js", "utils.js", 
-        "command_plate.js", "string_score.min.js"
+        "jquery.js", "config.js","urls.js", "utils.js", "command_plate.js", "string_score.min.js"
       ]
     },
     {

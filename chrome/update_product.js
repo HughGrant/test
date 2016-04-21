@@ -22,34 +22,39 @@ window.addEventListener("from_product_editing_page", function(data) {
 	var apid = get_apid();
 	var action = 'update';
 	var ajax = {
-		action: 'ajax_from_back',
-		method: 'get',
+		action: 'ajax_get_from_back',
 		url: KW_URL,
 		params: {model, apid, login_id, action}
 	};
-
-	chrome.runtime.sendMessage(ajax, function(resp) {
-
-		resp.ajax.done(function(data){
-			if (data.msg) {
-				alert(data.msg);
-				return false;
-			}
-
-			fill_product_name(data.title);
-			fill_product_keyword(data.word);
-			copy_title();
-			if ($.trim(data.word) == '' || $.trim(data.title) == '') {
-			    return false;
-			} else {
-			    move_down_to_submit();
-			    common_things_to_update();
-			}
-		});
-
-
-		
-	});
-
+	// send message to background page to invoke http ajax
+	chrome.runtime.sendMessage(ajax);
 	$('#setup_update').remove();
 }, false);
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.action == 'ajax_in_back_returns') {
+    	var data = request.data;
+    	if (data.fail) {
+    		alert('服务器出错');
+    	}
+
+    	if (data.msg) {
+			alert(data.msg);
+			return false;
+		}
+
+		fill_product_name(data.title);
+		fill_product_keyword(data.word);
+		copy_title();
+		if ($.trim(data.word) == '' || $.trim(data.title) == '') {
+		    return false;
+		} else {
+		    move_down_to_submit();
+		    common_things_to_update();
+		}
+    }
+});
+
+
+
+
