@@ -53,29 +53,6 @@ function fill_product_keyword(keyword) {
     $('#productKeyword').val(keyword);
 }
 
-
-// update titlte and keyword, by passing model, alibaba product id, alibaba login id
-function fill_tk_by_params(params) {
-    $.get(KW_URL, params).done(function(data) {
-        if (data.msg) {
-            alert(data.msg);
-            return false;
-        }
-
-        fill_product_name(data.title);
-        fill_product_keyword(data.word);
-        copy_title();
-        if ($.trim(data.word) == '' || $.trim(data.title) == '') {
-            return false;
-        } else {
-            move_down_to_submit();
-            common_things_to_update();
-        }
-    }).fail(function() {
-        alert('出错啦');
-    });
-}
-
 function get_apid() {
     return parseInt(window.location.search.match(/\d+/g)[0]);
 }
@@ -286,4 +263,34 @@ function common_things_to_update() {
     $('#port').val('NingBo');
     $('#consignmentTerm').val(3);
     $('#packagingDesc').val('Standard Export Packaging, Safe And Secure');
+}
+
+function send_background_ajax_get(url, data) {
+    chrome.runtime.sendMessage({
+        action: 'ajax_get_from_back',
+        url: url,
+        params: data
+    });
+}
+
+function send_background_ajax_post(url, data) {
+    chrome.runtime.sendMessage({
+        action: 'ajax_post_from_back',
+        url: url,
+        params: data
+    });
+}
+
+function dom_update_tk(data) {
+    if (data.fail) {
+        alert('服务器出错');
+    } else if (data.msg) {
+        alert(data.msg);
+    } else {
+        fill_product_name(data.title);
+        fill_product_keyword(data.word);
+        copy_title();
+        move_down_to_submit();
+        common_things_to_update();
+    }
 }

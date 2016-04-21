@@ -207,10 +207,7 @@ window.addEventListener("upload_from_back", function(data) {
 	var login_id = data.detail;
 	var model = product.model;
 	var action = 'upload';
-	// using promise
-	fill_tk_by_params({login_id, model, action})
-	auto_fill_product(product);
-	auto_fill_rich_text(product);
+	send_background_ajax_get(KW_URL, {login_id, model, action});
 }, false);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -230,5 +227,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		$('#search-keyword').val(request.category[request.category.length - 1]);
 		$('button[type=submit]').click();
 	}
+
+	if (request.action == 'ajax_in_back_returns') {
+    	dom_update_tk(request.data);
+    	auto_fill_product(product);
+		auto_fill_rich_text(product);
+    }
 
 });
