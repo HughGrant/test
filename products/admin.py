@@ -126,6 +126,11 @@ def duplicate_word(modeladmin, req, queryset):
         qs.save()
 duplicate_word.short_description = '重复关键字'
 
+def reset_count(modeladmin, req, queryset):
+    for qs in queryset:
+        qs.count = 0
+        qs.save()
+reset_count.short_description = '计数清零'
 
 class TKWFilter(admin.SimpleListFilter):
     title = '产品型号'
@@ -158,7 +163,7 @@ class TitleKeywordAdmin(AutoUserAdmin):
     list_editable = ('title', 'model', 'word', 'count')
     list_display = ('list_link', 'word', 'title', 'model', 'count')
     list_display_links = ('list_link', )
-    actions = [duplicate_word, ]
+    actions = [duplicate_word, reset_count]
 
 
 @admin.register(models.QuotationTemplate)

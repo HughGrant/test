@@ -23,11 +23,11 @@ class Order(models.Model):
     client_email.short_description = '客户信息'
     client_email.allow_tags = True
 
-    def po_excel_str(self):
+    def po_name_qty(self):
         descriptions = []
         for po in self.productorder_set.all():
             descriptions.append(po.description())
-        return '\n'.join(descriptions)
+        return descriptions
 
     def po_list(self):
         descriptions = []
@@ -56,17 +56,27 @@ class Order(models.Model):
         return m
 
     def logistic(self):
-        if self.logistic_company:
-            return self.logistic_company + ':' + self.tracking_number
-        return ''
+        if not self.logistic_company:
+            return ''
+        l = ''
+        for tu in self.tracking_number.split(','):
+            l += '%s: %s<br><br>' % (self.logistic_company, tu) 
+        return l
     logistic.short_description = '物流信息'
+    logistic.allow_tags = True
 
     def payments_rmb(self):
         rmb = 0
         for payment in self.payment_set.all():
             rmb += payment.rmb()
         return rmb
-    payments_rmb.short_description = '实际收款额(RMB)'
+
+    def payments_rmb_short(self):
+        rmb = 0
+        for payment in self.payment_set.all():
+            rmb += payment.rmb()
+        return "%.2f" % rmb
+    payments_rmb_short.short_description = '实际收款额(RMB)'
 
     def payments_excel_money(self):
         usd = []
@@ -84,7 +94,13 @@ class Order(models.Model):
         methods = []
         for payment in self.payment_set.all():
             methods.append(payment.get_payment_method_display())
-        return ','.join(set(methods))
+        return methods
+
+    def payments_collected_money(self):
+        money = []
+        for payment in self.payment_set.all():
+            money.append(payment.collected_money)
+        return money
 
     def prime_cost(self):
         cost = 0
@@ -106,7 +122,7 @@ class Order(models.Model):
         cost = []
         for po in self.productorder_set.all():
             cost.append('%f*%f' % (po.product.price, po.quantity))
-        return '=' + '+'.join(cost)
+        return cost
 
     def extra_cost(self):
         cost = 0
