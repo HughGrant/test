@@ -111,54 +111,54 @@ function get_inner_text(css_selector, default_str) {
 }
 
 function scratch() {
-    var product = {}
+    var product = {};
     product.name = get_product_name();
 
-    product.category = array_trim($('.ui-breadcrumb').attr('content').split('>'))
+    product.category = array_trim($('.ui-breadcrumb').attr('content').split('>'));
 
     product.unkown_category_id = $('.num').html().replace(/[()]/g, '');
     // main images src
-    product.photos = get_main_pictures()
+    product.photos = get_main_pictures();
 
     product.attrs = []
-    keys = $('.J-name')
-    values = $('.J-value')
+    keys = $('#J-quick-detail .J-name');
+    values = $('#J-quick-detail .J-value');
     for (var i = 0; i < keys.length; i++) {
-        product.attrs.push([keys[i].innerText.replace(/:/g, ''), $.trim(values[i].innerText)])
+        product.attrs.push([keys[i].innerText.replace(/:/g, ''), $.trim(values[i].innerText)]);
     }
 
-    product.consignment_term = get_inner_text('td:contains("Delivery Detail:") + td')
-    product.packaging_desc = get_inner_text('td:contains("Packaging Details:") + td')
+    product.consignment_term = get_inner_text('td:contains("Delivery Detail:") + td');
+    product.packaging_desc = get_inner_text('td:contains("Packaging Details:") + td');
 
     product.price_range_min = 0;
     product.price_range_max = 0;
     if ($('span[itemProp="priceCurrency"]').length == 1) {
-        product.price_range_min = parseInt($('span[itemProp="lowPrice"]').html().replace(/,/g, ""))
-        product.price_range_max = parseInt($('span[itemProp="highPrice"]').html().replace(/,/g, ""))
+        product.price_range_min = parseInt($('span[itemProp="lowPrice"]').html().replace(/,/g, ""));
+        product.price_range_max = parseInt($('span[itemProp="highPrice"]').html().replace(/,/g, ""));
     }
     // in preset.py money_type USD is 1
     product.money_type = 1;
     // SET/SETS
     product.price_unit = 20;
 
-    var MOQ = $('th:contains("Min.Order Quantity:") + td')[0].innerText
-    MOQ = MOQ.split(' ')
-    product.min_order_quantity = parseInt(MOQ[0])
-    product.min_order_unit = unitType[MOQ[1]]
+    var MOQ = $('th:contains("Min.Order Quantity:") + td')[0].innerText;
+    MOQ = MOQ.split(' ');
+    product.min_order_quantity = parseInt(MOQ[0]);
+    product.min_order_unit = unitType[MOQ[1]];
 
 
     product.port = get_inner_text('th:contains("Port:") + td', 'NingBo');
 
 
-    var pm = $('th:contains("Payment Terms:") + td')[0].innerText
-    product.payment_terms = array_trim(pm.split(','))
+    var pm = $('th:contains("Payment Terms:") + td')[0].innerText;
+    product.payment_terms = array_trim(pm.split(','));
 
-    var supply = $('th:contains("Supply Ability:") + td')[0].innerText
-    supply = supply.split(' ')
+    var supply = $('th:contains("Supply Ability:") + td')[0].innerText;
+    supply = supply.split(' ');
 
-    product.supply_unit = unitType[supply[1]]
-    product.supply_quantity = parseInt(supply[0])
-    product.supply_period = supply[supply.length - 1]
+    product.supply_unit = unitType[supply[1]];
+    product.supply_quantity = parseInt(supply[0]);
+    product.supply_period = supply[supply.length - 1];
 
     var rich = get_rich_text();
     product.rich_text = rich.txt.join('');
