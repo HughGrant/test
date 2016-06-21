@@ -1,9 +1,12 @@
+#-*- coding: utf-8 -*-
+from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
 from preset import *
 from clients.models import LoginEmail
 
 
+@python_2_unicode_compatible
 class Basic(models.Model):
     user = models.ForeignKey(User)
     cn_name = models.CharField('中文名', blank=True, max_length=200)
@@ -36,10 +39,14 @@ class Basic(models.Model):
         verbose_name = verbose_name_plural = '基本信息'
 
 
+@python_2_unicode_compatible
 class QuotationTemplate(models.Model):
     user = models.ForeignKey(User)
     dp = models.ForeignKey('DifferentPrice', null=True, verbose_name='产品')
     content = models.TextField('正文', blank=True, max_length=100000)
+
+    def __str__(self):
+        return self.dp.__str__()
 
     def copy_link(self):
         return '拷贝模板'
@@ -54,12 +61,16 @@ class QuotationTemplate(models.Model):
         verbose_name = verbose_name_plural = '报价模板'
 
 
+@python_2_unicode_compatible
 class TitleKeyword(models.Model):
     user = models.ForeignKey(User)
     model = models.CharField('型号', max_length=200, default="")
     title = models.CharField('标题', max_length=200, blank=True, default="")
     word = models.CharField('内容', max_length=200, default="")
     count = models.IntegerField('计数', default=0)
+
+    def __str__(self):
+        return "%s-%s" % (self.word, self.count)
 
     @classmethod
     def get_pair(cls, model):
@@ -75,9 +86,6 @@ class TitleKeyword(models.Model):
     def list_link(self):
         return self.word
     list_link.short_description = '链接'
-
-    def __str__(self):
-        return "%s-%s" % (self.word, self.count)
 
     class Meta:
         unique_together = ('model', 'word')
@@ -132,6 +140,7 @@ class Trace(models.Model):
         verbose_name = verbose_name_plural = '更新记录'
 
 
+@python_2_unicode_compatible
 class Category(models.Model):
     parent = models.ForeignKey(
         'self', verbose_name='上级类目', null=True, blank=True)
@@ -172,6 +181,7 @@ class Category(models.Model):
         verbose_name = verbose_name_plural = '产品分类'
 
 
+@python_2_unicode_compatible
 class Accessory(models.Model):
     basic = models.ForeignKey('Basic', verbose_name='基本信息')
     difference = models.CharField('描述', max_length=100)
@@ -187,6 +197,7 @@ class Accessory(models.Model):
         verbose_name = verbose_name_plural = '产品配件'
 
 
+@python_2_unicode_compatible
 class DifferentPrice(models.Model):
     basic = models.ForeignKey('Basic', verbose_name='基本信息')
     model = models.CharField('型号', blank=True, max_length=200)
@@ -219,6 +230,7 @@ class DifferentPrice(models.Model):
         verbose_name = verbose_name_plural = '差异价'
 
 
+@python_2_unicode_compatible
 class Attr(models.Model):
     extend = models.ForeignKey('Extend', verbose_name='详细信息')
     name = models.CharField('属性名', max_length=100)
@@ -231,6 +243,7 @@ class Attr(models.Model):
         verbose_name = verbose_name_plural = '属性'
 
 
+@python_2_unicode_compatible
 class Extend(models.Model):
     basic = models.ForeignKey('Basic', null=True, verbose_name='基本信息')
     different_price = models.ForeignKey(
@@ -259,6 +272,7 @@ class Extend(models.Model):
         verbose_name = verbose_name_plural = '详细信息'
 
 
+@python_2_unicode_compatible
 class MOQ(models.Model):
     min_order_quantity = models.IntegerField('起订量', default=1)
     min_order_unit = models.IntegerField(
@@ -274,6 +288,7 @@ class MOQ(models.Model):
         verbose_name = verbose_name_plural = '最小起订量'
 
 
+@python_2_unicode_compatible
 class SupplyAbility(models.Model):
     supply_quantity = models.IntegerField('产量', default=0)
     supply_unit = models.IntegerField(

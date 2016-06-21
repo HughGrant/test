@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 CURRENCY_TYPE = (
     (1, 'USD'),
     (2, 'RMB'),

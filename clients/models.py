@@ -1,7 +1,10 @@
+#-*- coding: utf-8 -*-
+from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
 
 
+@python_2_unicode_compatible
 class Country(models.Model):
     # public info to all users, only superuser can do CRUD
     ibt_id = models.IntegerField('IBT_ID')
@@ -18,6 +21,7 @@ class Country(models.Model):
         verbose_name = verbose_name_plural = '国家信息'
 
 
+@python_2_unicode_compatible
 class Client(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('姓名', max_length=200)
@@ -33,6 +37,7 @@ class Client(models.Model):
         verbose_name = verbose_name_plural = '客户信息'
 
 
+@python_2_unicode_compatible
 class Address(models.Model):
     client = models.ForeignKey('Client', verbose_name='所属客户')
     name = models.CharField('姓名', max_length=200)
@@ -49,6 +54,7 @@ class Address(models.Model):
         verbose_name = verbose_name_plural = '地址信息'
 
 
+@python_2_unicode_compatible
 class LoginEmail(models.Model):
     user = models.ForeignKey(User)
     login_id = models.CharField('LoginID', blank=True, max_length=100)

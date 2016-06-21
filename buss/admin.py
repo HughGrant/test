@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import io
 import time
 from django.contrib import admin
@@ -16,7 +17,7 @@ class AutoUserAdmin(admin.ModelAdmin):
         obj.save()
 
     def get_queryset(self, request):
-        return super().get_queryset(request).filter(user=request.user)
+        return super(AutoUserAdmin, self).get_queryset(request).filter(user=request.user)
 
 
 class ProductOrderInline(admin.TabularInline):
@@ -67,7 +68,7 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_string(row, 12, qs.tracking_number)
         worksheet.write_string(row, 13, qs.logistic_company)
         worksheet.write_string(row, 14, qs.ship_date.strftime('%Y/%m/%d'))
-        
+
         max_iters = []
         # Payment Methods
         for index, pm in enumerate(qs.payments_method(), row):
@@ -78,7 +79,7 @@ def make_month_profit(modeladmin, req, queryset):
         for index, m in enumerate(qs.payments_collected_money(), row):
             worksheet.write_number(index, 6, m)
         max_iters.append(index)
-        
+
         # product names and quantities
         name_qty = qs.po_name_qty()
         max_po = len(name_qty)
@@ -88,7 +89,7 @@ def make_month_profit(modeladmin, req, queryset):
 
         for index, cost in enumerate(qs.prime_excel_cost(), row):
             worksheet.write_formula(index, 9, cost)
-            
+
         # the extra cost follows unders order description
         for index, ec in enumerate(qs.extracost_set.all(), max_po + 1):
             worksheet.write_string(index, 8, ec.discription)
@@ -140,4 +141,4 @@ class PaymentAdmin(admin.ModelAdmin):
         'exchange_rate', 'payment_method', 'rmb')
 
     def get_queryset(self, req):
-        return super().get_queryset(req).filter(order__user=req.user)
+        return super(PaymentAdmin, self).get_queryset(req).filter(order__user=req.user)

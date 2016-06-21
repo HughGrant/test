@@ -1,4 +1,4 @@
-# from django.shortcuts import render
+#-*- coding: utf-8 -*-
 import json
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError, PermissionDenied
@@ -73,7 +73,7 @@ class UpdateByModel(View):
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+        return super(UpdateByModel, self).dispatch(request, *args, **kwargs)
 
 
 class CaptureView(View):
@@ -144,7 +144,7 @@ class CaptureView(View):
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+        return super(CaptureView, self).dispatch(request, *args, **kwargs)
 
 
 class TitleKeywordView(View):
@@ -197,4 +197,4 @@ class TitleKeywordView(View):
     @method_decorator(login_required(login_url='/login_required_jr/'))
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+        return super(TitleKeywordView, self).dispatch(request, *args, **kwargs)

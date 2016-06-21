@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import authenticate, login, logout
@@ -24,7 +25,7 @@ class ChromeLoginView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+        return super(ChromeLoginView, self).dispatch(request, *args, **kwargs)
 
 
 def user_logout(request):

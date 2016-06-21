@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
@@ -28,7 +29,7 @@ class BasicAdmin(AutoUserAdmin):
     list_display = ('__str__', 'price', 'spare_parts')
 
     def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        queryset, use_distinct = super(BasicAdmin, self).get_search_results(request, queryset, search_term)
         if search_term == '':
             return queryset, use_distinct
         qs = models.DifferentPrice.objects.filter(model__icontains=search_term)
@@ -56,7 +57,7 @@ class MOQAdmin(admin.ModelAdmin):
     form = MOQForm
 
     def get_model_perms(self, request):
-        perms = super().get_model_perms(request)
+        perms = super(MOQAdmin, self).get_model_perms(request)
         perms['hide_from_index'] = True
         return perms
 
@@ -78,7 +79,7 @@ class SupplyAbilityAdmin(admin.ModelAdmin):
     form = SPForm
 
     def get_model_perms(self, request):
-        perms = super().get_model_perms(request)
+        perms = super(SupplyAbilityAdmin, self).get_model_perms(request)
         perms['hide_from_index'] = True
         return perms
 
@@ -88,7 +89,7 @@ class DifferentPriceAdmin(admin.ModelAdmin):
     search_fields = ('model', 'basic__cn_name')
 
     def get_model_perms(self, request):
-        perms = super().get_model_perms(request)
+        perms = super(DifferentPriceAdmin, self).get_model_perms(request)
         perms['hide_from_index'] = True
         return perms
 
@@ -111,7 +112,7 @@ class ExtendAdmin(AutoUserAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':
             kwargs["queryset"] = models.Category.objects.filter(category=None)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+        return super(ExtendAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Media:
         js = ('js/tinymce/tinymce.min.js', 'js/upload_to_ali.js')
@@ -183,7 +184,7 @@ class TraceAdmin(AutoUserAdmin):
     list_display = ('title', 'modelx', 'apid', 'email', 'update_time', 'link')
 
     def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        queryset, use_distinct = super(TraceAdmin, self).get_search_results(request, queryset, search_term)
         if search_term == '':
             return queryset, use_distinct
         if search_term.isnumeric():

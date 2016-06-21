@@ -1,10 +1,13 @@
+#-*- coding: utf-8 -*-
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from clients.models import Client
 from products.models import DifferentPrice
 from preset import CURRENCY_TYPE, PAYMENT_METHOD
 
 
+@python_2_unicode_compatible
 class Order(models.Model):
     user = models.ForeignKey(User)
     client = models.ForeignKey(
@@ -14,6 +17,9 @@ class Order(models.Model):
     date = models.DateField('创建日期', blank=True, null=True)
     ship_date = models.DateField('发贷日期', blank=True, null=True)
     bak = models.TextField('备注', blank=True, max_length=500)
+
+    def __str__(self):
+        return '%s-定单ID:%s' % (self.client.__str__(), self.id)
 
     def client_email(self):
         # line_feed = '%0d%0a'
@@ -60,7 +66,7 @@ class Order(models.Model):
             return ''
         l = ''
         for tu in self.tracking_number.split(','):
-            l += '%s: %s<br><br>' % (self.logistic_company, tu) 
+            l += '%s: %s<br><br>' % (self.logistic_company, tu)
         return l
     logistic.short_description = '物流信息'
     logistic.allow_tags = True
@@ -143,13 +149,11 @@ class Order(models.Model):
             cost.append(str(po.shipping_cost))
         return '=' + '+'.join(cost)
 
-    def __str__(self):
-        return '%s-定单ID:%s' % (self.client.__str__(), self.id)
-
     class Meta:
         verbose_name = verbose_name_plural = '定单信息'
 
 
+@python_2_unicode_compatible
 class ExtraCost(models.Model):
     order = models.ForeignKey('Order')
     discription = models.CharField('描述', max_length=1000)
@@ -162,6 +166,7 @@ class ExtraCost(models.Model):
         verbose_name = verbose_name_plural = '额外费用'
 
 
+@python_2_unicode_compatible
 class ProductOrder(models.Model):
     order = models.ForeignKey('Order')
     product = models.ForeignKey(DifferentPrice, verbose_name='产品')
@@ -183,6 +188,7 @@ class ProductOrder(models.Model):
         verbose_name = verbose_name_plural = '定单内容'
 
 
+@python_2_unicode_compatible
 class Payment(models.Model):
     order = models.ForeignKey('Order', verbose_name='定单')
     sender_info = models.CharField('付款人信息', max_length=100)
@@ -196,6 +202,13 @@ class Payment(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = '付款信息'
+
+    def __str__(self):
+        return '%s(%s%s %s)' % (
+            self.sender_info,
+            self.collected_money,
+            self.get_currency_type_display(),
+            self.get_payment_method_display())
 
     def rmb(self):
         # RMB converting rule
@@ -215,12 +228,6 @@ class Payment(models.Model):
             return '%f/1.04*%f' % (self.collected_money, self.exchange_rate)
         return '%f*%f' % (self.collected_money, self.exchange_rate)
 
-    def __str__(self):
-        return '%s(%s%s %s)' % (
-            self.sender_info,
-            self.collected_money,
-            self.get_currency_type_display(),
-            self.get_payment_method_display())
 
 # class PaymentIssue(models.Model):
 #     payment = models.ForeignKey('Payment', verbose_name='付款信息')
