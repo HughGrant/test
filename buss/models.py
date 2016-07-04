@@ -1,10 +1,15 @@
 #-*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import sys
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from clients.models import Client
 from products.models import DifferentPrice
 from preset import CURRENCY_TYPE, PAYMENT_METHOD
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 @python_2_unicode_compatible
@@ -22,10 +27,10 @@ class Order(models.Model):
         return '%s-定单ID:%s' % (self.client.__str__(), self.id)
 
     def client_email(self):
-        # line_feed = '%0d%0a'
+        line_feed = '%0d%0a'
         email = '<a href="mailto:%s?subject=%s&body=%s">%s</a>' % (
             self.client.email, 'test', 'test', self.client.email)
-        return self.client.__str__() + '<br><br>' + email
+        return '%s<br><br>%s' % (str(self.client), email)
     client_email.short_description = '客户信息'
     client_email.allow_tags = True
 

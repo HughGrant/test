@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
@@ -92,6 +93,7 @@ class TitleKeyword(models.Model):
         verbose_name = verbose_name_plural = '更新数据'
 
 
+@python_2_unicode_compatible
 class Trace(models.Model):
     user = models.ForeignKey(User)
     tkw = models.ForeignKey('TitleKeyword', verbose_name='标题与关键字')
@@ -100,6 +102,9 @@ class Trace(models.Model):
     # alibaba product id
     apid = models.IntegerField('阿里产品ID', default=0)
     update_time = models.DateTimeField('最后更新时间', auto_now_add=True)
+
+    def __str__(self):
+        return self.tkw.__str__()
 
     @classmethod
     def tracing(cls, **kwargs):
@@ -130,7 +135,8 @@ class Trace(models.Model):
     modelx.short_description = '产品型号'
 
     def link(self):
-        l = "http://hz-productposting.alibaba.com/product/editing.htm?id=%d" % self.apid
+        l = "http://hz-productposting.alibaba.com/product/editing.htm?id=%d"
+        l = l % self.apid
         return '<a target="blank" href="%s">点击更新</a>' % l
     link.short_description = '更新链接'
     link.allow_tags = True
@@ -223,8 +229,8 @@ class DifferentPrice(models.Model):
         return 0
 
     def description(self):
-        return '%s-%s: %sRMB, %sKG, %sCM' % (
-            self.model, self.difference, self.price, self.weight, self.size)
+        return '%s-%s: %sRMB, %sKG' % (
+            self.model, self.difference, self.price, self.weight)
 
     class Meta:
         verbose_name = verbose_name_plural = '差异价'

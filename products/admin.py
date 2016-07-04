@@ -10,6 +10,8 @@ from buss.admin import AutoUserAdmin
 class DifferentPriceInline(admin.TabularInline):
     model = models.DifferentPrice
     ordering = ('model', 'difference')
+    fields = ('model', 'difference', 'price', 'profit', 'weight', 'size',
+                    'video')
     extra = 0
 
 
@@ -87,6 +89,8 @@ class SupplyAbilityAdmin(admin.ModelAdmin):
 @admin.register(models.DifferentPrice)
 class DifferentPriceAdmin(admin.ModelAdmin):
     search_fields = ('model', 'basic__cn_name')
+    list_display = ('model', 'difference', 'price', 'profit', 'weight', 'size',
+                    'video')
 
     def get_model_perms(self, request):
         perms = super(DifferentPriceAdmin, self).get_model_perms(request)
@@ -161,8 +165,8 @@ class TitleKeywordAdmin(AutoUserAdmin):
     search_fields = ('word', 'title')
     list_filter = (TKWFilter, )
     ordering = ('model', )
-    list_editable = ('title', 'model', 'word', 'count')
-    list_display = ('list_link', 'word', 'title', 'model', 'count')
+    list_editable = ('title', )
+    list_display = ('list_link', 'title', 'count')
     list_display_links = ('list_link', )
     actions = [duplicate_word, reset_count]
 

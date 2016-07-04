@@ -123,9 +123,8 @@ class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
     search_fields = ('client__name', 'client__email')
     list_filter = ordering = ('date', 'ship_date')
-    list_display = ('date', 'client_email', 'payments_rmb_short', 'po_list',
-                    'prime_cost_split', 'shipping_cost', 'profit', 'logistic',
-                    'ship_date')
+    list_display = ('date', 'client_email', 'po_list',
+                    'prime_cost_split', 'shipping_cost', 'profit')
     raw_id_fields = ('client', )
     inlines = [PaymentInline, ProductOrderInline, ExtraCostInline]
     actions = [make_month_profit, ]
