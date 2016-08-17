@@ -43,9 +43,3 @@ class ClientAdmin(AutoUserAdmin):
     raw_id_fields = ('country', )
     list_display = ('__str__', 'email')
     list_filter = (ClientCountryFilter, )
-
-
-@admin.register(models.LoginEmail)
-class LoginEmailAdmin(AutoUserAdmin):
-    exclude = ('user', )
-    list_display = ('login_id', 'email')

@@ -146,7 +146,14 @@ class Order(models.Model):
         for po in self.productorder_set.all():
             cost += po.shipping_cost
         return cost
-    shipping_cost.short_description = '运费(RMB)'
+
+    def shipping_cost_split(self):
+        cost = []
+        for po in self.productorder_set.all():
+            cost.append(str(po.shipping_cost))
+        return '<br><br>'.join(cost)
+    shipping_cost_split.allow_tags = True
+    shipping_cost_split.short_description = '运费(RMB)'
 
     def shipping_excel_cost(self):
         cost = []
@@ -200,7 +207,7 @@ class Payment(models.Model):
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
         '货币类型', default=1, choices=CURRENCY_TYPE)
-    exchange_rate = models.FloatField('对人民币汇率', default=6.52)
+    exchange_rate = models.FloatField('对人民币汇率', default=6.65)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
     date = models.DateField('日期')

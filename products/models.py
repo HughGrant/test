@@ -4,7 +4,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
 from preset import *
-from clients.models import LoginEmail
 
 
 @python_2_unicode_compatible
@@ -68,82 +67,25 @@ class TitleKeyword(models.Model):
     model = models.CharField('型号', max_length=200, default="")
     title = models.CharField('标题', max_length=200, blank=True, default="")
     word = models.CharField('内容', max_length=200, default="")
-    count = models.IntegerField('计数', default=0)
+    used = models.BooleanField('已用', default=False)
 
     def __str__(self):
-        return "%s-%s" % (self.word, self.count)
+        return "%s-%s" % (self.word, self.used)
 
     @classmethod
     def get_pair(cls, model):
-        tk = cls.objects.filter(model=model).exclude(title="")
+        tk = cls.objects.filter(model=model, used=False).exclude(title="")
         if tk.exists():
-            return tk.order_by('count')[:1].get()
+            return tk.first()
         return None
 
-    def count_plus(self):
-        self.count += 1
+    def mark_used(self):
+        self.used = True
         self.save()
-
-    def list_link(self):
-        return self.word
-    list_link.short_description = '链接'
 
     class Meta:
         unique_together = ('model', 'word')
         verbose_name = verbose_name_plural = '更新数据'
-
-
-@python_2_unicode_compatible
-class Trace(models.Model):
-    user = models.ForeignKey(User)
-    tkw = models.ForeignKey('TitleKeyword', verbose_name='标题与关键字')
-    # login email information
-    le = models.ForeignKey(LoginEmail, verbose_name='帐户信息', null=True)
-    # alibaba product id
-    apid = models.IntegerField('阿里产品ID', default=0)
-    update_time = models.DateTimeField('最后更新时间', auto_now_add=True)
-
-    def __str__(self):
-        return self.tkw.__str__()
-
-    @classmethod
-    def tracing(cls, **kwargs):
-        le = kwargs['le']
-        apid = kwargs['apid']
-        twk = kwargs['tkw']
-        user = kwargs['user']
-
-        t = cls.objects.filter(le=le, apid=apid, user=user)
-        if t.exists():
-            t = t.get()
-            t.twk = twk
-            t.save()
-        else:
-            t = cls(**kwargs)
-            t.save()
-
-    def title(self):
-        return self.tkw.title
-    title.short_description = '标题'
-
-    def email(self):
-        return self.le.email
-    email.short_description = '对应邮箱帐号'
-
-    def modelx(self):
-        return self.tkw.model
-    modelx.short_description = '产品型号'
-
-    def link(self):
-        l = "http://hz-productposting.alibaba.com/product/editing.htm?id=%d"
-        l = l % self.apid
-        return '<a target="blank" href="%s">点击更新</a>' % l
-    link.short_description = '更新链接'
-    link.allow_tags = True
-
-    class Meta:
-        unique_together = ('tkw', 'apid')
-        verbose_name = verbose_name_plural = '更新记录'
 
 
 @python_2_unicode_compatible

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
-from django.db.models import Sum
+# from django.db.models import Sum
 from . import models
 from buss.admin import AutoUserAdmin
 
@@ -124,18 +124,18 @@ class ExtendAdmin(AutoUserAdmin):
 
 def duplicate_word(modeladmin, req, queryset):
     for qs in queryset:
-        qs.count = 0
+        qs.used = False
         qs.title = ''
         qs.model = ''
         qs.id = None
         qs.save()
 duplicate_word.short_description = '重复关键字'
 
-def reset_count(modeladmin, req, queryset):
+def mark_used(modeladmin, req, queryset):
     for qs in queryset:
-        qs.count = 0
+        qs.used = 0
         qs.save()
-reset_count.short_description = '计数清零'
+mark_used.short_description = '重置'
 
 class TKWFilter(admin.SimpleListFilter):
     title = '产品型号'
@@ -144,11 +144,11 @@ class TKWFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         # returns a tuple
         pairs = []
-        names = models.TitleKeyword.objects.values_list('model').distinct()
+        names = models.TitleKeyword.objects.order_by('model').values_list('model').distinct()
         for n in names:
             r = models.TitleKeyword.objects.filter(model=n[0])
             total = r.count()
-            used = r.aggregate(Sum('count'))['count__sum']
+            used = r.filter(used=True).count()
             pairs.append((n[0], "%s (%d-%d)" % (n[0], used, total)))
         return pairs
 
@@ -161,14 +161,12 @@ class TKWFilter(admin.SimpleListFilter):
 
 @admin.register(models.TitleKeyword)
 class TitleKeywordAdmin(AutoUserAdmin):
-    exclude = ('user', 'count')
+    exclude = ('user', )
     search_fields = ('word', 'title')
     list_filter = (TKWFilter, )
     ordering = ('model', )
-    list_editable = ('title', )
-    list_display = ('list_link', 'title', 'count')
-    list_display_links = ('list_link', )
-    actions = [duplicate_word, reset_count]
+    list_display = ('word', 'title', 'used')
+    actions = [duplicate_word, mark_used]
 
 
 @admin.register(models.QuotationTemplate)
@@ -178,25 +176,3 @@ class QuotationTemplateAdmin(AutoUserAdmin):
     search_fields = ('dp__model', )
     list_filter = ordering = ('dp__model', )
     list_display = ('show_model', 'copy_link')
-
-
-@admin.register(models.Trace)
-class TraceAdmin(AutoUserAdmin):
-    exclude = ('user', )
-    search_fields = ('apid', )
-    list_filter = ('le__email', )
-    list_display = ('title', 'modelx', 'apid', 'email', 'update_time', 'link')
-
-    def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super(TraceAdmin, self).get_search_results(request, queryset, search_term)
-        if search_term == '':
-            return queryset, use_distinct
-        if search_term.isnumeric():
-            return queryset, use_distinct
-        qs = models.TitleKeyword.objects.filter(model=search_term)
-        if qs.count == 0:
-            return queryset, use_distinct
-
-        ids = qs.values_list('id', flat=True)
-        qs = models.Trace.objects.filter(tkw__in=ids)
-        return qs, use_distinct

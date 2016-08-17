@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from products.models import *
-from clients.models import LoginEmail
 
 
 class UpdateByModel(View):
@@ -173,22 +172,8 @@ class TitleKeywordView(View):
 
         action = request.GET['action']
         data = {'title': '', 'word': ''}
-        if action == 'copy':
-            tkw.count_plus()
 
-        if action == 'upload':
-            tkw.count_plus()
-
-        if action == 'update':
-            lid = request.GET['login_id']
-            le = LoginEmail.objects.filter(login_id=lid)
-            if le.count() != 1:
-                return JsonResponse({'msg': '请先设置帐户信息'})
-
-            apid = request.GET['apid']
-            Trace.tracing(le=le.get(), apid=apid, tkw=tkw,
-                          user=request.user)
-            tkw.count_plus()
+        tkw.mark_used()
 
         data['title'] = '%s %s' % (tkw.title, model)
         data['word'] = tkw.word

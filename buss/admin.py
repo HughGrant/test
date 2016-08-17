@@ -65,25 +65,37 @@ def make_month_profit(modeladmin, req, queryset):
 
         worksheet.write_formula(row, 10, qs.shipping_excel_cost())
         worksheet.write_formula(row, 11, qs.excel_profit())
-        worksheet.write_string(row, 12, qs.tracking_number)
-        worksheet.write_string(row, 13, qs.logistic_company)
-        worksheet.write_string(row, 14, qs.ship_date.strftime('%Y/%m/%d'))
+        worksheet.write_string(row, 12, qs.tracking_number or '无')
+        worksheet.write_string(row, 13, qs.logistic_company or '无')
+        if qs.ship_date:
+            worksheet.write_string(row, 14, qs.ship_date.strftime('%Y/%m/%d'))
+        else:
+            worksheet.write_string(row, 14, '无')
 
         max_iters = []
         # Payment Methods
-        for index, pm in enumerate(qs.payments_method(), row):
-            worksheet.write_string(index, 5, pm)
-        max_iters.append(index)
+        payment_methods = qs.payments_method()
+        if payment_methods:
+            for index, pm in enumerate(payment_methods, row):
+                worksheet.write_string(index, 5, pm)
+            max_iters.append(index)
+        else:
+            worksheet.write_string(row, 5, "无")
+            max_iters.append(row)
 
         # Payment Money
-        for index, m in enumerate(qs.payments_collected_money(), row):
-            worksheet.write_number(index, 6, m)
-        max_iters.append(index)
+        payment_money = qs.payments_collected_money()
+        if payment_money:
+            for index, m in enumerate(qs.payments_collected_money(), row):
+                worksheet.write_number(index, 6, m)
+            max_iters.append(index)
+        else:
+            worksheet.write_number(row, 6, 0)
+            max_iters.append(row)
 
         # product names and quantities
         name_qty = qs.po_name_qty()
-        max_po = len(name_qty)
-
+        max_po = len(name_qty) or (row - 1)
         for index, po_des in enumerate(name_qty, row):
             worksheet.write_string(index, 8, po_des)
 
@@ -124,7 +136,7 @@ class OrderAdmin(AutoUserAdmin):
     search_fields = ('client__name', 'client__email')
     list_filter = ordering = ('date', 'ship_date')
     list_display = ('date', 'client_email', 'po_list',
-                    'prime_cost_split', 'shipping_cost', 'profit')
+                    'prime_cost_split', 'shipping_cost_split', 'profit')
     raw_id_fields = ('client', )
     inlines = [PaymentInline, ProductOrderInline, ExtraCostInline]
     actions = [make_month_profit, ]

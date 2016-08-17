@@ -53,16 +53,3 @@ class Address(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = '地址信息'
-
-
-@python_2_unicode_compatible
-class LoginEmail(models.Model):
-    user = models.ForeignKey(User)
-    login_id = models.CharField('LoginID', blank=True, max_length=100)
-    email = models.CharField('邮箱', blank=True, max_length=100)
-
-    def __str__(self):
-        return '%s(%s)' % (self.login_id, self.email)
-
-    class Meta:
-        verbose_name = verbose_name_plural = '帐户设置'
