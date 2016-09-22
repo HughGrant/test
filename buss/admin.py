@@ -5,9 +5,9 @@ from django.contrib import admin
 from django.http import HttpResponse
 import xlsxwriter
 from . import models
-admin.site.site_header = '亚新科技'
+admin.site.site_header = 'Yason Tech'
 admin.site.site_title = 'Yason Tech'
-admin.site.index_title = '亚新电子科技有限公司'
+admin.site.index_title = 'Yason Tech'
 
 
 class AutoUserAdmin(admin.ModelAdmin):
@@ -39,8 +39,7 @@ class PaymentInline(admin.TabularInline):
 
 def make_month_profit(modeladmin, req, queryset):
     titles = ['日期', '客户性质', '客户邮箱地址', '客户名字', '国家', '付款方式', '收款金额(USD)',
-              '折RMB实际收款额', '商品名称及数量及单价', '货物成本', '运费', '净毛利', '跟踪号',
-              '货代公司', '发货日期']
+              '折RMB实际收款额', '订单内容', '对应费用', '运费', '净毛利', '跟踪号', '货代公司', '发货日期']
     excel_file = io.BytesIO()
     workbook = xlsxwriter.Workbook(excel_file, {'in_memory': True})
     worksheet = workbook.add_worksheet()
@@ -51,7 +50,7 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write(0, col, title, title_format)
     # filling the data
     row = 1
-    for qs in queryset.order_by('date'):
+    for qs in queryset.order_by('-date'):
         worksheet.write_string(row, 0, qs.date.strftime('%Y/%m/%d'))
         is_old = models.Order.objects.filter(client=qs.client).count()
         if is_old == 1:
@@ -61,8 +60,9 @@ def make_month_profit(modeladmin, req, queryset):
         worksheet.write_string(row, 2, qs.client.email)
         worksheet.write_string(row, 3, qs.client.name)
         worksheet.write_string(row, 4, qs.client.country.cn_name)
+        # 5, 6
         worksheet.write_formula(row, 7, qs.payments_excel_rmb())
-
+        # 8, 9
         worksheet.write_formula(row, 10, qs.shipping_excel_cost())
         worksheet.write_formula(row, 11, qs.excel_profit())
         worksheet.write_string(row, 12, qs.tracking_number or '无')
@@ -72,43 +72,44 @@ def make_month_profit(modeladmin, req, queryset):
         else:
             worksheet.write_string(row, 14, '无')
 
-        max_iters = []
-        # Payment Methods
+        # Payment Methods, 5
+        next_rows = []
         payment_methods = qs.payments_method()
         if payment_methods:
+            next_rows.append(len(payment_methods))
             for index, pm in enumerate(payment_methods, row):
                 worksheet.write_string(index, 5, pm)
-            max_iters.append(index)
         else:
             worksheet.write_string(row, 5, "无")
-            max_iters.append(row)
 
-        # Payment Money
+        # Payment Money, 6
         payment_money = qs.payments_collected_money()
         if payment_money:
+            next_rows.append(len(payment_money))
             for index, m in enumerate(qs.payments_collected_money(), row):
                 worksheet.write_number(index, 6, m)
-            max_iters.append(index)
         else:
             worksheet.write_number(row, 6, 0)
-            max_iters.append(row)
 
         # product names and quantities
         name_qty = qs.po_name_qty()
-        max_po = len(name_qty) or (row - 1)
-        for index, po_des in enumerate(name_qty, row):
-            worksheet.write_string(index, 8, po_des)
+        if name_qty:
+            next_rows.append(len(name_qty))
+            for index, po_des in enumerate(name_qty, row):
+                worksheet.write_string(index, 8, po_des)
 
-        for index, cost in enumerate(qs.prime_excel_cost(), row):
-            worksheet.write_formula(index, 9, cost)
+            for index, cost in enumerate(qs.prime_excel_cost(), row):
+                worksheet.write_formula(index, 9, cost)
 
         # the extra cost follows unders order description
-        for index, ec in enumerate(qs.extracost_set.all(), max_po + 1):
-            worksheet.write_string(index, 8, ec.discription)
-            worksheet.write_number(index, 9, ec.cost)
-        max_iters.append(index)
-
-        row = max(max_iters) + 2
+        extra_costs = qs.extracost_set.count()
+        if extra_costs:
+            next_rows.append(extra_costs + 1)
+            for index, ec in enumerate(qs.extracost_set.all(), row + len(name_qty)):
+                worksheet.write_string(index, 8, ec.discription)
+                worksheet.write_number(index, 9, ec.cost)
+        
+        row = max(next_rows) + row + 1
 
     # total profit sum
     worksheet.write_string(row, 10, '总利润')
@@ -133,8 +134,9 @@ make_month_profit.short_description = '生成利润表'
 @admin.register(models.Order)
 class OrderAdmin(AutoUserAdmin):
     exclude = ('user', )
+    ordering = ('-date', )
     search_fields = ('client__name', 'client__email')
-    list_filter = ordering = ('date', 'ship_date')
+    list_filter = ('date', 'ship_date')
     list_display = ('date', 'client_email', 'po_list',
                     'prime_cost_split', 'shipping_cost_split', 'profit')
     raw_id_fields = ('client', )
