@@ -1,15 +1,11 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import sys
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from clients.models import Client
 from products.models import DifferentPrice
 from preset import CURRENCY_TYPE, PAYMENT_METHOD
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 @python_2_unicode_compatible
@@ -27,10 +23,9 @@ class Order(models.Model):
         return '%s-定单ID:%s' % (self.client.__str__(), self.id)
 
     def client_email(self):
-        line_feed = '%0d%0a'
         email = '<a href="mailto:%s?subject=%s&body=%s">%s</a>' % (
             self.client.email, 'test', 'test', self.client.email)
-        return '%s<br><br>%s' % (str(self.client), email)
+        return '%s<br><br>%s' % (self.client.__str__(), email)
     client_email.short_description = '客户信息'
     client_email.allow_tags = True
 
@@ -132,7 +127,7 @@ class Order(models.Model):
     def prime_excel_cost(self):
         cost = []
         for po in self.productorder_set.all():
-            cost.append('%f*%f' % (po.product.price, po.quantity))
+            cost.append('%f*%f' % (po.unit_price, po.quantity))
         return cost
 
     def extra_cost(self):
@@ -207,7 +202,7 @@ class Payment(models.Model):
     collected_money = models.FloatField('收款金额', default=0)
     currency_type = models.IntegerField(
         '货币类型', default=1, choices=CURRENCY_TYPE)
-    exchange_rate = models.FloatField('对人民币汇率', default=6.65)
+    exchange_rate = models.FloatField('对人民币汇率', default=6.86)
     payment_method = models.IntegerField(
         '付款方式', default=1, choices=PAYMENT_METHOD)
     date = models.DateField('日期')

@@ -91,7 +91,7 @@ def make_month_profit(modeladmin, req, queryset):
         else:
             worksheet.write_number(row, 6, 0)
 
-        # product names and quantities
+        # product names and quantities, 8 and 9
         name_qty = qs.po_name_qty()
         if name_qty:
             next_rows.append(len(name_qty))
@@ -104,11 +104,11 @@ def make_month_profit(modeladmin, req, queryset):
         # the extra cost follows unders order description
         extra_costs = qs.extracost_set.count()
         if extra_costs:
-            next_rows.append(extra_costs + 1)
+            next_rows.append(extra_costs + len(name_qty))
             for index, ec in enumerate(qs.extracost_set.all(), row + len(name_qty)):
                 worksheet.write_string(index, 8, ec.discription)
                 worksheet.write_number(index, 9, ec.cost)
-        
+
         row = max(next_rows) + row + 1
 
     # total profit sum
